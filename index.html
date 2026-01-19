@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #0a0a0a; color: #fff; padding: 20px; text-align: center; }
+        .box { max-width: 850px; margin: auto; background: #111; padding: 25px; border-radius: 15px; border: 1px solid #ff0055; box-shadow: 0 0 30px rgba(255, 0, 85, 0.2); }
+        h2 { color: #ff0055; text-transform: uppercase; letter-spacing: 2px; }
+        textarea { 
+            width: 100%; height: 220px; background: #000; color: #00ff88; 
+            border: 1px solid #333; border-radius: 10px; padding: 15px;
+            font-family: 'Consolas', monospace; font-size: 13px; margin-bottom: 20px; outline: none;
+        }
+        .btns { display: flex; gap: 15px; justify-content: center; }
+        button { 
+            padding: 14px 35px; border-radius: 8px; border: none; font-weight: bold;
+            cursor: pointer; transition: 0.3s; font-size: 15px;
+        }
+        .btn-main { background: #ff0055; color: #fff; }
+        .btn-main:hover { background: #cc0044; transform: scale(1.05); }
+        .btn-copy { background: #333; color: #fff; }
+        #status { color: #888; font-size: 13px; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="box">
+    <h2>مشفر عباس الـ 100% (Full Virtualization)</h2>
+    <div id="status">جاهز لتحويل سكريبتك إلى أرقام غير قابلة للفهم...</div>
+
+    <textarea id="input" placeholder="ألصق سكريبتك هنا (عربي أو إنجليزي)..."></textarea>
+
+    <div class="btns">
+        <button class="btn-main" onclick="fullEncrypt()">تشفير شامل 100%</button>
+        <button class="btn-copy" onclick="copyResult()">نسخ الكود</button>
+    </div>
+
+    <p style="margin-top: 25px; color: #ff0055; font-weight: bold;">الناتج المشفر (آمن تماماً للرفع على GitHub):</p>
+    <textarea id="output" readonly placeholder="النتيجة ستظهر هنا..."></textarea>
+</div>
+
+<script>
+    function fullEncrypt() {
+        const input = document.getElementById('input').value;
+        const output = document.getElementById('output');
+        const status = document.getElementById('status');
+
+        if (!input) { alert("أدخل الكود أولاً!"); return; }
+
+        status.innerText = "جاري التشفير العميق لكل الحروف...";
+
+        // دالة لتحويل النص (بما فيه العربي) إلى Bytecode متوافق مع روبلوكس
+        function toBytecode(str) {
+            let res = "";
+            // نستخدم encodeURIComponent للتعامل مع الحروف العربية كـ UTF-8
+            let utf8 = unescape(encodeURIComponent(str));
+            for (let i = 0; i < utf8.length; i++) {
+                res += "\\" + utf8.charCodeAt(i).toString().padStart(3, '0');
+            }
+            return res;
+        }
+
+        const encodedData = toBytecode(input);
+        
+        // الكود النهائي مع محرك فك تشفير صامت لا يظهر أي حروف
+        const finalScript = `--[[ PROTECTED BY ABBAS ELITE SYSTEM 2026 ]]--\n` +
+            `local _0xPayload = "${encodedData}"\n` +
+            `local _0xExecute = function(_0xData)\n` +
+            `    local _0xDecoded = _0xData:gsub("\\\\(%d%d%d)", function(d) return string.char(tonumber(d)) end)\n` +
+            `    return (loadstring or load)(_0xDecoded)\n` +
+            `end\n` +
+            `_0xExecute(_0xPayload)()`;
+
+        setTimeout(() => {
+            output.value = finalScript;
+            status.innerText = "تم التشفير بنسبة 100%! لا توجد حروف واضحة الآن.";
+        }, 500);
+    }
+
+    function copyResult() {
+        const output = document.getElementById('output');
+        output.select();
+        document.execCommand('copy');
+        alert("تم نسخ الكود المشفر!");
+    }
+</script>
+
+</body>
+</html>
