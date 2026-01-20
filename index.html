@@ -18,14 +18,25 @@
             cursor: pointer; transition: 0.3s; font-size: 14px;
         }
         .btn-main { background: #ff0055; color: #fff; }
-        .btn-main:hover { background: #cc0044; transform: scale(1.05); }
         .btn-upload { background: #0088ff; color: #fff; }
-        .btn-upload:hover { background: #0066cc; transform: scale(1.05); }
         .btn-download { background: #00ff88; color: #000; }
-        .btn-download:hover { background: #00cc6e; transform: scale(1.05); }
         .btn-copy { background: #333; color: #fff; }
         #status { color: #888; font-size: 13px; margin-top: 10px; }
         #fileInput { display: none; }
+
+        /* نافذة إدخال الاسم (Custom Modal) */
+        #nameModal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center;
+        }
+        .modal-content {
+            background: #151515; padding: 30px; border-radius: 15px; border: 2px solid #ff0055;
+            width: 300px; text-align: center;
+        }
+        .modal-content input {
+            width: 90%; padding: 10px; margin: 15px 0; background: #000; border: 1px solid #ff0055;
+            color: #fff; border-radius: 5px; text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -35,24 +46,33 @@
     <div id="status">جاهز لتحويل سكريبتك إلى أرقام غير قابلة للفهم...</div>
 
     <textarea id="input" placeholder="ألصق سكريبتك هنا أو استخدم زر الرفع..."></textarea>
-
     <input type="file" id="fileInput" accept=".lua,.txt">
 
     <div class="btns">
         <button class="btn-upload" onclick="triggerUpload()">📁 رفع سكريبت</button>
         <button class="btn-main" onclick="fullEncrypt()">⚡ تشفير شامل 100%</button>
         <button class="btn-copy" onclick="copyResult()">📋 نسخ الكود</button>
-        <button class="btn-download" onclick="downloadWithFileName()">📥 تحميل الناتج</button>
+        <button class="btn-download" onclick="openNameModal()">📥 تحميل الناتج</button>
     </div>
 
-    <p style="margin-top: 25px; color: #ff0055; font-weight: bold;">الناتج المشفر (آمن تماماً للرفع على GitHub):</p>
+    <p style="margin-top: 25px; color: #ff0055; font-weight: bold;">الناتج المشفر:</p>
     <textarea id="output" readonly placeholder="النتيجة ستظهر هنا..."></textarea>
 </div>
 
+<div id="nameModal">
+    <div class="modal-content">
+        <h3 style="color:#ff0055; margin:0;">تسمية الملف</h3>
+        <p style="font-size:12px; color:#aaa;">اكتب اسم الملف (بشرط ينتهي بـ .lua)</p>
+        <input type="text" id="fileNameInput" placeholder="example.lua">
+        <div style="display:flex; gap:10px;">
+            <button class="btn-main" style="flex:1" onclick="confirmDownload()">تأكيد الحفظ</button>
+            <button class="btn-copy" style="flex:1" onclick="closeModal()">إلغاء</button>
+        </div>
+    </div>
+</div>
+
 <script>
-    function triggerUpload() {
-        document.getElementById('fileInput').click();
-    }
+    function triggerUpload() { document.getElementById('fileInput').click(); }
 
     document.getElementById('fileInput').addEventListener('change', function(e) {
         const file = e.target.files[0];
@@ -67,85 +87,59 @@
 
     function fullEncrypt() {
         const input = document.getElementById('input').value;
-        const output = document.getElementById('output');
-        const status = document.getElementById('status');
-
-        if (!input) { alert("أدخل الكود أو ارفع ملفاً أولاً!"); return; }
-
-        status.innerText = "جاري التشفير العميق لكل الحروف...";
-
-        function toBytecode(str) {
-            let res = "";
-            let utf8 = unescape(encodeURIComponent(str));
-            for (let i = 0; i < utf8.length; i++) {
-                res += "\\" + utf8.charCodeAt(i).toString().padStart(3, '0');
-            }
-            return res;
+        if (!input) { alert("أدخل الكود أولاً!"); return; }
+        document.getElementById('status').innerText = "جاري التشفير...";
+        
+        let encodedData = "";
+        let utf8 = unescape(encodeURIComponent(input));
+        for (let i = 0; i < utf8.length; i++) {
+            encodedData += "\\" + utf8.charCodeAt(i).toString().padStart(3, '0');
         }
 
-        const encodedData = toBytecode(input);
-        
         const finalScript = `--[[ PROTECTED BY ABBAS ELITE SYSTEM 2026 ]]--\n` +
             `local _0xPayload = "${encodedData}"\n` +
             `local _0xExecute = function(_0xData)\n` +
             `    local _0xDecoded = _0xData:gsub("\\\\(%d%d%d)", function(d) return string.char(tonumber(d)) end)\n` +
             `    return (loadstring or load)(_0xDecoded)\n` +
-            `end\n` +
-            `_0xExecute(_0xPayload)()`;
+            `end\n_0xExecute(_0xPayload)()`;
 
-        setTimeout(() => {
-            output.value = finalScript;
-            status.innerText = "تم التشفير بنسبة 100%! لا توجد حروف واضحة الآن.";
-        }, 500);
+        document.getElementById('output').value = finalScript;
+        document.getElementById('status').innerText = "تم التشفير بنسبة 100%!";
+    }
+
+    function openNameModal() {
+        if (!document.getElementById('output').value) { alert("شفر الكود أولاً!"); return; }
+        document.getElementById('nameModal').style.display = "flex";
+    }
+
+    function closeModal() { document.getElementById('nameModal').style.display = "none"; }
+
+    function confirmDownload() {
+        let name = document.getElementById('fileNameInput').value.trim();
+        if (!name) { alert("اكتب اسم الملف!"); return; }
+        
+        // التأكد من لاحقة .lua
+        if (!name.toLowerCase().endsWith(".lua")) { name += ".lua"; }
+
+        const blob = new Blob([document.getElementById('output').value], { type: 'text/plain' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = name;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        a.remove();
+        
+        closeModal();
+        document.getElementById('status').innerText = "تم الحفظ باسم: " + name;
     }
 
     function copyResult() {
         const output = document.getElementById('output');
-        if (!output.value) return;
         output.select();
         document.execCommand('copy');
-        alert("تم نسخ الكود المشفر!");
-    }
-
-    // الوظيفة الجديدة لطلب الاسم ثم التحميل
-    function downloadWithFileName() {
-        const content = document.getElementById('output').value;
-        if (!content) {
-            alert("التشفير فارغ! شفر كودك أولاً.");
-            return;
-        }
-
-        // إظهار نافذة لطلب الاسم من المستخدم
-        let fileName = prompt("أدخل اسم الملف لحفظه (مثال: script.lua):", "my_encrypted_script.lua");
-
-        // إذا ضغط المستخدم إلغاء
-        if (fileName === null) return;
-
-        // التأكد من وجود الاسم وعدم فراغه
-        if (fileName.trim() === "") {
-            alert("يجب كتابة اسم للملف!");
-            return;
-        }
-
-        // التأكد من أن الاسم ينتهي بـ .lua
-        if (!fileName.toLowerCase().endsWith(".lua")) {
-            fileName = fileName.split('.')[0] + ".lua";
-        }
-
-        // عملية الحفظ/التحميل
-        const blob = new Blob([content], { type: 'text/plain' });
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        
-        a.href = url;
-        a.download = fileName;
-        document.body.appendChild(a);
-        a.click();
-        
-        window.URL.revokeObjectURL(url);
-        document.body.removeChild(a);
-        
-        document.getElementById('status').innerText = "تم حفظ الملف باسم: " + fileName;
+        alert("تم النسخ!");
     }
 </script>
 
