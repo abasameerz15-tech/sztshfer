@@ -12,18 +12,19 @@
             border: 1px solid #333; border-radius: 10px; padding: 15px;
             font-family: 'Consolas', monospace; font-size: 13px; margin-bottom: 20px; outline: none;
         }
-        .btns { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
+        .btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
         button { 
-            padding: 14px 25px; border-radius: 8px; border: none; font-weight: bold;
-            cursor: pointer; transition: 0.3s; font-size: 15px;
+            padding: 12px 20px; border-radius: 8px; border: none; font-weight: bold;
+            cursor: pointer; transition: 0.3s; font-size: 14px;
         }
         .btn-main { background: #ff0055; color: #fff; }
         .btn-main:hover { background: #cc0044; transform: scale(1.05); }
-        .btn-upload { background: #0088ff; color: #fff; } /* لون أزرق لزر الرفع */
+        .btn-upload { background: #0088ff; color: #fff; }
         .btn-upload:hover { background: #0066cc; transform: scale(1.05); }
+        .btn-download { background: #00ff88; color: #000; } /* لون أخضر لزر التحميل */
+        .btn-download:hover { background: #00cc6e; transform: scale(1.05); }
         .btn-copy { background: #333; color: #fff; }
         #status { color: #888; font-size: 13px; margin-top: 10px; }
-        /* إخفاء عنصر اختيار الملف الحقيقي */
         #fileInput { display: none; }
     </style>
 </head>
@@ -41,6 +42,7 @@
         <button class="btn-upload" onclick="triggerUpload()">📁 رفع سكريبت</button>
         <button class="btn-main" onclick="fullEncrypt()">⚡ تشفير شامل 100%</button>
         <button class="btn-copy" onclick="copyResult()">📋 نسخ الكود</button>
+        <button class="btn-download" onclick="downloadResult()">📥 تحميل الناتج</button>
     </div>
 
     <p style="margin-top: 25px; color: #ff0055; font-weight: bold;">الناتج المشفر (آمن تماماً للرفع على GitHub):</p>
@@ -48,16 +50,13 @@
 </div>
 
 <script>
-    // وظيفة لفتح نافذة اختيار الملفات
     function triggerUpload() {
         document.getElementById('fileInput').click();
     }
 
-    // وظيفة لقراءة الملف المرفوع
     document.getElementById('fileInput').addEventListener('change', function(e) {
         const file = e.target.files[0];
         if (!file) return;
-
         const reader = new FileReader();
         reader.onload = function(e) {
             document.getElementById('input').value = e.target.result;
@@ -106,6 +105,31 @@
         output.select();
         document.execCommand('copy');
         alert("تم نسخ الكود المشفر!");
+    }
+
+    // وظيفة تحميل الملف الجديدة
+    function downloadResult() {
+        const output = document.getElementById('output').value;
+        if (!output) {
+            alert("لا يوجد كود مشفر لتحميله! قم بالتشفير أولاً.");
+            return;
+        }
+
+        // إنشاء ملف وهمي للتحميل
+        const blob = new Blob([output], { type: 'text/plain' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        
+        a.href = url;
+        a.download = "Abbas_Elite_Encrypted.lua"; // اسم الملف عند التحميل
+        document.body.appendChild(a);
+        a.click();
+        
+        // تنظيف الذاكرة
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+        
+        document.getElementById('status').innerText = "تم تحميل الملف بنجاح! تفضل يا عبيس.";
     }
 </script>
 
