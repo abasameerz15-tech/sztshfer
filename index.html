@@ -21,7 +21,7 @@
         .btn-main:hover { background: #cc0044; transform: scale(1.05); }
         .btn-upload { background: #0088ff; color: #fff; }
         .btn-upload:hover { background: #0066cc; transform: scale(1.05); }
-        .btn-download { background: #00ff88; color: #000; } /* لون أخضر لزر التحميل */
+        .btn-download { background: #00ff88; color: #000; }
         .btn-download:hover { background: #00cc6e; transform: scale(1.05); }
         .btn-copy { background: #333; color: #fff; }
         #status { color: #888; font-size: 13px; margin-top: 10px; }
@@ -42,7 +42,7 @@
         <button class="btn-upload" onclick="triggerUpload()">📁 رفع سكريبت</button>
         <button class="btn-main" onclick="fullEncrypt()">⚡ تشفير شامل 100%</button>
         <button class="btn-copy" onclick="copyResult()">📋 نسخ الكود</button>
-        <button class="btn-download" onclick="downloadResult()">📥 تحميل الناتج</button>
+        <button class="btn-download" onclick="downloadWithFileName()">📥 تحميل الناتج</button>
     </div>
 
     <p style="margin-top: 25px; color: #ff0055; font-weight: bold;">الناتج المشفر (آمن تماماً للرفع على GitHub):</p>
@@ -107,29 +107,45 @@
         alert("تم نسخ الكود المشفر!");
     }
 
-    // وظيفة تحميل الملف الجديدة
-    function downloadResult() {
-        const output = document.getElementById('output').value;
-        if (!output) {
-            alert("لا يوجد كود مشفر لتحميله! قم بالتشفير أولاً.");
+    // الوظيفة الجديدة لطلب الاسم ثم التحميل
+    function downloadWithFileName() {
+        const content = document.getElementById('output').value;
+        if (!content) {
+            alert("التشفير فارغ! شفر كودك أولاً.");
             return;
         }
 
-        // إنشاء ملف وهمي للتحميل
-        const blob = new Blob([output], { type: 'text/plain' });
+        // إظهار نافذة لطلب الاسم من المستخدم
+        let fileName = prompt("أدخل اسم الملف لحفظه (مثال: script.lua):", "my_encrypted_script.lua");
+
+        // إذا ضغط المستخدم إلغاء
+        if (fileName === null) return;
+
+        // التأكد من وجود الاسم وعدم فراغه
+        if (fileName.trim() === "") {
+            alert("يجب كتابة اسم للملف!");
+            return;
+        }
+
+        // التأكد من أن الاسم ينتهي بـ .lua
+        if (!fileName.toLowerCase().endsWith(".lua")) {
+            fileName = fileName.split('.')[0] + ".lua";
+        }
+
+        // عملية الحفظ/التحميل
+        const blob = new Blob([content], { type: 'text/plain' });
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         
         a.href = url;
-        a.download = "Abbas_Elite_Encrypted.lua"; // اسم الملف عند التحميل
+        a.download = fileName;
         document.body.appendChild(a);
         a.click();
         
-        // تنظيف الذاكرة
         window.URL.revokeObjectURL(url);
         document.body.removeChild(a);
         
-        document.getElementById('status').innerText = "تم تحميل الملف بنجاح! تفضل يا عبيس.";
+        document.getElementById('status').innerText = "تم حفظ الملف باسم: " + fileName;
     }
 </script>
 
