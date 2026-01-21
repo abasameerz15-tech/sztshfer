@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>محول السكربتات - عمك عبيس</title>
+    <style>
+        body {
+            background-color: #111;
+            color: #00ffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #1a1a1a;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #00ffff;
+            box-shadow: 0 0 20px #00ffff55;
+            width: 80%;
+            max-width: 600px;
+        }
+        h2 { text-align: center; }
+        textarea {
+            width: 100%;
+            height: 200px;
+            background-color: #222;
+            color: #fff;
+            border: 1px solid #444;
+            border-radius: 5px;
+            padding: 10px;
+            box-sizing: border-box;
+            resize: none;
+            margin-bottom: 15px;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            background: #222;
+            border: 1px solid #444;
+            color: #fff;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #00ffff;
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            background-color: #00cccc;
+            transform: scale(1.02);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>أداة حفظ السكربت (بدون تشفير)</h2>
+    
+    <label>ضع الكود هنا:</label>
+    <textarea id="scriptContent" placeholder="صق الكود هنا..."></textarea>
+    
+    <label>اسم الملف (سيتم إضافة .txt تلقائياً):</label>
+    <input type="text" id="fileName" placeholder="مثلاً: MyScript">
+    
+    <button onclick="downloadFile()">تحميل الملف بجهازي</button>
+</div>
+
+<script>
+    function downloadFile() {
+        const content = document.getElementById('scriptContent').value;
+        let name = document.getElementById('fileName').value;
+        
+        if (!content) {
+            alert("يا عبيس حط الكود أولاً!");
+            return;
+        }
+        
+        if (!name) {
+            name = "Abbas_Script";
+        }
+
+        // إنشاء ملف Blob
+        const blob = new Blob([content], { type: 'text/plain' });
+        const url = window.URL.createObjectURL(blob);
+        
+        // إنشاء رابط وهمي للتحميل
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = name + ".txt"; // إضافة الامتداد تلقائياً
+        document.body.appendChild(a);
+        a.click();
+        
+        // تنظيف
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+    }
+</script>
+
+</body>
+</html>
