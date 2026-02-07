@@ -3,83 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SZ OBF V8 | VM EDITION</title>
+    <title>SZ OBF V9 | THE BEAST</title>
     <style>
-        :root { --b: #0044ff; --r: #ff0022; --g: #00ff88; }
-        body { background: #000; color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; display: flex; justify-content: center; height: 100vh; width: 100vw; overflow: hidden; }
-        .main-box { width: 100%; height: 100%; background: #050505; border: 4px solid var(--b); display: flex; flex-direction: column; padding: 15px; box-sizing: border-box; box-shadow: inset 0 0 50px rgba(0, 68, 255, 0.2); }
-        h1 { text-align: center; color: var(--r); text-shadow: 0 0 20px var(--r); font-size: 24px; margin: 5px 0; }
-        textarea { flex: 1; background: #000; color: var(--g); border: 1px solid #222; border-radius: 10px; padding: 12px; font-family: monospace; font-size: 13px; outline: none; margin-bottom: 10px; resize: none; box-shadow: inset 0 0 10px #000; }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
-        button, .label { padding: 18px 5px; font-weight: bold; border: none; border-radius: 12px; cursor: pointer; color: #fff; text-align: center; font-size: 14px; transition: 0.2s; text-transform: uppercase; }
-        .btn-b { background: linear-gradient(45deg, #0011bb, var(--b)); border-bottom: 4px solid #000c88; }
-        .btn-r { background: linear-gradient(45deg, #bb0011, var(--r)); border-bottom: 4px solid #880000; }
-        button:active { transform: translateY(2px); border-bottom: 0; margin-bottom: 4px; }
-        #out { border-color: var(--r); color: var(--r); flex: 0.6; }
-        .modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #111; padding: 25px; border: 2px solid var(--b); border-radius: 20px; z-index: 1000; width: 85%; }
+        :root { --b: #0066ff; --r: #ff0000; }
+        body { background: #000; color: #fff; font-family: sans-serif; margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+        .box { width: 100%; max-width: 600px; border: 5px solid var(--b); border-radius: 20px; padding: 15px; background: #080808; box-shadow: 0 0 30px var(--b); }
+        h1 { text-align: center; color: var(--r); text-shadow: 0 0 10px var(--r); font-size: 28px; margin: 10px 0; }
+        textarea { width: 100%; height: 180px; background: #000; color: #0f0; border: 1px solid #333; border-radius: 10px; padding: 10px; font-size: 13px; outline: none; margin-bottom: 10px; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        button, .up { padding: 18px 5px; font-weight: bold; border: none; border-radius: 10px; cursor: pointer; color: #fff; text-align: center; font-size: 15px; }
+        .b-b { background: var(--blue); background: #0044ff; box-shadow: 0 5px #002288; }
+        .b-r { background: #ff0000; box-shadow: 0 5px #880000; }
+        button:active { transform: translateY(4px); box-shadow: none; }
+        #out { border-color: var(--r); color: var(--r); margin-top: 15px; }
     </style>
 </head>
 <body>
 
-<div class="main-box">
-    <h1>SZ OBFUSCATOR V8 (VM) 🔥</h1>
-    
-    <textarea id="in" placeholder="أدخل كودك هنا..."></textarea>
-    
+<div class="box">
+    <h1>SZ OBFUSCATOR V9 🔥</h1>
+    <textarea id="in" placeholder="الصق الكود هنا..."></textarea>
     <div class="grid">
-        <label class="label btn-b">📁 رفع ملف<input type="file" style="display:none" onchange="hdl(this)"></label>
-        <button class="btn-r" onclick="vm_obf()">🚀 تشفير الـ VM</button>
-        <button class="btn-b" onclick="cp()">📋 نسخ</button>
-        <button class="btn-r" onclick="show_m()">💾 تحميل</button>
+        <label class="up b-b">📁 رفع ملف<input type="file" style="display:none" onchange="rd(this)"></label>
+        <button class="b-r" onclick="obf()">🚀 تشفير الحرق</button>
+        <button class="b-b" onclick="cp()">📋 نسخ</button>
+        <button class="b-r" onclick="dl()">💾 تحميل</button>
     </div>
-
-    <textarea id="out" readonly placeholder="الناتج المشفر بنظام الـ VM الشامل..."></textarea>
-</div>
-
-<div id="m" class="modal">
-    <input type="text" id="fn" style="width:100%; padding:15px; margin-bottom:15px; background:#000; color:#fff; border:1px solid var(--b); border-radius:10px;" placeholder="script_name.lua">
-    <button class="btn-b" style="width:100%" onclick="save()">تنزيل السكربت المشفر</button>
-    <button class="btn-r" style="width:100%; margin-top:10px;" onclick="show_m()">إلغاء</button>
+    <textarea id="out" readonly placeholder="الناتج..."></textarea>
 </div>
 
 <script>
-    function hdl(i){let f=i.files[0];let r=new FileReader();r.onload=function(){document.getElementById('in').value=r.result};r.readAsText(f)}
-
-    // محاكي تشفير VM (Virtual Machine Bytecode)
-    function vm_obf() {
+    function rd(i){let f=i.files[0];let r=new FileReader();r.onload=function(){document.getElementById('in').value=r.result};r.readAsText(f)}
+    
+    function obf() {
         let code = document.getElementById('in').value;
-        if(!code) return alert("ضع كودك أولاً!");
+        if(!code) return alert("حط الكود!");
 
-        // 1. تحويل الكود إلى أرقام (Virtualizing)
-        let v = [];
-        for (let i = 0; i < code.length; i++) { v.push(code.charCodeAt(i) ^ 0x55); } // XOR encryption
+        // التشفير النهائي المعتمد في الهاكات القوية
+        // يحول الكود إلى "Byte-Stream" مستحيل يخرب
+        let encoded = "";
+        for (let i = 0; i < code.length; i++) {
+            encoded += "\\" + code.charCodeAt(i);
+        }
 
-        // 2. بناء الـ VM Loader (هذا هو المحرك اللي يشغل الكود المشفر)
-        let vm_engine = `
---[[ SZ PROTECTED VM ]]--
-local _VM_DATA = {${v.join(',')}}
-local _VM_KEY = 85
-local _VM_EXEC = ""
-for i=1, #_VM_DATA do 
-    _VM_EXEC = _VM_EXEC .. string.char(bit32.bxor(_VM_DATA[i], _VM_KEY)) 
-end
-local _SZ_SUCCESS, _SZ_ERROR = pcall(function()
-    return (loadstring or load)(_VM_EXEC)()
-end)
-if not _SZ_SUCCESS then warn("[SZ VM ERROR]: " .. tostring(_SZ_ERROR)) end
-        `.trim();
+        // اللودر V9: أسرع لودر في العالم (بدون متغيرات تعقد الهاك)
+        let res = `loadstring("${encoded}")()`;
 
-        document.getElementById('out').value = vm_engine;
-        alert("✅ تم التشفير بنظام الـ VM الاحترافي!");
+        document.getElementById('out').value = res;
+        alert("✅ شفرناه يا وحش!");
     }
 
     function cp(){let o=document.getElementById('out');o.select();document.execCommand('copy');alert("تم النسخ!")}
-    function show_m(){let d=document.getElementById('m');d.style.display=(d.style.display==='block'?'none':'block')}
-    function save(){
-        let n=document.getElementById('fn').value;
-        if(!n.endsWith(".lua")) return alert("يجب أن ينتهي بـ .lua");
-        let b=new Blob([document.getElementById('out').value],{type:"text/plain"});
-        let l=document.createElement("a");l.download=n;l.href=window.URL.createObjectURL(b);l.click();
+    function dl(){
+        let c=document.getElementById('out').value;
+        if(!c) return;
+        let b=new Blob([c],{type:"text/plain"});
+        let l=document.createElement("a");
+        l.download="Encrypted.lua"; // لاحظ هنا: غيرنا الامتداد لـ .lua غصب
+        l.href=window.URL.createObjectURL(b);l.click();
     }
 </script>
 
