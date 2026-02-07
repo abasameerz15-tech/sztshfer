@@ -3,65 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SZ OBF V9 | THE BEAST</title>
+    <title>SZ OBF V10 | ABBAS SYSTEM</title>
     <style>
-        :root { --b: #0066ff; --r: #ff0000; }
-        body { background: #000; color: #fff; font-family: sans-serif; margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
-        .box { width: 100%; max-width: 600px; border: 5px solid var(--b); border-radius: 20px; padding: 15px; background: #080808; box-shadow: 0 0 30px var(--b); }
-        h1 { text-align: center; color: var(--r); text-shadow: 0 0 10px var(--r); font-size: 28px; margin: 10px 0; }
-        textarea { width: 100%; height: 180px; background: #000; color: #0f0; border: 1px solid #333; border-radius: 10px; padding: 10px; font-size: 13px; outline: none; margin-bottom: 10px; }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        button, .up { padding: 18px 5px; font-weight: bold; border: none; border-radius: 10px; cursor: pointer; color: #fff; text-align: center; font-size: 15px; }
-        .b-b { background: var(--blue); background: #0044ff; box-shadow: 0 5px #002288; }
-        .b-r { background: #ff0000; box-shadow: 0 5px #880000; }
+        :root { --main: #8200ff; --sec: #ff0044; }
+        body { background: #000; color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+        .box { width: 100%; max-width: 500px; border: 3px solid var(--main); border-radius: 15px; padding: 15px; background: #0a0a0a; box-shadow: 0 0 20px var(--main); }
+        h1 { text-align: center; color: #fff; font-size: 22px; margin-bottom: 15px; border-bottom: 2px solid var(--sec); padding-bottom: 10px; }
+        textarea { width: 100%; height: 150px; background: #000; color: #00ff00; border: 1px solid #333; border-radius: 8px; padding: 10px; font-size: 12px; outline: none; margin-bottom: 10px; box-sizing: border-box; }
+        .btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        button { padding: 15px; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; color: #fff; font-size: 14px; transition: 0.3s; }
+        .b-obf { background: var(--sec); box-shadow: 0 4px #880022; }
+        .b-cp { background: var(--main); box-shadow: 0 4px #440088; }
         button:active { transform: translateY(4px); box-shadow: none; }
-        #out { border-color: var(--r); color: var(--r); margin-top: 15px; }
+        #out { color: var(--sec); border-color: var(--sec); margin-top: 15px; }
     </style>
 </head>
 <body>
 
 <div class="box">
-    <h1>SZ OBFUSCATOR V9 🔥</h1>
-    <textarea id="in" placeholder="الصق الكود هنا..."></textarea>
-    <div class="grid">
-        <label class="up b-b">📁 رفع ملف<input type="file" style="display:none" onchange="rd(this)"></label>
-        <button class="b-r" onclick="obf()">🚀 تشفير الحرق</button>
-        <button class="b-b" onclick="cp()">📋 نسخ</button>
-        <button class="b-r" onclick="dl()">💾 تحميل</button>
+    <h1>--[[ ABBAS ELITE SYSTEM 2026 ]]--</h1>
+    <textarea id="in" placeholder="الصق سكربتك هنا..."></textarea>
+    <div class="btns">
+        <button class="b-obf" onclick="run_abbas()">🚀 تشفير ELITE</button>
+        <button class="b-cp" onclick="copy()">📋 نسخ الكود</button>
     </div>
-    <textarea id="out" readonly placeholder="الناتج..."></textarea>
+    <textarea id="out" readonly placeholder="الناتج المتوافق مع نظامك..."></textarea>
 </div>
 
 <script>
-    function rd(i){let f=i.files[0];let r=new FileReader();r.onload=function(){document.getElementById('in').value=r.result};r.readAsText(f)}
-    
-    function obf() {
+    function run_abbas() {
         let code = document.getElementById('in').value;
-        if(!code) return alert("حط الكود!");
+        if(!code) return alert("حط كودك!");
 
-        // التشفير النهائي المعتمد في الهاكات القوية
-        // يحول الكود إلى "Byte-Stream" مستحيل يخرب
+        // التشفير بنظام 3 أرقام (000) عشان يطابق اللودر حقك
         let encoded = "";
         for (let i = 0; i < code.length; i++) {
-            encoded += "\\" + code.charCodeAt(i);
+            let charCode = code.charCodeAt(i).toString();
+            // إضافة أصفار على اليسار ليصبح الطول دائماً 3
+            while (charCode.length < 3) charCode = "0" + charCode;
+            encoded += "\\" + charCode;
         }
 
-        // اللودر V9: أسرع لودر في العالم (بدون متغيرات تعقد الهاك)
-        let res = `loadstring("${encoded}")()`;
+        let final = `--[[ PROTECTED BY ABBAS ELITE SYSTEM 2026 ]]--\n` +
+                    `local _0xPayload = "${encoded}"\n` +
+                    `local _0xExecute = function(_0xData)\n` +
+                    `    local _0xDecoded = _0xData:gsub("\\\\(%d%d%d)", function(d) return string.char(tonumber(d)) end)\n` +
+                    `    return (loadstring or load)(_0xDecoded)\n` +
+                    `end\n` +
+                    `_0xExecute(_0xPayload)()`;
 
-        document.getElementById('out').value = res;
-        alert("✅ شفرناه يا وحش!");
+        document.getElementById('out').value = final;
+        alert("✅ تم التشفير بنظامك الخاص!");
     }
 
-    function cp(){let o=document.getElementById('out');o.select();document.execCommand('copy');alert("تم النسخ!")}
-    function dl(){
-        let c=document.getElementById('out').value;
-        if(!c) return;
-        let b=new Blob([c],{type:"text/plain"});
-        let l=document.createElement("a");
-        l.download="Encrypted.lua"; // لاحظ هنا: غيرنا الامتداد لـ .lua غصب
-        l.href=window.URL.createObjectURL(b);l.click();
-    }
+    function copy(){let o=document.getElementById('out');o.select();document.execCommand('copy');alert("تم النسخ!")}
 </script>
 
 </body>
