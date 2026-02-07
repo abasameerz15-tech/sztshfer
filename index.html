@@ -3,60 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SZ OBF V10 | ABBAS SYSTEM</title>
+    <title>SZ OBF V10.1 | ABBAS FULL EDITION</title>
     <style>
         :root { --main: #8200ff; --sec: #ff0044; }
         body { background: #000; color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
-        .box { width: 100%; max-width: 500px; border: 3px solid var(--main); border-radius: 15px; padding: 15px; background: #0a0a0a; box-shadow: 0 0 20px var(--main); }
-        h1 { text-align: center; color: #fff; font-size: 22px; margin-bottom: 15px; border-bottom: 2px solid var(--sec); padding-bottom: 10px; }
-        textarea { width: 100%; height: 150px; background: #000; color: #00ff00; border: 1px solid #333; border-radius: 8px; padding: 10px; font-size: 12px; outline: none; margin-bottom: 10px; box-sizing: border-box; }
-        .btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        button { padding: 15px; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; color: #fff; font-size: 14px; transition: 0.3s; }
+        .box { width: 100%; max-width: 600px; border: 3px solid var(--main); border-radius: 15px; padding: 15px; background: #0a0a0a; box-shadow: 0 0 20px var(--main); }
+        h1 { text-align: center; color: #fff; font-size: 22px; margin: 10px 0; border-bottom: 2px solid var(--sec); padding-bottom: 10px; }
+        textarea { width: 100%; height: 160px; background: #000; color: #00ff00; border: 1px solid #333; border-radius: 8px; padding: 10px; font-size: 12px; outline: none; margin-bottom: 10px; box-sizing: border-box; resize: none; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        button, .up-label { padding: 15px 5px; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; color: #fff; font-size: 13px; text-align: center; transition: 0.2s; display: block; }
         .b-obf { background: var(--sec); box-shadow: 0 4px #880022; }
-        .b-cp { background: var(--main); box-shadow: 0 4px #440088; }
-        button:active { transform: translateY(4px); box-shadow: none; }
+        .b-main { background: var(--main); box-shadow: 0 4px #440088; }
+        button:active { transform: translateY(3px); box-shadow: none; }
         #out { color: var(--sec); border-color: var(--sec); margin-top: 15px; }
     </style>
 </head>
 <body>
 
 <div class="box">
-    <h1>--[[ ABBAS ELITE SYSTEM 2026 ]]--</h1>
-    <textarea id="in" placeholder="الصق سكربتك هنا..."></textarea>
-    <div class="btns">
-        <button class="b-obf" onclick="run_abbas()">🚀 تشفير ELITE</button>
-        <button class="b-cp" onclick="copy()">📋 نسخ الكود</button>
+    <h1>--[[ ABBAS ELITE SYSTEM V10.1 ]]--</h1>
+    
+    <textarea id="in" placeholder="أدخل كود الـ Lua هنا..."></textarea>
+    
+    <div class="grid">
+        <label class="up-label b-main">📁 رفع ملف Lua<input type="file" id="fileIn" style="display:none" onchange="loadFile(this)"></label>
+        
+        <button class="b-obf" onclick="run_obf()">🚀 تشفير الحين</button>
+        
+        <button class="b-main" onclick="copy()">📋 نسخ الكود</button>
+        
+        <button class="b-obf" onclick="download()">💾 تحميل الناتج</button>
     </div>
-    <textarea id="out" readonly placeholder="الناتج المتوافق مع نظامك..."></textarea>
+
+    <textarea id="out" readonly placeholder="السكربت المشفر بيطلع هنا..."></textarea>
 </div>
 
 <script>
-    function run_abbas() {
-        let code = document.getElementById('in').value;
-        if(!code) return alert("حط كودك!");
+    // وظيفة رفع الملف
+    function loadFile(input) {
+        let file = input.files[0];
+        let reader = new FileReader();
+        reader.onload = function() {
+            document.getElementById('in').value = reader.result;
+        };
+        reader.readAsText(file);
+    }
 
-        // التشفير بنظام 3 أرقام (000) عشان يطابق اللودر حقك
+    // وظيفة التشفير المتوافق مع لودرك
+    function run_obf() {
+        let code = document.getElementById('in').value;
+        if(!code) return alert("يا عباس حط الكود أولاً!");
+
         let encoded = "";
         for (let i = 0; i < code.length; i++) {
             let charCode = code.charCodeAt(i).toString();
-            // إضافة أصفار على اليسار ليصبح الطول دائماً 3
             while (charCode.length < 3) charCode = "0" + charCode;
             encoded += "\\" + charCode;
         }
 
-        let final = `--[[ PROTECTED BY ABBAS ELITE SYSTEM 2026 ]]--\n` +
-                    `local _0xPayload = "${encoded}"\n` +
-                    `local _0xExecute = function(_0xData)\n` +
-                    `    local _0xDecoded = _0xData:gsub("\\\\(%d%d%d)", function(d) return string.char(tonumber(d)) end)\n` +
-                    `    return (loadstring or load)(_0xDecoded)\n` +
-                    `end\n` +
-                    `_0xExecute(_0xPayload)()`;
+        let result = `--[[ PROTECTED BY ABBAS ELITE SYSTEM 2026 ]]--\n` +
+                     `local _0xPayload = "${encoded}"\n` +
+                     `local _0xExecute = function(_0xData)\n` +
+                     `    local _0xDecoded = _0xData:gsub("\\\\(%d%d%d)", function(d) return string.char(tonumber(d)) end)\n` +
+                     `    return (loadstring or load)(_0xDecoded)\n` +
+                     `end\n` +
+                     `_0xExecute(_0xPayload)()`;
 
-        document.getElementById('out').value = final;
-        alert("✅ تم التشفير بنظامك الخاص!");
+        document.getElementById('out').value = result;
     }
 
-    function copy(){let o=document.getElementById('out');o.select();document.execCommand('copy');alert("تم النسخ!")}
+    // وظيفة النسخ
+    function copy(){
+        let o=document.getElementById('out');
+        if(!o.value) return;
+        o.select();
+        document.execCommand('copy');
+        alert("تم النسخ يا وحش!");
+    }
+
+    // وظيفة تحميل الملف
+    function download(){
+        let content = document.getElementById('out').value;
+        if(!content) return alert("شفر الكود أولاً!");
+        let blob = new Blob([content], {type: "text/plain"});
+        let link = document.createElement("a");
+        link.download = "Abbas_Elite_Protected.lua";
+        link.href = window.URL.createObjectURL(blob);
+        link.click();
+    }
 </script>
 
 </body>
