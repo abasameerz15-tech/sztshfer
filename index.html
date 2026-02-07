@@ -3,118 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SZ ULTRA OBFUSCATOR</title>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <title>SZ OBF V2</title>
     <style>
-        :root { --primary: #00ff88; --bg: #0a0a0c; --card: #16161e; --text: #e1e1e6; }
-        * { box-sizing: border-box; }
-        body { font-family: 'Tajawal', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 10px; display: flex; justify-content: center; }
-        .container { width: 100%; max-width: 450px; background: var(--card); padding: 15px; border-radius: 12px; border: 1px solid var(--primary); box-shadow: 0 0 15px rgba(0, 255, 136, 0.2); }
-        h1 { color: var(--primary); text-align: center; font-size: 20px; margin-bottom: 15px; text-shadow: 0 0 5px var(--primary); }
-        textarea { width: 100%; height: 140px; background: #000; color: #0f0; border: 1px solid #333; border-radius: 8px; padding: 10px; font-family: monospace; font-size: 11px; outline: none; resize: none; margin-bottom: 10px; }
-        .controls { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-        button, .file-label { width: 100%; padding: 12px 5px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; text-align: center; font-size: 13px; font-family: 'Tajawal'; transition: 0.2s; }
-        .btn-main { background: var(--primary); color: #000; }
-        .btn-sec { background: #333; color: #fff; }
-        input[type="file"] { display: none; }
-        .download-box { margin-top: 10px; padding: 12px; background: #111; border-radius: 8px; display: none; border: 1px dotted var(--primary); }
-        .input-name { width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #333; background: #000; color: #fff; margin-bottom: 10px; outline: none; text-align: center; }
-        button:active { transform: scale(0.95); }
+        :root { --p: #00ff88; --b: #0a0a0c; }
+        body { font-family: sans-serif; background: var(--b); color: #fff; display: flex; justify-content: center; padding: 10px; }
+        .box { width: 100%; max-width: 400px; background: #16161e; padding: 15px; border-radius: 10px; border: 1px solid var(--p); }
+        textarea { width: 100%; height: 130px; background: #000; color: #0f0; border: 1px solid #333; margin-bottom: 10px; font-size: 11px; resize: none; }
+        .btns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        button, label { padding: 12px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; text-align: center; font-size: 12px; }
+        .m { background: var(--p); color: #000; }
+        .s { background: #333; color: #fff; }
+        .down { margin-top: 10px; display: none; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>SZ ULTRA OBF ⚡</h1>
-    
-    <textarea id="inputCode" placeholder="ضع سكربت الـ Lua هنا..."></textarea>
-    
-    <div class="controls">
-        <label class="btn-sec file-label">
-            📁 رفع ملف
-            <input type="file" id="fileInput" accept=".lua,.txt" onchange="loadFile(this)">
-        </label>
-        <button class="btn-main" onclick="ultraObfuscate()">🚀 تشفير شامل</button>
-        <button class="btn-sec" onclick="copyResult()">📋 نسخ الناتج</button>
-        <button class="btn-main" onclick="toggleDownload()">💾 تحميل ملف</button>
+<div class="box">
+    <h3 style="text-align:center; color:var(--p);">SZ OBFUSCATOR</h3>
+    <textarea id="in" placeholder="ضع الكود هنا..."></textarea>
+    <div class="btns">
+        <label class="s">رفع ملف<input type="file" style="display:none;" onchange="load(this)"></label>
+        <button class="m" onclick="run()">تشفير الآن</button>
+        <button class="s" onclick="copy()">نسخ</button>
+        <button class="m" onclick="showD()">تحميل</button>
     </div>
-
-    <div id="downloadBox" class="download-box">
-        <input type="text" id="fileName" class="input-name" placeholder="اسم الملف.lua">
-        <button class="btn-main" style="width:100%" onclick="finalDownload()">تنزيل ملف مشفر</button>
+    <div id="db" class="down">
+        <input type="text" id="fn" style="width:100%; padding:8px; margin-bottom:5px;" placeholder="name.lua">
+        <button class="m" style="width:100%" onclick="dl()">تنزيل</button>
     </div>
-
-    <textarea id="outputCode" style="margin-top:10px; height: 100px;" placeholder="الناتج المشفر..." readonly></textarea>
+    <textarea id="out" style="margin-top:10px;" readonly placeholder="الناتج..."></textarea>
 </div>
 
 <script>
-    function loadFile(input) {
-        let file = input.files[0];
-        let reader = new FileReader();
-        reader.onload = function() { document.getElementById('inputCode').value = reader.result; };
-        reader.readAsText(file);
-    }
-
-    function ultraObfuscate() {
-        let code = document.getElementById('inputCode').value;
-        if(!code) return alert("أدخل كود أولاً يا عباس!");
-
-        // نظام التشفير الثلاثي (Base64 + String Obfuscation + Safety Wrapper)
-        let encoded = btoa(unescape(encodeURIComponent(code)));
+    function load(i){let f=i.files[0];let r=new FileReader();r.onload=function(){document.getElementById('in').value=r.result};r.readAsText(f)}
+    
+    function run() {
+        let code = document.getElementById('in').value;
+        if(!code) return alert("ضع كود!");
         
-        // كود الـ Loader المصمم ليعمل على (Delta, Fluxus, Arceus, CodeX)
-        let finalCode = `--[[ SZ-ULTRA PROTECT | BY: DEVSZ_STORE ]]\n` +
-        `local _SZ_DECODE = function(data) \n` +
-        `    local b='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'\n` +
-        `    data = string.gsub(data, '[^'..b..'=]', '')\n` +
-        `    return (string.gsub(data, '.', function(x)\n` +
-        `        if (x == '=') then return '' end\n` +
-        `        local r,f='',(string.find(b,x)-1)\n` +
-        `        for i=6,1,-1 do r=r..(f%2^i-f%2^(i-1)>0 and '1' or '0') end\n` +
-        `        return r\n` +
-        `    end):gsub('%d%d%d%d%d%d%d%d', function(x)\n` +
-        `        local c=0\n` +
-        `        for i=1,8 do c=c+(string.sub(x,i,i)=='1' and 2^(8-i) or 0) end\n` +
-        `        return string.char(c)\n` +
-        `    end))\n` +
-        `end\n\n` +
-        `local _SZ_EXEC = function() \n` +
-        `    local success, result = pcall(function() \n` +
-        `        return (loadstring or load)(_SZ_DECODE("${encoded}"))()\n` +
-        `    end)\n` +
-        `    if not success then \n` +
-        `        warn("[SZ ERROR]: " .. tostring(result)) \n` +
-        `    end\n` +
-        `end\n\n` +
-        `_SZ_EXEC()`;
-
-        document.getElementById('outputCode').value = finalCode;
-        alert("✅ تم التشفير بنظام الشمولية!");
+        // تشفير خام جداً لضمان العمل على كل المحركات
+        let e = btoa(unescape(encodeURIComponent(code)));
+        
+        // كود تشغيل مباشر بدون تعليقات أو حقوق لعدم حدوث أخطاء
+        let res = `local _=function(d)local b='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/' d=d:gsub('[^'..b..'=]','')return(d:gsub('.',function(x)if x=='='then return''end local r,f='',b:find(x)-1 for i=6,1,-1 do r=r..(f%2^i-f%2^(i-1)>0 and '1' or '0')end return r end):gsub('%d%d%d%d%d%d%d%d',function(x)local c=0 for i=1,8 do c=c+(x:sub(i,i)=='1' and 2^(8-i) or 0)end return string.char(c)end))end;(loadstring or load)(_("${e}"))()`;
+        
+        document.getElementById('out').value = res;
     }
 
-    function copyResult() {
-        let out = document.getElementById('outputCode');
-        out.select();
-        document.execCommand('copy');
-        alert("تم النسخ!");
-    }
-
-    function toggleDownload() {
-        let box = document.getElementById('downloadBox');
-        box.style.display = (box.style.display === 'block') ? 'none' : 'block';
-    }
-
-    function finalDownload() {
-        let name = document.getElementById('fileName').value;
-        let content = document.getElementById('outputCode').value;
-        if(!content) return alert("شفر الكود أولاً!");
-        if(!name.endsWith(".lua")) return alert("يجب أن ينتهي الاسم بـ .lua");
-
-        let blob = new Blob([content], {type: "text/plain"});
-        let link = document.createElement("a");
-        link.download = name;
-        link.href = window.URL.createObjectURL(blob);
-        link.click();
+    function copy(){let t=document.getElementById('out');t.select();document.execCommand('copy');alert("تم!")}
+    function showD(){document.getElementById('db').style.display='block'}
+    function dl(){
+        let n=document.getElementById('fn').value;
+        if(!n.endsWith(".lua")) return alert("ينتهي بـ .lua");
+        let b=new Blob([document.getElementById('out').value],{type:"text/plain"});
+        let l=document.createElement("a");l.download=n;l.href=window.URL.createObjectURL(b);l.click();
     }
 </script>
 
