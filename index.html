@@ -3,70 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SZ OBFUSCATOR V5</title>
+    <title>SZ OBF V6 | FINAL</title>
     <style>
-        :root { --blue: #0044ff; --red: #ff0000; }
-        body { background: #000; color: #fff; font-family: 'Arial', sans-serif; margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
-        .container { width: 100%; max-width: 600px; border: 4px solid var(--blue); border-radius: 20px; padding: 20px; box-shadow: 0 0 20px var(--blue), inset 0 0 20px var(--red); background: #0a0a0a; }
-        h1 { text-align: center; color: var(--red); text-shadow: 0 0 15px var(--red); font-size: 30px; margin: 10px 0; }
-        textarea { width: 100%; height: 200px; background: #000; color: #00ffea; border: 2px solid #333; border-radius: 12px; padding: 15px; font-size: 14px; outline: none; margin-bottom: 15px; box-shadow: inset 0 0 10px var(--blue); }
-        .btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        button, .up { width: 100%; padding: 18px; font-size: 16px; font-weight: bold; border: none; border-radius: 10px; cursor: pointer; color: #fff; transition: 0.2s; text-align: center; }
-        .b-blue { background: var(--blue); box-shadow: 0 5px #002288; }
-        .b-red { background: var(--red); box-shadow: 0 5px #880000; }
+        :root { --b: #0055ff; --r: #ff0000; }
+        body { background: #000; color: #fff; font-family: 'Arial'; margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; }
+        .container { width: 100%; max-width: 650px; border: 5px solid var(--b); border-radius: 20px; padding: 20px; background: #080808; box-shadow: 0 0 30px var(--b); }
+        h1 { text-align: center; color: var(--r); text-shadow: 0 0 15px var(--r); font-size: 35px; }
+        textarea { width: 100%; height: 250px; background: #000; color: #00ff00; border: 2px solid #222; border-radius: 10px; padding: 15px; font-size: 14px; outline: none; margin-bottom: 15px; }
+        .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        button, .up-btn { width: 100%; padding: 20px; font-size: 18px; font-weight: bold; border: none; border-radius: 12px; cursor: pointer; color: white; transition: 0.3s; text-align: center; text-transform: uppercase; }
+        .b-blue { background: var(--b); box-shadow: 0 6px #002277; }
+        .b-red { background: var(--r); box-shadow: 0 6px #770000; }
         button:active { transform: translateY(4px); box-shadow: none; }
-        .dl-section { display: none; margin-top: 15px; background: #111; padding: 15px; border-radius: 10px; border: 1px solid var(--red); }
-        .inp-name { width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 5px; border: 1px solid var(--blue); background: #000; color: #fff; }
+        .dl-box { display: none; margin-top: 15px; background: #111; padding: 20px; border-radius: 15px; border: 2px dashed var(--r); }
+        .inp { width: 100%; padding: 15px; margin-bottom: 10px; border-radius: 8px; border: 1px solid var(--b); background: #000; color: #fff; font-size: 16px; }
+        #out { border-color: var(--r); color: var(--r); height: 150px; margin-top: 20px; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>SZ OBFUSCATOR V5 🔥</h1>
+    <h1>SZ OBFUSCATOR V6 🔥</h1>
     
-    <textarea id="in" placeholder="أدخل السكربت هنا..."></textarea>
+    <textarea id="in" placeholder="الصق سكربت الـ Lua هنا (حتى لو يبدأ بـ local)..."></textarea>
     
-    <div class="btns">
-        <label class="up b-blue">📁 رفع ملف<input type="file" style="display:none" onchange="read(this)"></label>
-        <button class="b-red" onclick="encrypt()">🚀 تشفير ناري</button>
+    <div class="btn-grid">
+        <label class="up-btn b-blue">📁 رفع ملف<input type="file" style="display:none" onchange="readFile(this)"></label>
+        <button class="b-red" onclick="obfuscate()">🚀 تشفير الحرق</button>
         <button class="b-blue" onclick="copy()">📋 نسخ</button>
         <button class="b-red" onclick="showDl()">💾 تحميل</button>
     </div>
 
-    <div id="dlBox" class="dl-section">
-        <input type="text" id="fn" class="inp-name" placeholder="اسم_الملف.lua">
-        <button class="b-blue" onclick="save()">تأكيد الحفظ</button>
+    <div id="dlArea" class="dl-box">
+        <input type="text" id="fname" class="inp" placeholder="اسم_السكربت.lua">
+        <button class="b-blue" onclick="download()">تأكيد التحميل</button>
     </div>
 
-    <textarea id="out" readonly style="margin-top:20px; border-color: var(--red); color: var(--red);" placeholder="الناتج يظهر هنا..."></textarea>
+    <textarea id="out" readonly placeholder="الناتج المشفر..."></textarea>
 </div>
 
 <script>
-    function read(i){let f=i.files[0];let r=new FileReader();r.onload=function(){document.getElementById('in').value=r.result};r.readAsText(f)}
+    function readFile(i){let f=i.files[0];let r=new FileReader();r.onload=function(){document.getElementById('in').value=r.result};r.readAsText(f)}
 
-    // تشفير String Escape (أقوى تشفير يقبله الهاك)
-    function encrypt() {
+    function obfuscate() {
         let code = document.getElementById('in').value;
-        if(!code) return alert("حط الكود يا عباس!");
+        if(!code) return alert("حط كود يا عباس!");
+
+        // حل مشكلة الـ local: نغلف الكود داخل دالة مجهولة (Anonymous Function) 
+        // لضمان عدم حدوث تداخل في المتغيرات
+        let wrappedCode = "function() \n" + code + "\n end";
         
-        let hex = "";
-        for (let i = 0; i < code.length; i++) {
-            hex += "\\" + code.charCodeAt(i);
+        // تشفير الـ CharCode (الأضمن لكل الهاكات)
+        let bytes = [];
+        for (let j = 0; j < wrappedCode.length; j++) {
+            bytes.push(wrappedCode.charCodeAt(j));
         }
-        
-        let final = `--[[ SZ PROTECT ]]--\nlocal _ = "${hex}"\nlocal func = loadstring or load\nassert(func(_))()`;
-        
-        document.getElementById('out').value = final;
-        alert("✅ تم التشفير بنظام HEX!");
+
+        // اللودر الجديد (V6) - يستخدم الـ pcall لضمان التشغيل حتى لو فيه أخطاء
+        let res = `--[[ SZ ULTRA PROTECT ]]--\nlocal _ = {${bytes.join(',')}}\nlocal s = ""\nfor i=1, #_ do s = s .. string.char(_[i]) end\nlocal f, e = loadstring("return "..s)\nif f then \n    local ok, res = pcall(f())\n    if not ok then warn("Error: "..res) end\nelse \n    warn("Load Error: "..e)\nend`;
+
+        document.getElementById('out').value = res;
+        alert("✅ تم التشفير بنجاح (حل مشكلة الـ Local)");
     }
 
     function copy(){let o=document.getElementById('out');o.select();document.execCommand('copy');alert("تم النسخ!")}
-    function showDl(){let b=document.getElementById('dlBox');b.style.display=(b.style.display==='block'?'none':'block')}
-    function save(){
-        let n=document.getElementById('fn').value;
-        let c=document.getElementById('out').value;
-        if(!n.endsWith(".lua"))return alert("يجب أن ينتهي بـ .lua");
-        let b=new Blob([c],{type:"text/plain"});
+    function showDl(){let a=document.getElementById('dlArea');a.style.display=(a.style.display==='block'?'none':'block')}
+    function download(){
+        let n=document.getElementById('fname').value;
+        if(!n.endsWith(".lua")) return alert("يجب أن ينتهي بـ .lua");
+        let b=new Blob([document.getElementById('out').value],{type:"text/plain"});
         let l=document.createElement("a");l.download=n;l.href=window.URL.createObjectURL(b);l.click();
     }
 </script>
