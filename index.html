@@ -3,62 +3,179 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SZ OBF V2</title>
+    <title>SZ OBF V3 | Space Edition</title>
     <style>
-        :root { --p: #00ff88; --b: #0a0a0c; }
-        body { font-family: sans-serif; background: var(--b); color: #fff; display: flex; justify-content: center; padding: 10px; }
-        .box { width: 100%; max-width: 400px; background: #16161e; padding: 15px; border-radius: 10px; border: 1px solid var(--p); }
-        textarea { width: 100%; height: 130px; background: #000; color: #0f0; border: 1px solid #333; margin-bottom: 10px; font-size: 11px; resize: none; }
-        .btns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-        button, label { padding: 12px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; text-align: center; font-size: 12px; }
-        .m { background: var(--p); color: #000; }
-        .s { background: #333; color: #fff; }
-        .down { margin-top: 10px; display: none; }
+        /* إعدادات الخلفية والنجوم */
+        body { 
+            background: radial-gradient(circle at center, #0a0e1a 0%, #000 100%); 
+            color: #fff; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* حرق الوضع بالنجوم المتحركة */
+        body::before {
+            content: "";
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background-image: 
+                radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
+                radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
+                radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 20px);
+            background-size: 550px 550px, 350px 350px, 250px 250px;
+            animation: moveStars 60s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes moveStars {
+            from { transform: translateY(0); }
+            to { transform: translateY(-1000px); }
+        }
+
+        .box { 
+            width: 90%; 
+            max-width: 420px; 
+            background: rgba(22, 22, 30, 0.9); 
+            padding: 25px; 
+            border-radius: 20px; 
+            border: 2px solid #0055ff; 
+            box-shadow: 0 0 30px rgba(0, 85, 255, 0.3), inset 0 0 15px rgba(255, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+
+        h3 { 
+            text-align: center; 
+            color: #ff004c; 
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px #ff004c, 0 0 20px #0055ff;
+            margin-top: 0;
+        }
+
+        textarea { 
+            width: 100%; 
+            height: 120px; 
+            background: rgba(0, 0, 0, 0.8); 
+            color: #00d9ff; 
+            border: 1px solid #0055ff; 
+            border-radius: 10px;
+            padding: 10px; 
+            font-family: 'Courier New', monospace;
+            font-size: 12px; 
+            margin-bottom: 15px; 
+            outline: none;
+            box-sizing: border-box;
+            box-shadow: inset 0 0 10px rgba(0, 217, 255, 0.1);
+        }
+
+        textarea:focus {
+            border-color: #ff004c;
+            box-shadow: 0 0 10px rgba(255, 0, 76, 0.4);
+        }
+
+        .btn-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        button { 
+            padding: 12px; 
+            border: none; 
+            border-radius: 10px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            font-size: 12px;
+        }
+
+        .btn-obf { 
+            background: linear-gradient(45deg, #0055ff, #00d9ff); 
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(0, 85, 255, 0.4);
+        }
+
+        .btn-copy { 
+            background: linear-gradient(45deg, #ff004c, #ff6b00); 
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(255, 0, 76, 0.4);
+        }
+
+        button:hover { 
+            transform: translateY(-3px) scale(1.05);
+            filter: brightness(1.2);
+        }
+
+        button:active { transform: scale(0.95); }
+
+        .footer {
+            text-align: center;
+            font-size: 10px;
+            margin-top: 20px;
+            color: #555;
+            letter-spacing: 1px;
+        }
     </style>
 </head>
 <body>
+    <div class="box">
+        <h3>SZ ULTRA OBFUSCATOR</h3>
+        <textarea id="in" placeholder="الصق كود Lua هنا..."></textarea>
+        
+        <div class="btn-group">
+            <button class="btn-obf" onclick="obf()">🚀 تشفير ناري</button>
+            <button class="btn-copy" onclick="copy()">📋 نسخ الناتج</button>
+        </div>
 
-<div class="box">
-    <h3 style="text-align:center; color:var(--p);">SZ OBFUSCATOR</h3>
-    <textarea id="in" placeholder="ضع الكود هنا..."></textarea>
-    <div class="btns">
-        <label class="s">رفع ملف<input type="file" style="display:none;" onchange="load(this)"></label>
-        <button class="m" onclick="run()">تشفير الآن</button>
-        <button class="s" onclick="copy()">نسخ</button>
-        <button class="m" onclick="showD()">تحميل</button>
+        <textarea id="out" readonly style="margin-top: 15px; border-color: #ff004c; color: #ff004c;" placeholder="الناتج المشفر سيظهر هنا..."></textarea>
+        
+        <div class="footer">MADE BY DEVSZ_STORE © 2026</div>
     </div>
-    <div id="db" class="down">
-        <input type="text" id="fn" style="width:100%; padding:8px; margin-bottom:5px;" placeholder="name.lua">
-        <button class="m" style="width:100%" onclick="dl()">تنزيل</button>
-    </div>
-    <textarea id="out" style="margin-top:10px;" readonly placeholder="الناتج..."></textarea>
-</div>
 
-<script>
-    function load(i){let f=i.files[0];let r=new FileReader();r.onload=function(){document.getElementById('in').value=r.result};r.readAsText(f)}
-    
-    function run() {
-        let code = document.getElementById('in').value;
-        if(!code) return alert("ضع كود!");
-        
-        // تشفير خام جداً لضمان العمل على كل المحركات
-        let e = btoa(unescape(encodeURIComponent(code)));
-        
-        // كود تشغيل مباشر بدون تعليقات أو حقوق لعدم حدوث أخطاء
-        let res = `local _=function(d)local b='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/' d=d:gsub('[^'..b..'=]','')return(d:gsub('.',function(x)if x=='='then return''end local r,f='',b:find(x)-1 for i=6,1,-1 do r=r..(f%2^i-f%2^(i-1)>0 and '1' or '0')end return r end):gsub('%d%d%d%d%d%d%d%d',function(x)local c=0 for i=1,8 do c=c+(x:sub(i,i)=='1' and 2^(8-i) or 0)end return string.char(c)end))end;(loadstring or load)(_("${e}"))()`;
-        
-        document.getElementById('out').value = res;
-    }
+    <script>
+        function obf() {
+            let code = document.getElementById('in').value;
+            if(!code) return alert("يا عباس، حط الكود أول!");
+            
+            let bytes = [];
+            for (let i = 0; i < code.length; i++) {
+                bytes.push(code.charCodeAt(i));
+            }
+            
+            let res = `local SZ_DATA = {${bytes.join(',')}}; local SZ_STR = ""; for i=1, #SZ_DATA do SZ_STR = SZ_STR .. string.char(SZ_DATA[i]) end; assert(loadstring(SZ_STR))()`;
+            
+            document.getElementById('out').value = res;
+            // إضافة تأثير اهتزاز خفيف عند النجاح
+            document.querySelector('.box').style.animation = 'shake 0.2s ease-in-out';
+            setTimeout(() => { document.querySelector('.box').style.animation = ''; }, 200);
+        }
 
-    function copy(){let t=document.getElementById('out');t.select();document.execCommand('copy');alert("تم!")}
-    function showD(){document.getElementById('db').style.display='block'}
-    function dl(){
-        let n=document.getElementById('fn').value;
-        if(!n.endsWith(".lua")) return alert("ينتهي بـ .lua");
-        let b=new Blob([document.getElementById('out').value],{type:"text/plain"});
-        let l=document.createElement("a");l.download=n;l.href=window.URL.createObjectURL(b);l.click();
-    }
-</script>
+        function copy() {
+            let t = document.getElementById('out');
+            if(!t.value) return;
+            t.select();
+            document.execCommand('copy');
+            alert("تم النسخ يا بطل! السكربت جاهز للحرق 🔥");
+        }
+    </script>
 
+    <style>
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(5px); }
+            50% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+            100% { transform: translateX(0); }
+        }
+    </style>
 </body>
 </html>
