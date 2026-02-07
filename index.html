@@ -3,90 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gemini AI | DEVSZ_STORE</title>
+    <title>SZ-OBFUSCATOR | DEVSZ_STORE</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #0084ff; --bg: #0b0f1a; --card: #161b2c; --text: #ffffff; }
-        body { font-family: 'Tajawal', sans-serif; background: var(--bg); color: var(--text); margin: 0; display: flex; flex-direction: column; height: 100vh; }
-        header { padding: 15px; text-align: center; background: var(--card); border-bottom: 2px solid var(--primary); }
-        #chat-box { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 15px; }
-        .msg { max-width: 85%; padding: 12px 18px; border-radius: 15px; line-height: 1.6; }
-        .user { align-self: flex-start; background: var(--primary); }
-        .bot { align-self: flex-end; background: var(--card); border: 1px solid #2d3748; white-space: pre-wrap; }
-        .input-container { padding: 15px; background: var(--card); display: flex; gap: 10px; }
-        input { flex: 1; padding: 12px; border-radius: 10px; border: 1px solid #2d3748; background: #0b0f1a; color: white; outline: none; }
-        button { background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer; }
+        :root { --primary: #00ff88; --bg: #0a0a0c; --card: #16161e; --text: #e1e1e6; }
+        body { font-family: 'Tajawal', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        .container { width: 100%; max-width: 850px; background: var(--card); padding: 25px; border-radius: 15px; border: 1px solid var(--primary); box-shadow: 0 0 15px rgba(0, 255, 136, 0.1); }
+        h1 { color: var(--primary); text-align: center; margin-bottom: 20px; }
+        textarea { width: 100%; height: 200px; background: #000; color: #0f0; border: 1px solid #333; border-radius: 8px; padding: 10px; font-family: monospace; outline: none; resize: none; margin-bottom: 15px; }
+        .controls { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+        button, label { padding: 12px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; text-align: center; transition: 0.3s; font-size: 14px; }
+        .btn-main { background: var(--primary); color: #000; }
+        .btn-sec { background: #333; color: #fff; }
+        input[type="file"] { display: none; }
+        .input-name { width: 100%; padding: 12px; margin-top: 10px; border-radius: 8px; border: 1px solid #333; background: #111; color: #fff; outline: none; box-sizing: border-box; }
+        button:hover { opacity: 0.8; transform: translateY(-2px); }
     </style>
 </head>
 <body>
 
-<header>
-    <strong>Gemini AI ⚡</strong><br>
-    <small>بواسطة: DEVSZ_STORE</small>
-</header>
+<div class="container">
+    <h1>SZ OBFUSCATOR ⚡</h1>
+    
+    <textarea id="inputCode" placeholder="الصق السكربت هنا أو ارفع ملف..."></textarea>
+    
+    <div class="controls">
+        <label class="btn-sec">
+            📁 رفع ملف
+            <input type="file" id="fileInput" accept=".lua,.txt" onchange="loadFile(this)">
+        </label>
+        <button class="btn-main" onclick="obfuscate()">🚀 تشفير السكربت</button>
+        <button class="btn-sec" onclick="copyResult()">📋 نسخ الناتج</button>
+        <button class="btn-main" id="downloadBtn" onclick="toggleDownload()" style="display:none;">💾 تحميل الناتج</button>
+    </div>
 
-<div id="chat-box">
-    <div class="msg bot">مرحباً عباس! أنا شغال الآن بأقوى نظام. اسألني أي شيء..</div>
-</div>
+    <div id="downloadArea" style="display:none;">
+        <input type="text" id="fileName" class="input-name" placeholder="اكتب اسم الملف (مثال: script.lua)">
+        <button class="btn-main" style="width:100%; margin-top:10px;" onclick="downloadFinal()">تأكيد التحميل</button>
+    </div>
 
-<div class="input-container">
-    <input type="text" id="userInput" placeholder="اكتب سؤالك هنا...">
-    <button id="sendBtn" onclick="askGemini()">إرسال</button>
+    <textarea id="outputCode" placeholder="السكربت المشفر سيظهر هنا..." readonly></textarea>
 </div>
 
 <script>
-    // الـ API Key الخاص بك
-    const API_KEY = "AIzaSyBXDCXbitmk_Llj3fKwxPt1nA3o9gCBun8";
-
-    async function askGemini() {
-        const input = document.getElementById('userInput');
-        const box = document.getElementById('chat-box');
-        const btn = document.getElementById('sendBtn');
-        const text = input.value.trim();
-
-        if (!text) return;
-
-        // إضافة رسالة المستخدم
-        box.innerHTML += `<div class="msg user">${text}</div>`;
-        input.value = "";
-        btn.disabled = true;
-
-        // رسالة انتظار
-        const loadingMsg = document.createElement('div');
-        loadingMsg.className = 'msg bot';
-        loadingMsg.innerText = "⏳ جاري جلب الرد من خوادم جوجل...";
-        box.appendChild(loadingMsg);
-        box.scrollTop = box.scrollHeight;
-
-        try {
-            // استخدام رابط الـ API المباشر (أضمن طريقة لجيثب)
-            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    contents: [{ parts: [{ text: text }] }]
-                })
-            });
-
-            const data = await response.json();
-            
-            if (data.candidates && data.candidates[0].content.parts[0].text) {
-                loadingMsg.innerText = data.candidates[0].content.parts[0].text;
-            } else {
-                loadingMsg.innerText = "❌ جوجل رفضت الرد. تأكد أن الـ API Key مفعل فيه خدمة Generative Language API.";
-            }
-        } catch (error) {
-            loadingMsg.innerText = "❌ فشل الاتصال. تأكد أن الـ API Key صحيح ومفعل.";
-            console.error(error);
-        } finally {
-            btn.disabled = false;
-            box.scrollTop = box.scrollHeight;
-        }
+    // وظيفة رفع ملف من الجهاز
+    function loadFile(input) {
+        let file = input.files[0];
+        let reader = new FileReader();
+        reader.onload = function() {
+            document.getElementById('inputCode').value = reader.result;
+        };
+        reader.readAsText(file);
     }
 
-    document.getElementById('userInput').addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') askGemini();
-    });
+    // محرك التشفير القوي (بدون تأخير)
+    function obfuscate() {
+        let code = document.getElementById('inputCode').value;
+        if(!code) return alert("ضع كود أولاً!");
+
+        // تشفير Base64 لمنع الـ Decompile
+        let b64 = btoa(unescape(encodeURIComponent(code)));
+        
+        // قالب التشغيل السريع (Fast VM)
+        let protected = `--[[ SZ-HACK PROTECTED ]]--\n` +
+        `local _SZ=function(s)local b='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/' s=s:gsub('[^'..b..'=]','')return(s:gsub('.',function(x)if x=='='then return''end local r,f='',b:find(x)-1 for i=6,1,-1 do r=r..(f%2^i-f%2^(i-1)>0 and '1' or '0')end return r end):gsub('%d%d%d%d%d%d%d%d',function(x)local c=0 for i=1,8 do c=c+(x:sub(i,i)=='1' and 2^(8-i) or 0)end return string.char(c)end))end\n` +
+        `task.spawn(function() (loadstring or load)(_SZ("${b64}"))() end)`;
+
+        document.getElementById('outputCode').value = protected;
+        document.getElementById('downloadBtn').style.display = 'block';
+        alert("تم التشفير بنجاح!");
+    }
+
+    // نسخ الناتج
+    function copyResult() {
+        let out = document.getElementById('outputCode');
+        out.select();
+        document.execCommand('copy');
+        alert("تم النسخ!");
+    }
+
+    // إظهار منطقة تسمية الملف
+    function toggleDownload() {
+        let area = document.getElementById('downloadArea');
+        area.style.display = area.style.display === 'none' ? 'block' : 'none';
+    }
+
+    // وظيفة التحميل الفعلية
+    function downloadFinal() {
+        let name = document.getElementById('fileName').value;
+        let content = document.getElementById('outputCode').value;
+
+        if(!name.endsWith(".lua")) {
+            return alert("شرط: يجب أن ينتهي الاسم بـ .lua");
+        }
+
+        let blob = new Blob([content], {type: "text/plain"});
+        let link = document.createElement("a");
+        link.download = name;
+        link.href = window.URL.createObjectURL(blob);
+        link.click();
+    }
 </script>
 
 </body>
