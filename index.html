@@ -3,179 +3,185 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SZ OBF V3 | Space Edition</title>
+    <title>SZ OBF V4 | FULL EDITION</title>
     <style>
-        /* إعدادات الخلفية والنجوم */
+        :root { --blue: #007bff; --red: #ff0000; --dark: #050505; }
+        * { box-sizing: border-box; }
         body { 
-            background: radial-gradient(circle at center, #0a0e1a 0%, #000 100%); 
-            color: #fff; 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            display: flex; 
-            justify-content: center; 
+            background-color: var(--dark); 
+            color: white; 
+            font-family: 'Arial', sans-serif; 
+            margin: 0; 
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
             align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            overflow: hidden;
-            position: relative;
         }
 
-        /* حرق الوضع بالنجوم المتحركة */
-        body::before {
-            content: "";
-            position: absolute;
-            width: 200%;
-            height: 200%;
-            background-image: 
-                radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
-                radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
-                radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 20px);
-            background-size: 550px 550px, 350px 350px, 250px 250px;
-            animation: moveStars 60s linear infinite;
-            z-index: -1;
+        .container {
+            width: 100%;
+            max-width: 600px; /* حجم أكبر لملء الشاشة */
+            background: #111;
+            border: 3px solid var(--blue);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 0 20px var(--blue), inset 0 0 10px var(--red);
         }
 
-        @keyframes moveStars {
-            from { transform: translateY(0); }
-            to { transform: translateY(-1000px); }
-        }
-
-        .box { 
-            width: 90%; 
-            max-width: 420px; 
-            background: rgba(22, 22, 30, 0.9); 
-            padding: 25px; 
-            border-radius: 20px; 
-            border: 2px solid #0055ff; 
-            box-shadow: 0 0 30px rgba(0, 85, 255, 0.3), inset 0 0 15px rgba(255, 0, 0, 0.2);
-            backdrop-filter: blur(10px);
-            position: relative;
-        }
-
-        h3 { 
+        h1 { 
             text-align: center; 
-            color: #ff004c; 
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            text-shadow: 0 0 10px #ff004c, 0 0 20px #0055ff;
-            margin-top: 0;
+            color: var(--red); 
+            text-shadow: 0 0 10px var(--red);
+            font-size: 28px;
+            margin-bottom: 20px;
         }
 
-        textarea { 
-            width: 100%; 
-            height: 120px; 
-            background: rgba(0, 0, 0, 0.8); 
-            color: #00d9ff; 
-            border: 1px solid #0055ff; 
+        textarea {
+            width: 100%;
+            height: 180px;
+            background: #000;
+            color: #00ff00;
+            border: 2px solid #333;
             border-radius: 10px;
-            padding: 10px; 
-            font-family: 'Courier New', monospace;
-            font-size: 12px; 
-            margin-bottom: 15px; 
+            padding: 12px;
+            font-family: monospace;
+            font-size: 14px;
+            margin-bottom: 15px;
             outline: none;
-            box-sizing: border-box;
-            box-shadow: inset 0 0 10px rgba(0, 217, 255, 0.1);
         }
 
-        textarea:focus {
-            border-color: #ff004c;
-            box-shadow: 0 0 10px rgba(255, 0, 76, 0.4);
-        }
-
-        .btn-group {
+        .grid-buttons {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
+            gap: 12px;
         }
 
-        button { 
-            padding: 12px; 
-            border: none; 
-            border-radius: 10px; 
-            font-weight: bold; 
-            cursor: pointer; 
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            font-size: 12px;
-        }
-
-        .btn-obf { 
-            background: linear-gradient(45deg, #0055ff, #00d9ff); 
-            color: #fff;
-            box-shadow: 0 4px 15px rgba(0, 85, 255, 0.4);
-        }
-
-        .btn-copy { 
-            background: linear-gradient(45deg, #ff004c, #ff6b00); 
-            color: #fff;
-            box-shadow: 0 4px 15px rgba(255, 0, 76, 0.4);
-        }
-
-        button:hover { 
-            transform: translateY(-3px) scale(1.05);
-            filter: brightness(1.2);
-        }
-
-        button:active { transform: scale(0.95); }
-
-        .footer {
+        button, .upload-label {
+            width: 100%;
+            padding: 15px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
             text-align: center;
-            font-size: 10px;
-            margin-top: 20px;
-            color: #555;
-            letter-spacing: 1px;
+            transition: 0.3s;
+            color: white;
+            text-transform: uppercase;
         }
+
+        .btn-blue { background: var(--blue); box-shadow: 0 4px var(--dark); }
+        .btn-red { background: var(--red); box-shadow: 0 4px var(--dark); }
+        input[type="file"] { display: none; }
+
+        button:active { transform: translateY(4px); box-shadow: none; }
+
+        .dl-area {
+            margin-top: 15px;
+            padding: 15px;
+            background: #222;
+            border-radius: 10px;
+            display: none; /* تظهر عند الحاجة */
+        }
+
+        .input-name {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid var(--blue);
+            background: #000;
+            color: white;
+            font-size: 16px;
+        }
+
+        #out { border-color: var(--red); color: var(--red); margin-top: 20px; }
     </style>
 </head>
 <body>
-    <div class="box">
-        <h3>SZ ULTRA OBFUSCATOR</h3>
-        <textarea id="in" placeholder="الصق كود Lua هنا..."></textarea>
-        
-        <div class="btn-group">
-            <button class="btn-obf" onclick="obf()">🚀 تشفير ناري</button>
-            <button class="btn-copy" onclick="copy()">📋 نسخ الناتج</button>
-        </div>
 
-        <textarea id="out" readonly style="margin-top: 15px; border-color: #ff004c; color: #ff004c;" placeholder="الناتج المشفر سيظهر هنا..."></textarea>
+<div class="container">
+    <h1>SZ OBFUSCATOR V4 🔥</h1>
+    
+    <textarea id="in" placeholder="الصق كود الـ Lua هنا..."></textarea>
+    
+    <div class="grid-buttons">
+        <label class="upload-label btn-blue">
+            📁 رفع ملف
+            <input type="file" onchange="loadFile(this)">
+        </label>
         
-        <div class="footer">MADE BY DEVSZ_STORE © 2026</div>
+        <button class="btn-red" onclick="obfuscate()">🚀 تشفير ناري</button>
+        <button class="btn-blue" onclick="copyResult()">📋 نسخ الناتج</button>
+        <button class="btn-red" onclick="showDownload()">💾 تحميل الناتج</button>
     </div>
 
-    <script>
-        function obf() {
-            let code = document.getElementById('in').value;
-            if(!code) return alert("يا عباس، حط الكود أول!");
-            
-            let bytes = [];
-            for (let i = 0; i < code.length; i++) {
-                bytes.push(code.charCodeAt(i));
-            }
-            
-            let res = `local SZ_DATA = {${bytes.join(',')}}; local SZ_STR = ""; for i=1, #SZ_DATA do SZ_STR = SZ_STR .. string.char(SZ_DATA[i]) end; assert(loadstring(SZ_STR))()`;
-            
-            document.getElementById('out').value = res;
-            // إضافة تأثير اهتزاز خفيف عند النجاح
-            document.querySelector('.box').style.animation = 'shake 0.2s ease-in-out';
-            setTimeout(() => { document.querySelector('.box').style.animation = ''; }, 200);
+    <div id="dlBox" class="dl-area">
+        <input type="text" id="fileName" class="input-name" placeholder="اكتب اسم الملف (مثال: my_script.lua)">
+        <button class="btn-blue" onclick="downloadFile()">تأكيد التحميل (.lua)</button>
+    </div>
+
+    <textarea id="out" readonly placeholder="الكود المشفر سيظهر هنا..."></textarea>
+</div>
+
+<script>
+    // وظيفة رفع الملف
+    function loadFile(input) {
+        let file = input.files[0];
+        let reader = new FileReader();
+        reader.onload = function() {
+            document.getElementById('in').value = reader.result;
+        };
+        reader.readAsText(file);
+    }
+
+    // التشفير الجبار (Bytecode)
+    function obfuscate() {
+        let code = document.getElementById('in').value;
+        if(!code) return alert("يا عباس حط الكود أول!");
+
+        let bytes = [];
+        for (let i = 0; i < code.length; i++) {
+            bytes.push(code.charCodeAt(i));
         }
 
-        function copy() {
-            let t = document.getElementById('out');
-            if(!t.value) return;
-            t.select();
-            document.execCommand('copy');
-            alert("تم النسخ يا بطل! السكربت جاهز للحرق 🔥");
-        }
-    </script>
+        // الكود المشفر (خام وبدون أي إضافات تسبب فشل)
+        let result = `local data = {${bytes.join(',')}}; local str = ""; for i=1, #data do str = str .. string.char(data[i]) end; local func, err = loadstring(str); if func then func() else warn(err) end`;
+        
+        document.getElementById('out').value = result;
+        alert("✅ تم التشفير بنجاح!");
+    }
 
-    <style>
-        @keyframes shake {
-            0% { transform: translateX(0); }
-            25% { transform: translateX(5px); }
-            50% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
-            100% { transform: translateX(0); }
-        }
-    </style>
+    // نسخ الكود
+    function copyResult() {
+        let out = document.getElementById('out');
+        if(!out.value) return;
+        out.select();
+        document.execCommand('copy');
+        alert("📋 تم النسخ بنجاح!");
+    }
+
+    // إظهار صندوق التحميل
+    function showDownload() {
+        let box = document.getElementById('dlBox');
+        box.style.display = (box.style.display === 'block') ? 'none' : 'block';
+    }
+
+    // تحميل الملف
+    function downloadFile() {
+        let name = document.getElementById('fileName').value;
+        let content = document.getElementById('out').value;
+
+        if(!content) return alert("شفر الكود أولاً!");
+        if(!name.endsWith(".lua")) return alert("يجب أن ينتهي الاسم بـ .lua");
+
+        let blob = new Blob([content], {type: "text/plain"});
+        let link = document.createElement("a");
+        link.download = name;
+        link.href = window.URL.createObjectURL(blob);
+        link.click();
+    }
+</script>
+
 </body>
 </html>
