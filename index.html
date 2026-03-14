@@ -2,96 +2,225 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Delta Hub - التحميل التلقائي</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brawl Stars Pro Tracker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
     <style>
-        :root { --primary: #00d2ff; --accent: #007bff; --bg: #0a0a0a; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
-        
+        :root {
+            --main-red: #ff4b2b;
+            --main-blue: #00d2ff;
+            --bg-dark: #0f0c29;
+        }
+
         body {
-            background: radial-gradient(circle at center, #111 0%, #000 100%);
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
             color: white;
-            overflow: hidden;
-        }
-
-        .main-container {
-            text-align: center;
-            width: 100%;
+            font-family: 'Cairo', sans-serif;
+            margin: 0;
             padding: 20px;
+            min-height: 100vh;
         }
 
-        .loader-circle {
-            width: 120px;
-            height: 120px;
-            border: 5px solid rgba(255,255,255,0.1);
-            border-top: 5px solid var(--primary);
-            border-radius: 50%;
-            margin: 0 auto 30px;
-            animation: spin 1s linear infinite;
-            box-shadow: 0 0 20px rgba(0, 210, 255, 0.2);
+        .container {
+            max-width: 1000px;
+            margin: auto;
         }
 
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-        h1 { font-size: 28px; margin-bottom: 10px; text-shadow: 0 0 10px rgba(255,255,255,0.3); }
-        p { color: #888; font-size: 16px; margin-bottom: 40px; }
-
-        .status-box {
-            background: rgba(255,255,255,0.05);
-            padding: 15px;
+        /* تصميم كرت البحث */
+        .search-box {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 20px;
             border-radius: 15px;
-            border: 1px solid rgba(255,255,255,0.1);
-            display: inline-block;
-            min-width: 250px;
+            border: 2px solid var(--main-blue);
+            text-align: center;
+            margin-bottom: 25px;
         }
 
-        .status-text { color: var(--primary); font-weight: bold; }
-
-        /* زر احتياطي في حال لم يبدأ التحميل تلقائياً */
-        .manual-btn {
-            margin-top: 30px;
-            display: block;
-            color: #555;
-            text-decoration: underline;
-            font-size: 13px;
-            background: none;
+        input {
+            padding: 12px;
+            border-radius: 8px;
             border: none;
+            width: 60%;
+            font-size: 18px;
+            background: #fff;
+            color: #333;
+        }
+
+        .btn-search {
+            padding: 12px 25px;
+            background: linear-gradient(to right, var(--main-red), var(--main-blue));
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
             cursor: pointer;
         }
+
+        /* كرت اللاعب الرئيسي */
+        .player-header {
+            background: linear-gradient(45deg, rgba(255, 75, 43, 0.2), rgba(0, 210, 255, 0.2));
+            padding: 30px;
+            border-radius: 20px;
+            border-left: 5px solid var(--main-red);
+            border-right: 5px solid var(--main-blue);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            border-bottom: 3px solid transparent;
+            transition: 0.3s;
+        }
+
+        .stat-card:hover { border-bottom-color: var(--main-blue); transform: translateY(-5px); }
+
+        .stat-card img { width: 40px; margin-left: 15px; }
+
+        /* سجل المعارك */
+        .battle-log { margin-top: 30px; }
+        .battle-item {
+            background: rgba(0, 0, 0, 0.3);
+            margin-bottom: 10px;
+            padding: 15px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-right: 4px solid var(--main-red);
+        }
+
+        .victory { border-right-color: #4cd137; }
+        .defeat { border-right-color: #e84118; }
+
+        .brawler-icon { width: 35px; border-radius: 5px; margin: 2px; }
     </style>
 </head>
 <body>
 
-<div class="main-container">
-    <div class="loader-circle"></div>
-    <h1>جاري تجهيز ملف التثبيت</h1>
-    <p>يرجى عدم إغلاق الصفحة، سيبدأ التحميل الآن...</p>
-
-    <div class="status-box">
-        <span class="status-text" id="status">جاري الاتصال بالسيرفر...</span>
+<div class="container">
+    <div class="search-box">
+        <h2>🚀 تعقب أساطير براول</h2>
+        <input type="text" id="playerTag" placeholder="#P8Y2G..." value="#">
+        <button class="btn-search" onclick="fetchProStats()">بحث احترافي</button>
     </div>
 
-    <a href="https://files.catbox.moe/28ne2w.apk" id="downloadLink" style="display:none;"></a>
-    
-    <button class="manual-btn" onclick="startDownload()">إذا لم يبدأ التحميل تلقائياً اضغط هنا</button>
+    <div id="loading" style="display:none; text-align:center;">جاري جلب البيانات من السيرفر... ⏳</div>
+
+    <div id="playerDisplay" style="display:none;">
+        <div class="player-header">
+            <div>
+                <h1 id="pName" style="margin:0;">-</h1>
+                <p id="pTag" style="color:var(--main-blue);">#000000</p>
+                <h3 id="pClub">النادي: -</h3>
+            </div>
+            <div style="text-align:center;">
+                <img id="rankIcon" src="https://cdn.brawlstats.com/rank-icons/icon_rank_25.png" width="80">
+                <div id="pRating" style="font-weight:bold; margin-top:5px;">تقييم اللاعب</div>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <img src="https://cdn.brawlify.com/res/trophy.png">
+                <div><span>الكؤوس:</span> <h3 id="pTrophies">0</h3></div>
+            </div>
+            <div class="stat-card">
+                <img src="https://cdn.brawlify.com/res/event_mode_3v3.png">
+                <div><span>فوز 3v3:</span> <h3 id="p3v3">0</h3></div>
+            </div>
+            <div class="stat-card">
+                <img src="https://cdn.brawlify.com/res/xp.png">
+                <div><span>مستوى الخبرة:</span> <h3 id="pExp">0</h3></div>
+            </div>
+            <div class="stat-card">
+                <img src="https://cdn.brawlify.com/res/ranked.png">
+                <div><span>الرانكد الحالي:</span> <h3 id="pRanked">ذهبي III</h3></div>
+            </div>
+        </div>
+
+        <div class="battle-log">
+            <h3>🕒 سجل آخر المعارك (آخر 10 ساعات)</h3>
+            <div id="logsContainer"></div>
+        </div>
+    </div>
 </div>
 
 <script>
-    function startDownload() {
-        const link = document.getElementById('downloadLink');
-        link.click();
-        document.getElementById('status').innerText = "بدأ التحميل بنجاح ✅";
-        document.getElementById('status').style.color = "#00ff88";
-    }
+async function fetchProStats() {
+    const tag = document.getElementById('playerTag').value.replace('#', '%23');
+    const apiKey = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6IjEzZGI0Y2YzLTVkYjMtNGEwZC1iODE4LTNiZjNkYTkzNzljZiIsImlhdCI6MTc3MzQ5MDAzNiwic3ViIjoiZGV2ZWxvcGVyL2JiOTVhMzVmLTUzYWUtNzkxNi04OTM2LWM5ZGU5ODdhMDJkYyIsInNjb3BlcyI6WyJicmF3bHN0YXJzIl0sImxpbWl0cyI6W3sidGllciI6ImRldmVsb3Blci9zaWx2ZXIiLCJ0eXBlIjoidGhyb3R0bGluZyJ9LHsiY2lkcnMiOlsiMTg1LjE4MS4xMDguMjMyIl0sInR5cGUiOiJjbGllbnQifV19.Cs_F8HghWirLwDzREjMOn7b0MMkNIhD1_SYR8UC7J0mV8c-r84-W5GVfzCRkIod1EGTkLDf-J3waSjbocy0qPw"
+    const display = document.getElementById('playerDisplay');
+    const loading = document.getElementById('loading');
 
-    // بدء التحميل تلقائياً بعد ثانية واحدة من فتح الصفحة
-    window.onload = function() {
-        setTimeout(startDownload, 1500);
-    };
+    loading.style.display = 'block';
+    display.style.display = 'none';
+
+    try {
+        // استخدام بروكسي لتخطي الـ CORS
+        const proxy = "https://cors-anywhere.herokuapp.com/";
+        const url = `${proxy}https://api.brawlstars.com/v1/players/${tag}`;
+        const logUrl = `${proxy}https://api.brawlstars.com/v1/players/${tag}/battlelog`;
+
+        const res = await fetch(url, { headers: { 'Authorization': `Bearer ${apiKey}` } });
+        const data = await res.json();
+
+        const logRes = await fetch(logUrl, { headers: { 'Authorization': `Bearer ${apiKey}` } });
+        const logData = await logRes.json();
+
+        // تعبئة البيانات
+        document.getElementById('pName').innerText = data.name;
+        document.getElementById('pTag').innerText = data.tag;
+        document.getElementById('pTrophies').innerText = data.trophies;
+        document.getElementById('p3v3').innerText = data["3vs3Victories"];
+        document.getElementById('pExp').innerText = data.expLevel;
+        document.getElementById('pClub').innerText = "النادي: " + (data.club.name || "لا يوجد");
+        
+        // سجل المعارك
+        const logsBox = document.getElementById('logsContainer');
+        logsBox.innerHTML = '';
+        logData.items.slice(0, 10).forEach(battle => {
+            const time = battle.battleTime; // تحتاج فورمات للوقت
+            const resultClass = battle.battle.result === "victory" ? "victory" : "defeat";
+            const mode = battle.event.mode;
+            
+            logsBox.innerHTML += `
+                <div class="battle-item ${resultClass}">
+                    <div>
+                        <strong>${mode}</strong> <br>
+                        <small>قبل قليل</small>
+                    </div>
+                    <div>
+                        ${battle.battle.teams[0].map(p => `<img class="brawler-icon" src="https://cdn.brawlify.com/brawlers/icons/${p.brawler.name.replace(' ','%20')}.png" title="${p.brawler.name}">`).join('')}
+                    </div>
+                    <div style="font-weight:bold;">${battle.battle.result === "victory" ? "فوز ✅" : "خسارة ❌"}</div>
+                </div>
+            `;
+        });
+
+        loading.style.display = 'none';
+        display.style.display = 'block';
+
+    } catch (e) {
+        alert("خطأ! تأكد من المفتاح أو الـ IP");
+        loading.style.display = 'none';
+    }
+}
 </script>
 
 </body>
