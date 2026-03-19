@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>موقع الرسائل الاحترافي</title>
+    <style>
+        :root {
+            --primary: #ff007f; /* وردي خرافي */
+            --bg: #0a0a12;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* تأثير النجوم المتحركة */
+        #stars-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: twinkle var(--duration) infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.5); opacity: 1; }
+        }
+
+        /* حاوية التصميم */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            width: 90%;
+            max-width: 450px;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        h1 { font-size: 24px; margin-bottom: 20px; color: var(--primary); text-shadow: 0 0 10px var(--primary); }
+
+        textarea {
+            width: 100%;
+            height: 150px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 15px;
+            color: white;
+            font-size: 16px;
+            resize: none;
+            outline: none;
+            box-sizing: border-box;
+            transition: 0.3s;
+        }
+
+        textarea:focus { border-color: var(--primary); box-shadow: 0 0 15px rgba(255, 0, 127, 0.3); }
+
+        button {
+            margin-top: 20px;
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            background: var(--primary);
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 5px 15px rgba(255, 0, 127, 0.4);
+        }
+
+        button:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(255, 0, 127, 0.6); }
+
+        button:disabled { background: #555; cursor: not-allowed; box-shadow: none; }
+
+        #link-display {
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 10px;
+            display: none;
+            word-break: break-all;
+            cursor: pointer;
+        }
+
+        /* واجهة عرض الرسالة */
+        #message-view { display: none; }
+        .msg-text { font-size: 20px; line-height: 1.6; white-space: pre-wrap; }
+
+    </style>
+</head>
+<body>
+
+    <div id="stars-container"></div>
+
+    <div class="glass-card" id="main-view">
+        <h1>✨ صانع الروابط السحرية</h1>
+        <textarea id="msgInput" placeholder="اكتب رسالتك الالكترونية ✉️"></textarea>
+        <button id="createBtn" onclick="generateLink()">إنشاء رابط الرسالة</button>
+        <div id="link-display" onclick="copyLink()">اضغط هنا لنسخ الرابط</div>
+    </div>
+
+    <div class="glass-card" id="message-view">
+        <h1>💌 وصلتك رسالة خاصة</h1>
+        <div class="msg-text" id="viewArea"></div>
+        <button onclick="window.location.search = ''">إنشاء رسالة جديدة</button>
+    </div>
+
+    <script>
+        // توليد النجوم
+        const container = document.getElementById('stars-container');
+        for (let i = 0; i < 150; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            const size = Math.random() * 3 + 'px';
+            star.style.width = size;
+            star.style.height = size;
+            star.style.top = Math.random() * 100 + '%';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.setProperty('--duration', Math.random() * 3 + 2 + 's');
+            container.appendChild(star);
+        }
+
+        // منطق إنشاء الرابط
+        function generateLink() {
+            const msg = document.getElementById('msgInput').value;
+            if (!msg.trim()) {
+                alert("يا عباس اكتب شي أولاً! 😂");
+                return;
+            }
+            
+            const encodedMsg = btoa(unescape(encodeURIComponent(msg)));
+            const finalLink = window.location.origin + window.location.pathname + "?msg=" + encodedMsg;
+            
+            const display = document.getElementById('link-display');
+            display.innerText = "تم إنشاء الرابط! اضغط هنا للنسخ";
+            display.style.display = 'block';
+            display.dataset.link = finalLink;
+        }
+
+        function copyLink() {
+            const link = document.getElementById('link-display').dataset.link;
+            navigator.clipboard.writeText(link);
+            alert("تم نسخ الرابط بنجاح! أرسله لمن تحب.");
+        }
+
+        // فحص إذا كان هناك رسالة في الرابط عند الفتح
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const msgParam = urlParams.get('msg');
+
+            if (msgParam) {
+                document.getElementById('main-view').style.display = 'none';
+                document.getElementById('message-view').style.display = 'block';
+                try {
+                    const decodedMsg = decodeURIComponent(escape(atob(msgParam)));
+                    document.getElementById('viewArea').innerText = decodedMsg;
+                } catch(e) {
+                    document.getElementById('viewArea').innerText = "خطأ في قراءة الرسالة!";
+                }
+            }
+        };
+    </script>
+</body>
+</html>
