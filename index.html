@@ -6,6 +6,7 @@
     <title>𝐴𝐵𝐵𝐴𝑆 | ŞZS - HUB</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        /* إعدادات الجسم والمنع */
         html, body {
             margin: 0; padding: 0;
             width: 100%; height: 100%;
@@ -14,6 +15,8 @@
             background: #000814;
             display: flex; justify-content: center; align-items: center;
             direction: rtl;
+            -webkit-user-select: none; /* منع تحديد النص */
+            user-select: none;
         }
 
         /* الخلفية المائية المتحركة */
@@ -49,6 +52,7 @@
             100% { transform: translateY(-110vh) scale(1.2); opacity: 0; }
         }
 
+        /* الحقوق فوق */
         .rights {
             position: absolute; top: 25px; 
             font-size: 22px; font-weight: bold; 
@@ -56,11 +60,11 @@
             z-index: 100;
         }
 
-        /* الكرت الرئيسي */
+        /* الكروت */
         .hub-card {
-            background: rgba(0, 15, 25, 0.82);
+            background: rgba(0, 15, 25, 0.85);
             backdrop-filter: blur(25px);
-            border: 2px solid rgba(0, 180, 216, 0.3);
+            border: 2px solid rgba(0, 180, 216, 0.4);
             border-radius: 30px;
             padding: 25px;
             width: 85%; max-width: 400px;
@@ -68,101 +72,110 @@
             z-index: 10;
             text-align: center;
             display: none;
+            color: #fff;
         }
 
         .active-page { display: block !important; animation: fadeIn 0.4s ease-out; }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
 
-        h1 { font-size: 20px; margin-bottom: 15px; color: #fff; border-bottom: 1px solid rgba(0, 180, 216, 0.3); padding-bottom: 10px; }
+        h1 { font-size: 20px; margin-bottom: 15px; color: #00e5ff; border-bottom: 1px solid rgba(0, 180, 216, 0.3); padding-bottom: 10px; text-shadow: 0 0 10px rgba(0, 229, 255, 0.3); }
         
+        /* وضوح النصوص */
         .info-box { text-align: right; line-height: 1.8; margin-bottom: 20px; }
-        .info-box p { font-size: 14px; color: #caf0f8; margin: 8px 0; opacity: 0.9; display: flex; align-items: center; }
-        .info-box i { color: #00b4d8; margin-left: 10px; font-size: 12px; }
+        .info-box p { font-size: 14px; color: #e0f7fa; margin: 10px 0; display: flex; align-items: center; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); }
+        .info-box i { color: #00b4d8; margin-left: 10px; }
 
         .btn {
             display: block; padding: 14px; margin: 12px 0;
-            font-size: 16px; font-weight: bold; color: #fff;
+            font-size: 15px; font-weight: bold; color: #fff;
             text-decoration: none; border-radius: 15px;
-            background: rgba(255, 255, 255, 0.04);
+            background: rgba(0, 180, 216, 0.1);
             border: 1.5px solid #00b4d8;
             transition: 0.3s;
+            text-shadow: 0 0 5px rgba(0,0,0,0.5);
         }
+        .btn:hover { background: rgba(0, 180, 216, 0.3); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 180, 216, 0.4); }
 
-        .btn:hover { background: rgba(0, 180, 216, 0.2); transform: scale(1.02); }
-
-        /* تنسيق صورة التسريبات لتكون فخمة */
+        /* حماية الصورة */
         .leak-img {
             width: 100%;
             border-radius: 15px;
-            border: 1px solid rgba(0, 180, 216, 0.6);
+            border: 1px solid rgba(0, 180, 216, 0.5);
             margin-top: 10px;
-            box-shadow: 0 0 20px rgba(0, 180, 216, 0.3);
-            background: #000;
+            pointer-events: none; /* منع الضغط المطول والخيارات */
+            -webkit-touch-callout: none;
         }
 
-        /* شريط التنقل السفلي */
+        /* شريط السفلي المطور */
         .nav-bar {
-            position: absolute; bottom: 30px;
-            width: 90%; max-width: 400px;
+            position: absolute; bottom: 25px;
+            width: 92%; max-width: 420px;
             background: #0a0e14;
-            border-radius: 60px;
+            border-radius: 50px;
             display: flex; justify-content: space-around;
-            padding: 8px 15px; 
+            padding: 10px 5px; 
             border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
             z-index: 100;
         }
 
         .nav-item {
             display: flex; flex-direction: column; align-items: center;
-            color: #555; text-decoration: none; transition: 0.3s;
+            color: #444; text-decoration: none; transition: 0.3s;
             cursor: pointer; flex: 1;
         }
 
-        .nav-item i { font-size: 22px; margin-bottom: 4px; }
-        .nav-item span { font-size: 11px; font-weight: bold; }
+        .nav-item i { font-size: 20px; margin-bottom: 4px; }
+        .nav-item span { font-size: 10px; font-weight: bold; }
 
         .nav-item.active {
             color: #00e5ff;
-            text-shadow: 0 0 10px rgba(0, 229, 255, 0.8);
+            text-shadow: 0 0 10px rgba(0, 229, 255, 0.6);
         }
-        .nav-item.active i { filter: drop-shadow(0 0 8px rgba(0, 229, 255, 0.6)); }
 
+        .support-text { font-size: 14px; color: #caf0f8; line-height: 1.6; margin-bottom: 20px; }
     </style>
 </head>
-<body>
-
-    <div class="snow-container" id="snowBox"></div>
+<body oncontextmenu="return false;"> <div class="snow-container" id="snowBox"></div>
 
     <div class="rights">𝐴𝐵𝐵𝐴𝑆 | ŞZS</div>
 
     <div id="pageHome" class="hub-card active-page">
         <h1>القائمة الرئيسية</h1>
-        
         <div class="info-box">
             <p><i class="fas fa-check-circle"></i> هذا الموقع يختص بتسريبات لعبة ببجي</p>
             <p><i class="fas fa-gamepad"></i> لعبة الباتل رويال الذي تم انشائها 2018 - 19 مارس</p>
             <p><i class="fas fa-shield-alt"></i> موقع رسمي وموثوق</p>
             <p><i class="fas fa-broadcast-tower"></i> نقوم بنشر تسريبات تحديثات والكثير.</p>
         </div>
-
-        <div style="font-size: 11px; margin: 10px 0 5px; color: #00b4d8; opacity: 0.6; font-weight: bold;">تواصل مع المطور:</div>
-        
-        <a href="javascript:void(0)" class="btn" onclick="playAndGo('https://www.tiktok.com/@sz2st?_r=1&_t=ZS-952okvechm5')">
-           المطور على تيك توك
-        </a>
-
-        <a href="javascript:void(0)" class="btn" onclick="playAndGo('https://t.me/DEVSZ_STORE')">
-           المطور على تيليجرام
-        </a>
     </div>
 
     <div id="pageLeaks" class="hub-card">
         <h1>آخر التسريبات</h1>
-        <p>تسريب جديد وحصري:</p>
-        <img src="https://raw.githubusercontent.com/abasameerz15-tech/sztshfer/refs/heads/main/Screenshot_%D9%A2%D9%A0%D9%A2%D9%A6%D9%A0%D9%A3%D9%A2%D9%A7-%D9%A2%D9%A3%D9%A5%D9%A5%D9%A2%D9%A4.jpg" class="leak-img" alt="PUBG Leak Content">
-        <div style="margin-top: 15px; color: #ffde57; font-size: 13px; opacity: 0.8;">سيتم تحديث هذه القائمة فور توفر جديد!</div>
+        <p style="color: #e0f7fa; font-size: 13px;">عروض وقسائم ببجي الحصرية:</p>
+        
+        <img src="https://raw.githubusercontent.com/abasameerz15-tech/sztshfer/refs/heads/main/Screenshot_%D9%A2%D9%A0%D9%A2%D9%A6%D9%A0%D9%A3%D9%A2%D9%A7-%D9%A2%D9%A3%D9%A5%D9%A5%D9%A2%D9%A4.jpg" class="leak-img" alt="Leak Image">
+        
+        <a href="javascript:void(0)" class="btn" style="background: linear-gradient(90deg, #b8860b, #ffd700); color: #000;" onclick="playAndGo('https://www.midasbuy.com/shop/pagedoo/ct1744785094_QMGQJMGD/mobile/index.html?adtag=couponManage#/pages/p-wgbu/')">
+           <i class="fas fa-ticket-alt"></i> إدخال رمز القسيمة
+        </a>
+    </div>
+
+    <div id="pageSupport" class="hub-card">
+        <h1>الدعم الفني</h1>
+        <div class="support-text">
+            هذه الصفحه تخص الدعم الفني<br>
+            اذا اردت تستفسر او تقترح شيئٱ تواصل معنا:
+        </div>
+        
+        <a href="javascript:void(0)" class="btn" onclick="playAndGo('https://t.me/DEVSZ_STORE')">
+           <i class="fab fa-telegram"></i> تواصل مع المطور على تيليجرام
+        </a>
+
+        <a href="javascript:void(0)" class="btn" onclick="playAndGo('https://www.tiktok.com/@sz2st?_r=1&_t=ZS-952okvechm5')">
+           <i class="fab fa-tiktok"></i> تواصل مع المطور على تيك توك
+        </a>
     </div>
 
     <div class="nav-bar">
@@ -172,8 +185,13 @@
         </div>
 
         <div class="nav-item" id="btnLeaksNav" onclick="switchPage('leaks')">
-            <i class="fas fa-ghost"></i>
+            <i class="fas fa-bolt"></i>
             <span>التسريبات</span>
+        </div>
+
+        <div class="nav-item" id="btnSupportNav" onclick="switchPage('support')">
+            <i class="fas fa-headset"></i>
+            <span>الدعم الفني</span>
         </div>
     </div>
 
@@ -182,16 +200,16 @@
     </audio>
 
     <script>
-        // تأثير الثلج
+        // كود الثلج
         const snowBox = document.getElementById('snowBox');
-        for (let i = 0; i < 30; i++) {
+        for (let i = 0; i < 35; i++) {
             let snow = document.createElement('div');
             snow.className = 'snow';
             let size = Math.random() * 4 + 2 + 'px';
             snow.style.width = size;
             snow.style.height = size;
             snow.style.left = Math.random() * 100 + '%';
-            snow.style.animationDelay = Math.random() * 5 + 's';
+            snow.style.animationDelay = Math.random() * 6 + 's';
             snowBox.appendChild(snow);
         }
 
@@ -204,17 +222,20 @@
 
         function switchPage(page) {
             snd.currentTime = 0; snd.play();
+            
+            // إخفاء الكل
+            document.querySelectorAll('.hub-card').forEach(card => card.classList.remove('active-page'));
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
 
             if (page === 'home') {
                 document.getElementById('pageHome').classList.add('active-page');
-                document.getElementById('pageLeaks').classList.remove('active-page');
                 document.getElementById('btnHomeNav').classList.add('active');
-                document.getElementById('btnLeaksNav').classList.remove('active');
-            } else {
+            } else if (page === 'leaks') {
                 document.getElementById('pageLeaks').classList.add('active-page');
-                document.getElementById('pageHome').classList.remove('active-page');
                 document.getElementById('btnLeaksNav').classList.add('active');
-                document.getElementById('btnHomeNav').classList.remove('active');
+            } else if (page === 'support') {
+                document.getElementById('pageSupport').classList.add('active-page');
+                document.getElementById('btnSupportNav').classList.add('active');
             }
         }
     </script>
