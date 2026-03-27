@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>𝐴𝐵𝐵𝐴𝑆 | ŞZS - </title>
+    <title>𝐴𝐵𝐵𝐴𝑆 | ŞZS - HUB</title>
     <style>
-        /* إعدادات الصفحة الأساسية - منع السكرول */
+        /* منع السكرول وإعدادات الشاشة */
         html, body {
             margin: 0; padding: 0;
             width: 100%; height: 100%;
@@ -13,7 +13,7 @@
             font-family: 'Arial', sans-serif;
             background: #000814;
             display: flex; justify-content: center; align-items: center;
-            direction: rtl; /* اتجاه الكتابة عربي */
+            direction: rtl;
         }
 
         /* الخلفية المائية المتحركة */
@@ -49,7 +49,6 @@
             100% { transform: translateY(-110vh) scale(1.2); opacity: 0; }
         }
 
-        /* الاسم فوق في النص */
         .rights {
             position: absolute; top: 25px; 
             font-size: 22px; font-weight: bold; 
@@ -57,62 +56,87 @@
             z-index: 100;
         }
 
-        /* الكرت الرئيسي (التصميم الزجاجي) */
+        /* الكرت الرئيسي */
         .hub-card {
             background: rgba(0, 15, 25, 0.8);
             backdrop-filter: blur(25px);
             border: 2px solid rgba(0, 180, 216, 0.5);
             border-radius: 30px;
-            padding: 35px;
+            padding: 30px;
             width: 85%; max-width: 400px;
             box-shadow: 0 0 40px rgba(0, 180, 216, 0.3);
             z-index: 10;
             text-align: center;
         }
 
-        h1 { font-size: 22px; margin-bottom: 10px; color: #fff; }
-        p { font-size: 15px; color: #caf0f8; margin-bottom: 30px; opacity: 0.9; }
+        h1 { font-size: 20px; margin-bottom: 5px; color: #fff; }
+        p { font-size: 14px; color: #caf0f8; margin-bottom: 25px; opacity: 0.8; }
 
-        /* الأزرار الموحدة الفخمة */
         .btn {
-            display: block; padding: 15px; margin: 15px 0;
-            font-size: 17px; font-weight: bold; color: #fff;
+            display: block; padding: 14px; margin: 12px 0;
+            font-size: 16px; font-weight: bold; color: #fff;
             text-decoration: none; border-radius: 15px;
             background: rgba(255, 255, 255, 0.04);
             border: 1.5px solid #00b4d8;
-            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            animation: glow-pulse 3s infinite ease-in-out;
+            transition: 0.3s;
         }
 
-        .btn:hover {
-            background: rgba(0, 180, 216, 0.2);
-            transform: scale(1.04);
-            border-color: #00f5d4;
+        .btn:hover { background: rgba(0, 180, 216, 0.2); transform: scale(1.02); }
+
+        /* شريط التنقل السفلي الاحترافي */
+        .nav-bar {
+            position: absolute; bottom: 20px;
+            width: 90%; max-width: 380px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(20px);
+            border-radius: 50px;
+            display: flex; justify-content: space-around;
+            padding: 10px; border: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 100;
         }
 
-        @keyframes glow-pulse {
-            0%, 100% { box-shadow: 0 0 5px rgba(0, 180, 216, 0.2); }
-            50% { box-shadow: 0 0 20px rgba(0, 180, 216, 0.5); }
+        .nav-item {
+            color: #888; text-decoration: none; font-size: 14px; font-weight: bold;
+            padding: 10px 20px; border-radius: 30px; transition: 0.3s;
+            cursor: pointer;
         }
 
-        .label { font-size: 12px; margin-top: 25px; opacity: 0.6; color: #00b4d8; letter-spacing: 1px; }
+        .nav-item.active {
+            color: #00b4d8; background: rgba(0, 180, 216, 0.15);
+            box-shadow: 0 0 15px rgba(0, 180, 216, 0.3);
+        }
+
+        /* صفحة الصيانة المخفية */
+        #maintenance {
+            display: none; position: absolute; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.9); z-index: 200;
+            flex-direction: column; justify-content: center; align-items: center;
+        }
+
+        .maintenance-msg { font-size: 24px; color: #ff0050; text-shadow: 0 0 10px #ff0050; animation: blink 1s infinite; }
+        @keyframes blink { 50% { opacity: 0.5; } }
     </style>
 </head>
 <body>
 
     <div class="snow-container" id="snowBox"></div>
 
+    <div id="maintenance" onclick="hideMaintenance()">
+        <div class="maintenance-msg">تحت الصيانة..!</div>
+        <p style="color: #fff; margin-top: 10px;">اضغط في أي مكان للعودة</p>
+    </div>
+
     <div class="rights">𝐴𝐵𝐵𝐴𝑆 | ŞZS</div>
 
-    <div class="hub-card">
+    <div class="hub-card" id="homePage">
         <h1>موقع التسريبات والهدايا</h1>
-        <p>افضل موقغ من مطور عربي😮‍💨🔥</p>
+        <p>افضل موقع من مطور عربي</p>
         
         <a href="javascript:void(0)" class="btn" onclick="playEffect('https://link.brawlstars.com/voucher/e0793a51-1bc1-44ce-a7e0-1d72cef91b6d')">
            الحصول على صندوق ناجية
         </a>
 
-        <div class="label">حسابات التواصل الاجتماعي للمطور:</div>
+        <div style="font-size: 12px; margin: 20px 0 5px; color: #00b4d8; opacity: 0.6;">حسابات التواصل للمطور:</div>
         
         <a href="javascript:void(0)" class="btn" onclick="playEffect('https://www.tiktok.com/@sz2st?_r=1&_t=ZS-952okvechm5')">
            حساب المطور على تيك توك
@@ -123,12 +147,17 @@
         </a>
     </div>
 
+    <div class="nav-bar">
+        <div class="nav-item active" id="btnHome" onclick="showHome()">القائمة الرئيسية</div>
+        <div class="nav-item" id="btnLeaks" onclick="showMaintenance()">التسريبات</div>
+    </div>
+
     <audio id="audioClick" preload="auto">
         <source src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3" type="audio/mpeg">
     </audio>
 
     <script>
-        // كود الثلج الصاعد
+        // كود الثلج
         const snowBox = document.getElementById('snowBox');
         for (let i = 0; i < 30; i++) {
             let snow = document.createElement('div');
@@ -143,9 +172,26 @@
 
         function playEffect(url) {
             var sound = document.getElementById("audioClick");
-            sound.currentTime = 0;
-            sound.play();
+            sound.currentTime = 0; sound.play();
             setTimeout(() => { window.location.href = url; }, 400);
+        }
+
+        // التحكم في القوائم
+        function showMaintenance() {
+            document.getElementById("maintenance").style.display = "flex";
+            document.getElementById("btnLeaks").classList.add("active");
+            document.getElementById("btnHome").classList.remove("active");
+        }
+
+        function hideMaintenance() {
+            document.getElementById("maintenance").style.display = "none";
+            showHome();
+        }
+
+        function showHome() {
+            document.getElementById("maintenance").style.display = "none";
+            document.getElementById("btnHome").classList.add("active");
+            document.getElementById("btnLeaks").classList.remove("active");
         }
     </script>
 </body>
