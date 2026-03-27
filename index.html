@@ -3,73 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>𝐴𝐵𝐵𝐴𝑆 | ŞZS TIK TOK - Gifts</title>
+    <title>𝐴𝐵𝐵𝐴𝑆 | ŞZS</title>
     <style>
         body {
             margin: 0; padding: 0;
             font-family: 'Arial', sans-serif;
             background: radial-gradient(circle, #001d3d 0%, #000814 100%);
-            height: 100vh;
+            min-height: 100vh;
             display: flex; justify-content: center; align-items: center;
-            color: white; overflow: hidden; text-align: center;
-            position: relative;
+            color: white; text-align: center; position: relative;
         }
 
-        /* تصميم الحقوق في الأعلى - تأكدت أنها ظاهرة */
         .rights {
-            position: absolute;
-            top: 30px;
-            width: 100%;
-            left: 0;
-            font-size: 22px;
-            font-weight: bold;
-            color: #00b4d8;
-            text-shadow: 0 0 20px #00b4d8;
-            letter-spacing: 3px;
-            z-index: 100;
-            animation: pulse 2s infinite;
+            position: absolute; top: 20px; width: 100%;
+            font-size: 20px; font-weight: bold; color: #00b4d8;
+            text-shadow: 0 0 15px #00b4d8; animation: pulse 2s infinite;
         }
 
         .container {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(15px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 40px;
-            border-radius: 30px;
+            padding: 30px; border-radius: 30px;
             box-shadow: 0 25px 50px rgba(0,0,0,0.5);
-            max-width: 90%; width: 500px;
-            position: relative;
-            z-index: 10;
+            width: 90%; max-width: 450px; margin-top: 50px;
         }
 
-        h1 { font-size: 22px; margin-bottom: 10px; text-shadow: 0 0 10px #00b4d8; }
-        p { font-size: 16px; color: #caf0f8; margin-bottom: 25px; }
+        h1 { font-size: 20px; margin-bottom: 5px; text-shadow: 0 0 10px #00b4d8; }
+        p { font-size: 14px; color: #caf0f8; margin-bottom: 20px; }
 
-        .btn-get {
-            display: inline-block;
-            padding: 15px 45px;
-            font-size: 22px;
-            font-weight: bold;
-            color: #fff;
-            text-decoration: none;
-            background: rgba(0, 180, 216, 0.1);
-            border: 2px solid #00b4d8;
-            border-radius: 50px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            box-shadow: 0 0 20px rgba(0, 180, 216, 0.2);
+        /* الزر الرئيسي (صندوق الناجية) */
+        .btn-main {
+            display: block; padding: 15px; margin-bottom: 20px;
+            font-size: 20px; font-weight: bold; color: #fff;
+            background: linear-gradient(45deg, #00b4d8, #0077b6);
+            border: none; border-radius: 50px; cursor: pointer;
+            box-shadow: 0 0 20px rgba(0, 180, 216, 0.5);
+            transition: 0.3s; text-decoration: none;
         }
 
-        .btn-get:hover {
-            background: #00b4d8;
-            box-shadow: 0 0 40px #00b4d8;
-            transform: scale(1.05);
+        /* أزرار المطور */
+        .btn-dev {
+            display: block; padding: 10px; margin: 10px 0;
+            font-size: 14px; font-weight: bold; color: #fff;
+            text-decoration: none; border-radius: 10px;
+            transition: 0.3s; border: 1px solid rgba(255,255,255,0.2);
         }
+
+        .tiktok { background: #000; border-left: 5px solid #ff0050; }
+        .telegram { background: #0088cc; border-left: 5px solid #fff; }
+
+        .btn-main:hover, .btn-dev:hover { transform: scale(1.03); opacity: 0.9; }
 
         @keyframes pulse {
-            0% { opacity: 0.6; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.05); }
-            100% { opacity: 0.6; transform: scale(1); }
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
         }
     </style>
 </head>
@@ -80,32 +68,38 @@
     <div class="container">
         <h1>مرحبًا بك في موقع التسريبات والهدايا</h1>
         <h1>Welcome to the leaks and gifts website</h1>
-        <hr style="opacity: 0.1; margin: 20px 0;">
+        <hr style="opacity: 0.1; margin: 15px 0;">
         <p>اضغط الزر أدناه للحصول على صندوق ناجية</p>
-        <p>Press the button below to get a nigeeh box</p>
-
-        <div class="btn-get" onclick="playAndRedirect()">
+        
+        <a href="javascript:void(0)" class="btn-main" onclick="playEffect('https://link.brawlstars.com/voucher/e0793a51-1bc1-44ce-a7e0-1d72cef91b6d')">
            الحصول على الصندوق get box
-        </div>
+        </a>
+
+        <p style="margin-top: 20px; font-size: 12px; opacity: 0.6;">Contact Developer - تواصل مع المطور</p>
+        
+        <a href="javascript:void(0)" class="btn-dev tiktok" onclick="playEffect('https://www.tiktok.com/@sz2st?_r=1&_t=ZS-952okvechm5')">
+           مطور الموقع تيك توك dev website in tik tok
+        </a>
+
+        <a href="javascript:void(0)" class="btn-dev telegram" onclick="playEffect('https://t.me/DEVSZ_STORE')">
+           مطور الموقع تيليجرام dev website in telegram
+        </a>
     </div>
 
-    <audio id="btnSound" preload="auto">
-        <source src="https://www.soundjay.com/button/button-3.mp3" type="audio/mpeg">
+    <audio id="audioClick" preload="auto">
+        <source src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3" type="audio/mpeg">
     </audio>
 
     <script>
-        function playAndRedirect() {
-            var audio = document.getElementById("btnSound");
-            
-            // تشغيل الصوت
-            audio.play().catch(function(error) {
-                console.log("المنصفح منع الصوت التلقائي: " + error);
-            });
+        function playEffect(url) {
+            var sound = document.getElementById("audioClick");
+            sound.currentTime = 0; // البدء من الصفر لو ضغط مرتين
+            sound.volume = 1.0; // أعلى مستوى صوت
+            sound.play();
 
-            // تحويل المستخدم بعد سماع الصوت (350 مللي ثانية)
             setTimeout(function() {
-                window.location.href = "https://link.brawlstars.com/voucher/e0793a51-1bc1-44ce-a7e0-1d72cef91b6d";
-            }, 350);
+                window.location.href = url;
+            }, 400); // تأخير بسيط عشان الصوت يظهر بقوة
         }
     </script>
 
