@@ -6,11 +6,11 @@
     <title>𝐴𝐵𝐵𝐴𝑆 | ŞZS - HUB</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* إعدادات الجسم الأساسية - منع السكرول والتحديد */
+        /* إعدادات الجسم الأساسية */
         html, body {
             margin: 0; padding: 0;
             width: 100%; height: 100%;
-            overflow: hidden; /* يمنع السحب والنزول */
+            overflow: hidden; /* منع السكرول */
             font-family: 'Arial', sans-serif;
             background: #000814;
             display: flex; justify-content: center; align-items: center;
@@ -18,7 +18,7 @@
             -webkit-user-select: none; user-select: none; /* منع تحديد النص */
         }
 
-        /* الخلفية المائية المتحركة */
+        /* الخلفية المائية المتحركة - تأكدت من حركتها */
         body::before {
             content: "";
             position: absolute; width: 100%; height: 100%;
@@ -34,21 +34,21 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* الثلج الصاعد - تأكدت من وجوده */
+        /* الثلج الصاعد - تأكدت من عمله */
         .snow-container {
             position: absolute; width: 100%; height: 100%;
             top: 0; left: 0; z-index: -1; pointer-events: none;
         }
         .snow {
             position: absolute; bottom: -20px;
-            background: rgba(255, 255, 255, 0.4); border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5); border-radius: 50%;
             animation: rise 6s linear infinite; /* حركة الصعود */
         }
 
         @keyframes rise {
             0% { transform: translateY(0) scale(1); opacity: 0; }
-            50% { opacity: 0.5; }
-            100% { transform: translateY(-110vh) scale(1.2); opacity: 0; }
+            50% { opacity: 0.6; }
+            100% { transform: translateY(-110vh) scale(1.3); opacity: 0; }
         }
 
         .rights {
@@ -94,17 +94,17 @@
         }
         .btn:hover { background: rgba(0, 180, 216, 0.2); transform: scale(1.02); }
 
-        /* حماية الصورة */
+        /* حماية الصورة من الخيارات */
         .leak-img {
             width: 100%;
             border-radius: 15px;
             border: 1px solid rgba(0, 180, 216, 0.5);
             margin-top: 5px; margin-bottom: 15px;
-            pointer-events: none; /* منع الضغط المطول */
+            pointer-events: none; /* منع أي تفاعل */
             -webkit-touch-callout: none;
         }
 
-        /* شريط التنقل السفلي الاحترافي */
+        /* شريط التنقل السفلي */
         .nav-bar {
             position: absolute; bottom: 25px;
             width: 90%; max-width: 380px;
@@ -132,11 +132,34 @@
         }
         .nav-item.active i { filter: drop-shadow(0 0 8px rgba(0, 229, 255, 0.6)); }
 
-        /* صفحة الدعم الفني */
         .support-text { font-size: 13px; color: #caf0f8; line-height: 1.6; margin-bottom: 20px; }
+
+        /* رسالة النسخ الاحترافية (Custom Toast) */
+        #toast {
+            position: absolute; bottom: -100px; /* مخفي تحت */
+            background: rgba(0, 229, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 2px solid #00e5ff;
+            border-radius: 15px;
+            color: #fff; font-weight: bold; font-size: 16px;
+            padding: 12px 25px;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
+            z-index: 200;
+            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: none; /* مخفي بالجافا سكربت */
+            transform: scale(0.5); /* يبدأ صغير */
+        }
+        #toast.show {
+            display: block;
+            bottom: 100px; /* يظهر فوق الشريط السفلي */
+            transform: scale(1); /* يكبر */
+        }
     </style>
 </head>
 <body oncontextmenu="return false;"> <div class="snow-container" id="snowBox"></div>
+
+    <div id="toast">✅ تم نسخ الرمز!</div>
 
     <div class="rights">𝐴𝐵𝐵𝐴𝑆 | ŞZS</div>
 
@@ -202,16 +225,16 @@
     </audio>
 
     <script>
-        // كود الثلج الصاعد - تأكدت من عمله
+        // كود الثلج الصاعد - تأكدت من عمله وزدت العدد
         const snowBox = document.getElementById('snowBox');
-        for (let i = 0; i < 40; i++) { // زدت عدد حبيبات الثلج
+        for (let i = 0; i < 45; i++) { 
             let snow = document.createElement('div');
             snow.className = 'snow';
             let size = Math.random() * 4 + 2 + 'px';
             snow.style.width = size;
             snow.style.height = size;
             snow.style.left = Math.random() * 100 + '%';
-            snow.style.animationDelay = Math.random() * 6 + 's';
+            snow.style.animationDelay = Math.random() * 8 + 's'; // تأخير عشوائي
             snowBox.appendChild(snow);
         }
 
@@ -222,15 +245,26 @@
             setTimeout(() => { window.location.href = url; }, 400);
         }
 
-        // دالة نسخ الرمز الجديدة مع الصوت
+        // دالة نسخ الرمز مع الرسالة الاحترافية الجديدة
         function copyCodeAndNotify(code) {
             snd.currentTime = 0; snd.play(); // تشغيل الصوت
 
             navigator.clipboard.writeText(code).then(() => {
-                alert("✅ تم نسخ الرمز: " + code); // رسالة تأكيد بسيطة
+                showToast(); // إظهار الرسالة الاحترافية
             }).catch(err => {
-                alert("❌ فشل نسخ الرمز: " + err);
+                console.log("فشل النسخ: " + err);
             });
+        }
+
+        // إظهار وإخفاء رسالة النسخ الاحترافية
+        function showToast() {
+            const toast = document.getElementById('toast');
+            toast.classList.add('show'); // إظهار
+
+            // إخفاء تلقائي بعد ثانيتين (2000ms)
+            setTimeout(() => {
+                toast.classList.remove('show'); // إخفاء
+            }, 2000);
         }
 
         function switchPage(page) {
