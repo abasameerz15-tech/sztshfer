@@ -2,20 +2,27 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>𝐴𝐵𝐵𝐴𝑆 | ŞZS TIK TOK - Official Site</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>𝐴𝐵𝐵𝐴𝑆 | ŞZS </title>
     <style>
-        /* خلفية مائية متحركة */
-        body {
+        /* منع النزول وحركة الخلفية */
+        html, body {
             margin: 0; padding: 0;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background: linear-gradient(-45deg, #001219, #003049, #005f73, #0a9396);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
-            min-height: 100vh;
+            width: 100%; height: 100%;
+            overflow: hidden; /* يمنع السحب والنزول */
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            background: #000814;
             display: flex; justify-content: center; align-items: center;
-            color: white; text-align: center; position: relative;
-            overflow: hidden;
+        }
+
+        /* الخلفية المائية المتحركة */
+        body::before {
+            content: "";
+            position: absolute; width: 100%; height: 100%;
+            background: linear-gradient(-45deg, #001219, #003049, #001d3d);
+            background-size: 400% 400%;
+            animation: gradientBG 10s ease infinite;
+            z-index: -2;
         }
 
         @keyframes gradientBG {
@@ -24,66 +31,62 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* الثلج الصاعد */
+        /* تأثير الثلج الصاعد */
         .snow-container {
             position: absolute; width: 100%; height: 100%;
-            top: 0; left: 0; z-index: 1; pointer-events: none;
+            top: 0; left: 0; z-index: -1; pointer-events: none;
         }
         .snow {
             position: absolute; bottom: -20px;
-            background: rgba(255, 255, 255, 0.6); border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4); border-radius: 50%;
             animation: rise 6s linear infinite;
         }
 
         @keyframes rise {
-            0% { transform: translateY(0) translateX(0) scale(1); opacity: 0; }
-            20% { opacity: 0.6; }
-            100% { transform: translateY(-110vh) translateX(20px) scale(1.5); opacity: 0; }
+            0% { transform: translateY(0) scale(1); opacity: 0; }
+            50% { opacity: 0.5; }
+            100% { transform: translateY(-110vh) scale(1.2); opacity: 0; }
         }
 
         .rights {
-            position: absolute; top: 20px; width: 100%;
-            font-size: 20px; font-weight: bold; color: #00b4d8;
-            text-shadow: 0 0 15px #00b4d8; z-index: 10;
-            letter-spacing: 2px;
+            position: absolute; top: 15px; font-size: 18px;
+            font-weight: bold; color: #00b4d8; text-shadow: 0 0 10px #00b4d8;
         }
 
-        .container {
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 35px; border-radius: 30px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
-            width: 85%; max-width: 420px; z-index: 10;
-        }
-
-        h1 { font-size: 22px; margin-bottom: 10px; font-weight: 800; }
-        p { font-size: 15px; color: #caf0f8; margin-bottom: 25px; line-height: 1.6; }
-
-        /* الأزرار النبّاضة الشفافة */
-        .btn {
-            display: block; padding: 15px; margin: 15px 0;
-            font-size: 17px; font-weight: bold; color: #fff;
-            text-decoration: none; border-radius: 12px;
-            background: rgba(255, 255, 255, 0.05);
+        /* الكرت الرئيسي يشبه تصميم الصورة */
+        .hub-card {
+            background: rgba(0, 15, 25, 0.85);
+            backdrop-filter: blur(20px);
             border: 2px solid #00b4d8;
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            animation: pulse-button 2s infinite ease-in-out;
+            border-radius: 25px;
+            padding: 30px;
+            width: 85%; max-width: 380px;
+            box-shadow: 0 0 30px rgba(0, 180, 216, 0.4);
+            z-index: 10;
         }
 
-        .btn-main { border-color: #00f5d4; text-transform: uppercase; }
-        .btn-tiktok { border-color: #ff0050; }
-        .btn-tele { border-color: #0088cc; }
+        h1 { font-size: 20px; margin-bottom: 10px; color: #fff; text-transform: uppercase; }
+        p { font-size: 14px; color: #caf0f8; margin-bottom: 25px; opacity: 0.8; }
 
-        .btn:hover { background: rgba(255, 255, 255, 0.2); transform: scale(1.08); }
-
-        @keyframes pulse-button {
-            0% { transform: scale(1); box-shadow: 0 0 10px rgba(0, 180, 216, 0.2); }
-            50% { transform: scale(1.04); box-shadow: 0 0 25px rgba(0, 180, 216, 0.5); }
-            100% { transform: scale(1); box-shadow: 0 0 10px rgba(0, 180, 216, 0.2); }
+        /* أزرار موحدة بالكامل */
+        .btn {
+            display: block; padding: 14px; margin: 12px 0;
+            font-size: 15px; font-weight: bold; color: #fff;
+            text-decoration: none; border-radius: 15px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1.5px solid #00b4d8; /* نفس اللون لكل الأزرار */
+            transition: 0.3s ease;
+            animation: pulse-border 2.5s infinite;
         }
 
-        .dev-label { margin: 25px 0 10px; font-size: 12px; font-weight: bold; opacity: 0.8; letter-spacing: 1px; }
+        .btn:hover { background: rgba(0, 180, 216, 0.2); transform: scale(1.03); }
+
+        @keyframes pulse-border {
+            0%, 100% { box-shadow: 0 0 5px rgba(0, 180, 216, 0.3); border-color: #00b4d8; }
+            50% { box-shadow: 0 0 15px rgba(0, 180, 216, 0.6); border-color: #00f5d4; }
+        }
+
+        .label { font-size: 11px; margin-top: 20px; opacity: 0.5; letter-spacing: 1px; }
     </style>
 </head>
 <body>
@@ -92,22 +95,22 @@
 
     <div class="rights">𝐴𝐵𝐵𝐴𝑆 | ŞZS TIK TOK</div>
 
-    <div class="container">
-        <h1>Welcome to Leaks and Gifts</h1>
-        <p>Click the button below to claim your reward box instantly</p>
+    <div class="hub-card">
+        <h1>Leaks and Gifts Hub</h1>
+        <p>Claim your rewards and connect with the developer</p>
         
-        <a href="javascript:void(0)" class="btn btn-main" onclick="playEffect('https://link.brawlstars.com/voucher/e0793a51-1bc1-44ce-a7e0-1d72cef91b6d')">
+        <a href="javascript:void(0)" class="btn" onclick="playEffect('https://link.brawlstars.com/voucher/e0793a51-1bc1-44ce-a7e0-1d72cef91b6d')">
            GET REWARD BOX
         </a>
 
-        <div class="dev-label">DEVELOPER CONTACT</div>
+        <div class="label">DEVELOPER CONTACT</div>
         
-        <a href="javascript:void(0)" class="btn btn-tiktok" onclick="playEffect('https://www.tiktok.com/@sz2st?_r=1&_t=ZS-952okvechm5')">
-           Developer TikTok
+        <a href="javascript:void(0)" class="btn" onclick="playEffect('https://www.tiktok.com/@sz2st?_r=1&_t=ZS-952okvechm5')">
+           DEVELOPER TIKTOK
         </a>
 
-        <a href="javascript:void(0)" class="btn btn-tele" onclick="playEffect('https://t.me/DEVSZ_STORE')">
-           Developer Telegram
+        <a href="javascript:void(0)" class="btn" onclick="playEffect('https://t.me/DEVSZ_STORE')">
+           DEVELOPER TELEGRAM
         </a>
     </div>
 
@@ -116,16 +119,16 @@
     </audio>
 
     <script>
-        // توليد الثلج
+        // إنشاء تأثير الثلج
         const snowBox = document.getElementById('snowBox');
-        for (let i = 0; i < 35; i++) {
+        for (let i = 0; i < 30; i++) {
             let snow = document.createElement('div');
             snow.className = 'snow';
             let size = Math.random() * 4 + 2 + 'px';
             snow.style.width = size;
             snow.style.height = size;
             snow.style.left = Math.random() * 100 + '%';
-            snow.style.animationDelay = Math.random() * 8 + 's';
+            snow.style.animationDelay = Math.random() * 5 + 's';
             snowBox.appendChild(snow);
         }
 
