@@ -1,90 +1,130 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> موقع الهدايا 🎁</title>
+    <title>Leaks and Gifts Website</title>
     <style>
-        :root { --main: #ff007f; --dark: #05050a; }
-        body { margin: 0; padding: 0; background: var(--dark); color: white; font-family: 'Arial', sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; overflow: hidden; }
-        
-        /* نجوم متحركة خفيفة */
-        #stars { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
-        .star { position: absolute; background: white; border-radius: 50%; animation: blink 3s infinite; }
-        @keyframes blink { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+        /* تصميم الخلفية والخطوط */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: radial-gradient(circle, #001d3d 0%, #000814 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            overflow: hidden;
+            text-align: center;
+        }
 
-        .container { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); padding: 30px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1); width: 90%; max-width: 400px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        
-        .header-text { color: #aaa; font-size: 14px; margin-bottom: 10px; }
-        h1 { font-size: 22px; color: var(--main); margin-bottom: 20px; }
-        
-        textarea { width: 100%; height: 120px; background: rgba(0,0,0,0.5); border: 1px solid #333; border-radius: 12px; padding: 12px; color: white; font-size: 16px; outline: none; box-sizing: border-box; }
-        textarea:focus { border-color: var(--main); }
+        /* كارت المحتوى الزجاجي */
+        .container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            max-width: 90%;
+            width: 500px;
+            animation: fadeIn 1.5s ease-out;
+        }
 
-        .btn { margin-top: 20px; width: 100%; padding: 14px; border: none; border-radius: 10px; background: var(--main); color: white; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        .btn:hover { background: #e60072; transform: scale(1.02); }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px #00b4d8;
+        }
 
-        #result { margin-top: 15px; display: none; background: #111; padding: 10px; border-radius: 8px; font-size: 12px; word-break: break-all; border: 1px dashed var(--main); }
-        
-        .view-msg { font-size: 20px; color: #ffeb3b; line-height: 1.5; white-space: pre-wrap; }
+        p {
+            font-size: 18px;
+            color: #caf0f8;
+            margin-bottom: 30px;
+        }
+
+        /* الزر الاحترافي */
+        .btn-get {
+            display: inline-block;
+            padding: 15px 40px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #fff;
+            text-decoration: none;
+            background: rgba(0, 180, 216, 0.2);
+            border: 2px solid #00b4d8;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(0, 180, 216, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-get:hover {
+            background: #00b4d8;
+            box-shadow: 0 0 30px #00b4d8;
+            transform: translateY(-3px);
+        }
+
+        .btn-get:active {
+            transform: translateY(1px);
+        }
+
+        /* أنيميشن الدخول */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* لمسة احترافية خلف الزر */
+        .glow {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: #00b4d8;
+            filter: blur(100px);
+            z-index: -1;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
     </style>
 </head>
 <body>
 
-    <div id="stars"></div>
+    <div class="glow"></div>
 
-    <div class="container" id="create-box">
-        <p class="header-text">✨ منصة إرسال الهدايا المعنوية للأصدقاء ✨</p>
-        <h1>اصنع مفاجأتك الآن 🎁</h1>
-        <textarea id="textIn" placeholder="اكتب رسالة هدية لصديقك هنا..."></textarea>
-        <button class="btn" onclick="makeLink()">إنشاء رابط الهدية 🔗</button>
-        <div id="result" onclick="copy()"></div>
+    <div class="container">
+        <h1>مرحبًا بك في موقع التسريبات والهدايا</h1>
+        <h1>Welcome to the leaks and gifts website</h1>
+        <hr style="opacity: 0.2; margin: 20px 0;">
+        <p>اضغط الزر أدناه للحصول على صندوق ناجية</p>
+        <p>Press the button below to get a nigeeh box</p>
+
+        <a href="https://link.brawlstars.com/voucher/e0793a51-1bc1-44ce-a7e0-1d72cef91b6d" 
+           class="btn-get" 
+           onclick="playSound()">
+           الحصول على الصندوق get box
+        </a>
     </div>
 
-    <div class="container" id="view-box" style="display:none;">
-        <h1>🎁 وصلتـك هديـة خـاصـة</h1>
-        <div class="view-msg" id="viewArea"></div>
-        <button class="btn" onclick="location.href=location.pathname">اصنع هدية لصديقك 💌</button>
-    </div>
+    <audio id="clickSound">
+        <source src="https://www.soundjay.com/buttons/sounds/button-16.mp3" type="audio/mpeg">
+    </audio>
 
     <script>
-        // توليد نجوم
-        for(let i=0; i<100; i++) {
-            let s = document.createElement('div');
-            s.className = 'star';
-            s.style.width = s.style.height = Math.random()*2+'px';
-            s.style.left = Math.random()*100+'%';
-            s.style.top = Math.random()*100+'%';
-            document.getElementById('stars').appendChild(s);
-        }
-
-        function makeLink() {
-            let txt = document.getElementById('textIn').value;
-            if(!txt.trim()) return alert("اكتب شيئاً أولاً!");
-            // تحويل النص لـ Hex بدل Base64 (أقل إثارة للشك)
-            let hex = Array.from(new TextEncoder().encode(txt)).map(b => b.toString(16).padStart(2, '0')).join('');
-            let url = location.origin + location.pathname + "?gift=" + hex;
-            let res = document.getElementById('result');
-            res.innerText = "تم صنع الرابط! اضغط هنا للنسخ";
-            res.style.display = 'block';
-            res.dataset.url = url;
-        }
-
-        function copy() {
-            navigator.clipboard.writeText(document.getElementById('result').dataset.url);
-            alert("تم نسخ الرابط! أرسله لصديقك 🚀");
-        }
-
-        window.onload = () => {
-            let params = new URLSearchParams(location.search);
-            if(params.has('gift')) {
-                document.getElementById('create-box').style.display = 'none';
-                document.getElementById('view-box').style.display = 'block';
-                let hex = params.get('gift');
-                let bytes = new Uint8Array(hex.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
-                document.getElementById('viewArea').innerText = new TextDecoder().decode(bytes);
-            }
+        function playSound() {
+            var audio = document.getElementById("clickSound");
+            audio.play();
+            // تأخير الفتح قليلاً عشان الصوت ينسمع
+            setTimeout(function() {
+                window.location.href = "https://link.brawlstars.com/voucher/e0793a51-1bc1-44ce-a7e0-1d72cef91b6d";
+            }, 200);
         }
     </script>
+
 </body>
 </html>
