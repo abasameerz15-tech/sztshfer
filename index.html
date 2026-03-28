@@ -55,7 +55,13 @@
             text-align: center;
             display: none; 
             color: #fff;
+            max-height: 80vh; /* تحديد أقصى ارتفاع */
+            overflow-y: auto; /* السماح بالتمرير داخل الكرت إذا كثرت التسريبات */
         }
+
+        /* تخصيص السكرول بار داخل الكرت */
+        .hub-card::-webkit-scrollbar { width: 3px; }
+        .hub-card::-webkit-scrollbar-thumb { background: #00e5ff; border-radius: 10px; }
 
         .active-page { display: block !important; animation: fadeIn 0.4s ease-out; }
 
@@ -78,7 +84,7 @@
         }
         .btn:hover { background: rgba(0, 229, 255, 0.2); transform: scale(1.02); }
 
-        /* ستايل الفيديو والصورة */
+        /* ستايل الفيديو والصور */
         .leak-video, .leak-img {
             width: 100%;
             border-radius: 15px;
@@ -156,7 +162,9 @@
             متصفحك لا يدعم تشغيل الفيديو.
         </video>
 
-        <img src="https://raw.githubusercontent.com/abasameerz15-tech/sztshfer/refs/heads/main/Screenshot_%D9%A2%D9%A0%D9%A2%D9%A6%D9%A0%D9%A3%D9%A2%D9%A7-%D9%A2%D9%A3%D9%A5%D9%A5%D9%A2%D9%A4.jpg" class="leak-img" alt="PUBG Leak Image">
+        <img src="https://raw.githubusercontent.com/abasameerz15-tech/sztshfer/refs/heads/main/Screenshot_%D9%A2%D9%A0%D9%A2%D9%A6%D9%A0%D9%A3%D9%A2%D9%A8-%D9%A1%D9%A6%D9%A2%D9%A4%D9%A0%D9%A9.jpg" class="leak-img" alt="New Leak Image">
+
+        <img src="https://raw.githubusercontent.com/abasameerz15-tech/sztshfer/refs/heads/main/Screenshot_%D9%A2%D9%A0%D9%A2%D9%A6%D9%A0%D9%A3%D9%A2%D9%A7-%D9%A2%D9%A3%D9%A5%D9%A5%D9%A2%D9%A4.jpg" class="leak-img" alt="Old Leak Image">
         
         <a href="javascript:void(0)" class="btn" onclick="playAndGo('https://www.midasbuy.com/shop/pagedoo/ct1744785094_QMGQJMGD/mobile/index.html?adtag=couponManage#/pages/p-wgbu/')">
            <i class="fas fa-ticket-alt"></i> إدخال رمز القسيمة
@@ -238,7 +246,6 @@
         function switchPage(page) {
             snd.currentTime = 0; snd.play().catch(()=>{});
             
-            // إخفاء الكل
             document.getElementById('pageHome').classList.remove('active-page');
             document.getElementById('pageLeaks').classList.remove('active-page');
             document.getElementById('pageSupport').classList.remove('active-page');
@@ -246,18 +253,5 @@
             document.getElementById('btnLeaksNav').classList.remove('active');
             document.getElementById('btnSupportNav').classList.remove('active');
 
-            // إظهار الصفحة المختارة
             if (page === 'home') {
-                document.getElementById('pageHome').classList.add('active-page');
-                document.getElementById('btnHomeNav').classList.add('active');
-            } else if (page === 'leaks') {
-                document.getElementById('pageLeaks').classList.add('active-page');
-                document.getElementById('btnLeaksNav').classList.add('active');
-            } else {
-                document.getElementById('pageSupport').classList.add('active-page');
-                document.getElementById('btnSupportNav').classList.add('active');
-            }
-        }
-    </script>
-</body>
-</html>
+                document.
