@@ -12,38 +12,33 @@
             width: 100%; height: 100%;
             overflow: hidden; 
             font-family: 'Arial', sans-serif;
-            /* تم نقل الخلفية المتحركة هنا مباشرة لضمان ظهورها */
-            background: linear-gradient(-45deg, #001219, #003049, #001d3d, #005f73);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
+            background: #000000; /* خلفية سوداء بالكامل */
             display: flex; justify-content: center; align-items: center;
             direction: rtl;
             -webkit-user-select: none; user-select: none;
         }
 
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* حاوية الثلج الصاعد */
-        .snow-container {
-            position: absolute; width: 100%; height: 100%;
-            top: 0; left: 0; z-index: 1; pointer-events: none;
-        }
-        
-        .snow {
-            position: absolute; 
-            background: rgba(255, 255, 255, 0.6); 
-            border-radius: 50%;
+        /* حاوية النقاط الصاعدة (النجوم) */
+        .stars-container {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0; /* خلف المحتوى */
             pointer-events: none;
         }
 
-        @keyframes rise {
-            0% { transform: translateY(110vh) scale(0.5); opacity: 0; }
-            50% { opacity: 0.7; }
-            100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+        .star {
+            position: absolute;
+            background: #ffffff;
+            border-radius: 50%;
+            opacity: 0.8;
+            filter: blur(0.5px);
+        }
+
+        /* حركة الصعود المستمرة */
+        @keyframes moveUp {
+            from { transform: translateY(110vh); }
+            to { transform: translateY(-10vh); }
         }
 
         .rights {
@@ -55,13 +50,13 @@
 
         /* تصميم الكرت (Hub Card) */
         .hub-card {
-            background: rgba(0, 15, 25, 0.85);
-            backdrop-filter: blur(25px);
-            border: 2px solid rgba(0, 180, 216, 0.4);
+            background: rgba(10, 10, 10, 0.9); /* خلفية داكنة جداً */
+            backdrop-filter: blur(15px);
+            border: 1.5px solid rgba(255, 255, 255, 0.1);
             border-radius: 30px;
             padding: 25px;
             width: 85%; max-width: 400px;
-            box-shadow: 0 0 30px rgba(0, 180, 216, 0.2);
+            box-shadow: 0 0 40px rgba(0, 0, 0, 1);
             z-index: 10;
             text-align: center;
             display: none; 
@@ -82,7 +77,7 @@
             display: block; padding: 13px; margin: 10px 0;
             font-size: 14px; font-weight: bold; color: #fff;
             text-decoration: none; border-radius: 12px;
-            background: rgba(255, 255, 255, 0.04);
+            background: rgba(255, 255, 255, 0.05);
             border: 1.5px solid #00b4d8;
             transition: 0.3s;
             cursor: pointer;
@@ -90,30 +85,28 @@
         .btn:hover { background: rgba(0, 180, 216, 0.2); transform: scale(1.02); }
 
         .leak-img {
-            width: 100%;
-            border-radius: 15px;
-            border: 1px solid rgba(0, 180, 216, 0.5);
+            width: 100%; border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
             margin-top: 5px; margin-bottom: 15px;
             pointer-events: none;
-            -webkit-touch-callout: none;
         }
 
         /* شريط التنقل السفلي */
         .nav-bar {
             position: absolute; bottom: 25px;
             width: 90%; max-width: 380px;
-            background: #0a0e14;
+            background: rgba(10, 10, 10, 0.95);
             border-radius: 50px;
             display: flex; justify-content: space-around;
             padding: 8px 10px; 
             border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
             z-index: 100;
         }
 
         .nav-item {
             display: flex; flex-direction: column; align-items: center;
-            color: #555; text-decoration: none; transition: 0.3s;
+            color: #777; text-decoration: none; transition: 0.3s;
             cursor: pointer; flex: 1;
         }
 
@@ -129,29 +122,22 @@
 
         #toast {
             position: absolute; bottom: -100px;
-            background: rgba(0, 229, 255, 0.15);
+            background: rgba(0, 229, 255, 0.2);
             backdrop-filter: blur(10px);
             border: 2px solid #00e5ff;
             border-radius: 15px;
             color: #fff; font-weight: bold; font-size: 16px;
             padding: 12px 25px;
-            text-align: center;
-            box-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
             z-index: 200;
             transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: none; 
-            transform: scale(0.5);
+            display: none;
         }
-        #toast.show {
-            display: block;
-            bottom: 100px;
-            transform: scale(1);
-        }
+        #toast.show { display: block; bottom: 100px; transform: scale(1); }
     </style>
 </head>
 <body oncontextmenu="return false;"> 
     
-    <div class="snow-container" id="snowBox"></div>
+    <div class="stars-container" id="starsBox"></div>
 
     <div id="toast">✅ تم نسخ الرمز!</div>
 
@@ -216,38 +202,44 @@
     </audio>
 
     <script>
-        // كود توليد الثلج الصاعد المعدل
-        const snowBox = document.getElementById('snowBox');
-        for (let i = 0; i < 50; i++) { 
-            let snow = document.createElement('div');
-            snow.className = 'snow';
+        // كود إنشاء النقاط البيضاء (النجوم) المتحركة
+        const starsBox = document.getElementById('starsBox');
+        const starCount = 100; // عدد النقاط
+
+        for (let i = 0; i < starCount; i++) {
+            let star = document.createElement('div');
+            star.className = 'star';
             
-            let size = Math.random() * 4 + 2 + 'px';
-            let leftPos = Math.random() * 100 + '%';
-            let duration = Math.random() * 5 + 5 + 's';
+            // أحجام عشوائية للنقاط
+            let size = Math.random() * 3 + 1 + 'px';
+            star.style.width = size;
+            star.style.height = size;
+            
+            // توزيع عشوائي عرضي
+            star.style.left = Math.random() * 100 + '%';
+            
+            // توقيت عشوائي للحركة عشان ما يخلصوا مع بعض
+            let duration = Math.random() * 3 + 4 + 's'; // بين 4 لـ 7 ثواني
             let delay = Math.random() * 5 + 's';
             
-            snow.style.width = size;
-            snow.style.height = size;
-            snow.style.left = leftPos;
-            snow.style.bottom = "-20px";
-            snow.style.animation = `rise ${duration} linear infinite`;
-            snow.style.animationDelay = delay;
+            star.style.animation = `moveUp ${duration} linear infinite`;
+            star.style.animationDelay = delay;
             
-            snowBox.appendChild(snow);
+            // شفافية عشوائية لمظهر واقعي
+            star.style.opacity = Math.random();
+            
+            starsBox.appendChild(star);
         }
 
         const snd = document.getElementById("clickSound");
 
         function playAndGo(url) {
-            snd.currentTime = 0; 
-            snd.play().catch(() => {});
+            snd.currentTime = 0; snd.play().catch(()=>{});
             setTimeout(() => { window.location.href = url; }, 400);
         }
 
         function copyCodeAndNotify(code) {
-            snd.currentTime = 0; 
-            snd.play().catch(() => {});
+            snd.currentTime = 0; snd.play().catch(()=>{});
             navigator.clipboard.writeText(code).then(() => {
                 showToast();
             });
@@ -260,9 +252,7 @@
         }
 
         function switchPage(page) {
-            snd.currentTime = 0; 
-            snd.play().catch(() => {});
-
+            snd.currentTime = 0; snd.play().catch(()=>{});
             document.querySelectorAll('.hub-card').forEach(p => p.classList.remove('active-page'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
 
