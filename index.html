@@ -35,28 +35,27 @@
             100% { transform: translateY(-110vh) scale(1.3); opacity: 0; }
         }
 
-        /* العنوان العلوي واليوزر */
+        /* العنوان العلوي واليوزر (غير قابل للضغط) */
         .header-top {
             position: absolute; top: 20px; 
             text-align: center;
             z-index: 100;
+            pointer-events: none; /* يمنع أي تفاعل أو ضغط */
         }
         .rights {
             font-size: 20px; font-weight: bold; 
             color: #00e5ff; text-shadow: 0 0 10px #00e5ff;
             margin-bottom: 5px;
         }
-        .channel-link {
+        .channel-name {
             font-size: 14px; color: #caf0f8;
-            text-decoration: none;
             display: block;
             background: rgba(0, 229, 255, 0.1);
-            padding: 4px 12px;
+            padding: 4px 15px;
             border-radius: 20px;
             border: 1px solid rgba(0, 229, 255, 0.3);
-            transition: 0.3s;
+            opacity: 0.9;
         }
-        .channel-link:hover { background: rgba(0, 229, 255, 0.2); }
 
         /* تصميم الكرت الرئيسي */
         .hub-card {
@@ -147,7 +146,7 @@
 
     <div class="header-top">
         <div class="rights">𝐴𝐵𝐵𝐴𝑆 | ŞZS</div>
-        <a href="https://t.me/TSRPUBG_" class="channel-link">قناة التلي: @TSRPUBG_</a>
+        <span class="channel-name">قناة التلي: TSRPUBG_</span>
     </div>
 
     <div id="pageHome" class="hub-card active-page">
