@@ -161,7 +161,7 @@
     <div id="force-sub">
         <div class="sub-content">
             <h2>اشترك بقناة التسريبات الرسميه فضلٱ وليس امرٱ</h2>
-            <a href="https://t.me/TSRPUBG_" class="btn" style="background: linear-gradient(90deg, #0088cc, #00e5ff); border: none;">
+            <a href="tg://resolve?domain=TSRPUBG_" class="btn" style="background: linear-gradient(90deg, #0088cc, #00e5ff); border: none;">
                <i class="fab fa-telegram-plane"></i> زر الاشتراك في القناة
             </a>
             <div class="timer-bar-container">
@@ -200,7 +200,7 @@
     <div id="pageSupport" class="hub-card">
         <h1>الدعم الفني</h1>
         <div class="support-text">اذا لديك استفسار او اقتراح تواصل معنا عبر حساباتنا على:</div>
-        <a href="javascript:void(0)" class="btn" onclick="playAndGo('https://t.me/DEVSZ_STORE')">حساب المطور على تيليجرام</a>
+        <a href="javascript:void(0)" class="btn" onclick="playAndGo('tg://resolve?domain=DEVSZ_STORE')">حساب المطور على تيليجرام</a>
         <a href="javascript:void(0)" class="btn" onclick="playAndGo('https://www.tiktok.com/@sz2st?_r=1&_t=ZS-952okvechm5')">حساب المطور على تيك توك</a>
     </div>
 
@@ -242,6 +242,7 @@
         function playAndGo(url) { 
             snd.currentTime = 0; 
             snd.play().catch(()=>{}); 
+            // تأكيد التحويل المباشر
             setTimeout(() => { window.location.href = url; }, 400); 
         }
         function copyCodeAndNotify(code) { snd.currentTime = 0; snd.play().catch(()=>{}); navigator.clipboard.writeText(code).then(() => { showToast(); }); }
