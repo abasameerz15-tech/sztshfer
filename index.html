@@ -18,7 +18,7 @@
             -webkit-user-select: none; user-select: none;
         }
 
-        /* حاوية الإعلان الإجباري */
+        /* حاوية الإعلان الإجباري (من أعلى الشاشة) */
         #force-sub {
             position: fixed; top: 0; left: 0; width: 100%;
             background: rgba(10, 10, 10, 0.98);
@@ -30,12 +30,13 @@
             backdrop-filter: blur(15px);
         }
         
+        /* كلاس الاختفاء */
         .hide-up { top: -200% !important; }
 
         .sub-content { width: 90%; max-width: 400px; margin: 0 auto; position: relative; }
-        .sub-content h2 { color: #fff; font-size: 16px; margin-bottom: 15px; text-shadow: 0 0 10px rgba(255,255,255,0.2); }
+        .sub-content h2 { color: #fff; font-size: 15px; margin-bottom: 12px; }
         
-        /* شريط الوقت الاحترافي */
+        /* شريط الوقت */
         .timer-bar-container {
             width: 100%; height: 4px; background: rgba(255,255,255,0.1);
             position: absolute; bottom: -15px; left: 0; overflow: hidden;
@@ -47,7 +48,7 @@
         }
         @keyframes progress { from { width: 100%; } to { width: 0%; } }
 
-        /* قناع التعتيم */
+        /* قناع التعتيم خلف الإعلان */
         #overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.85); z-index: 9998;
@@ -117,29 +118,44 @@
         .btn:hover { background: rgba(0, 180, 216, 0.2); transform: scale(1.02); }
 
         .leak-video, .leak-img {
-            width: 100%; border-radius: 15px; border: 1px solid rgba(0, 229, 255, 0.5); margin-bottom: 10px;
+            width: 100%;
+            border-radius: 15px;
+            border: 1px solid rgba(0, 229, 255, 0.5);
+            margin-top: 5px; margin-bottom: 10px;
         }
 
         .nav-bar {
             position: absolute; bottom: 25px;
             width: 90%; max-width: 380px;
-            background: #0a0e14; border-radius: 50px;
+            background: #0a0e14;
+            border-radius: 50px;
             display: flex; justify-content: space-around;
-            padding: 8px 10px; border: 2px solid #00e5ff;
-            box-shadow: 0 0 15px rgba(0, 229, 255, 0.2); z-index: 100;
+            padding: 8px 10px; 
+            border: 2px solid #00e5ff;
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.2);
+            z-index: 100;
         }
 
-        .nav-item { display: flex; flex-direction: column; align-items: center; color: #555; cursor: pointer; flex: 1; transition: 0.3s; }
+        .nav-item {
+            display: flex; flex-direction: column; align-items: center;
+            color: #555; text-decoration: none; transition: 0.3s;
+            cursor: pointer; flex: 1;
+        }
         .nav-item i { font-size: 20px; margin-bottom: 4px; }
         .nav-item span { font-size: 10px; font-weight: bold; }
         .nav-item.active { color: #00e5ff; text-shadow: 0 0 10px rgba(0, 229, 255, 0.6); }
 
         #toast {
             position: absolute; bottom: -100px;
-            background: rgba(0, 229, 255, 0.15); backdrop-filter: blur(10px);
-            border: 2px solid #00e5ff; border-radius: 15px;
-            color: #fff; font-weight: bold; padding: 12px 25px;
-            z-index: 200; transition: 0.5s; display: none;
+            background: rgba(0, 229, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 2px solid #00e5ff;
+            border-radius: 15px;
+            color: #fff; font-weight: bold; font-size: 16px;
+            padding: 12px 25px;
+            z-index: 200;
+            transition: 0.5s;
+            display: none;
         }
         #toast.show { display: block; bottom: 100px; transform: scale(1); }
     </style>
@@ -150,7 +166,7 @@
     <div id="force-sub">
         <div class="sub-content">
             <h2>اشترك بقناة التسريبات الرسميه فضلٱ وليس امرٱ</h2>
-            <a href="https://t.me/TSRPUBG_" target="_blank" class="btn" style="background: linear-gradient(90deg, #0088cc, #00e5ff); border: none;">
+            <a href="https://t.me/TSRPUBG_" target="_blank" rel="noopener noreferrer" class="btn" style="background: linear-gradient(90deg, #0088cc, #00e5ff); border: none;">
                <i class="fab fa-telegram-plane"></i> زر الاشتراك في القناة
             </a>
             <div class="timer-bar-container">
@@ -168,25 +184,29 @@
         <h1>القائمة الرئيسية</h1>
         <div class="info-box">
             <p><i class="fas fa-check-circle"></i> هذا الموقع يختص بتسريبات لعبة ببجي</p>
-            <p><i class="fas fa-gamepad"></i> لعبة الباتل رويال تم إنشاؤها 2018</p>
+            <p><i class="fas fa-gamepad"></i> لعبة الباتل رويال الذي تم انشائها 2018 - 19 مارس</p>
             <p><i class="fas fa-shield-alt"></i> موقع رسمي وموثوق</p>
-            <p><i class="fas fa-broadcast-tower"></i> نقوم بنشر تحديثات حصرية.</p>
+            <p><i class="fas fa-broadcast-tower"></i> نقوم بنشر تسريبات تحديثات والكثير.</p>
         </div>
     </div>
 
     <div id="pageLeaks" class="hub-card">
         <h1>آخر التسريبات</h1>
-        <video class="leak-video" controls><source src="https://github.com/abasameerz15-tech/sztshfer/raw/refs/heads/main/1774703706611.mp4" type="video/mp4"></video>
+        <video class="leak-video" controls>
+            <source src="https://github.com/abasameerz15-tech/sztshfer/raw/refs/heads/main/1774703706611.mp4" type="video/mp4">
+        </video>
         <img src="https://raw.githubusercontent.com/abasameerz15-tech/sztshfer/refs/heads/main/Screenshot_%D9%A2%D9%A0%D9%A2%D9%A6%D9%A0%D9%A3%D9%A2%D9%A8-%D9%A1%D9%A6%D9%A2%D9%A4%D9%A0%D9%A9.jpg" class="leak-img">
+        <img src="https://raw.githubusercontent.com/abasameerz15-tech/sztshfer/refs/heads/main/Screenshot_%D9%A2%D9%A0%D9%A2%D9%A6%D9%A0%D9%A3%D9%A2%D9%A7-%D9%A2%D9%A3%D9%A5%D9%A5%D9%A2%D9%A4.jpg" class="leak-img">
+        
         <a href="javascript:void(0)" class="btn" onclick="playAndGo('https://www.midasbuy.com/shop/pagedoo/ct1744785094_QMGQJMGD/mobile/index.html?adtag=couponManage#/pages/p-wgbu/')">إدخال رمز القسيمة</a>
         <a href="javascript:void(0)" class="btn" onclick="copyCodeAndNotify('PUBGM8TH')">نسخ رمز القسيمة</a>
     </div>
 
     <div id="pageSupport" class="hub-card">
         <h1>الدعم الفني</h1>
-        <div class="support-text">تواصل مع المطور:</div>
-        <a href="javascript:void(0)" class="btn" onclick="playAndGo('https://t.me/DEVSZ_STORE')">تيليجرام</a>
-        <a href="javascript:void(0)" class="btn" onclick="playAndGo('https://www.tiktok.com/@sz2st?_r=1&_t=ZS-952okvechm5')">تيك توك</a>
+        <div class="support-text">اذا لديك استفسار او اقتراح تواصل معنا عبر حساباتنا على:</div>
+        <a href="javascript:void(0)" class="btn" onclick="playAndGo('https://t.me/DEVSZ_STORE')">حساب المطور على تيليجرام</a>
+        <a href="javascript:void(0)" class="btn" onclick="playAndGo('https://www.tiktok.com/@sz2st?_r=1&_t=ZS-952okvechm5')">حساب المطور على تيك توك</a>
     </div>
 
     <div class="nav-bar">
@@ -195,19 +215,20 @@
         <div class="nav-item" id="btnSupportNav" onclick="switchPage('support')"><i class="fas fa-headset"></i><span>الدعم الفني</span></div>
     </div>
 
-    <audio id="clickSound" preload="auto"><source src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3" type="audio/mpeg"></audio>
+    <audio id="clickSound" preload="auto">
+        <source src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3" type="audio/mpeg">
+    </audio>
 
     <script>
+        // إخفاء الإعلان تلقائياً بعد 3 ثواني
         window.onload = function() {
-            // فتح القناة تلقائياً
-            window.open('https://t.me/TSRPUBG_', '_blank');
-            
-            // إخفاء الإعلان بعد 3 ثوانٍ حقيقية
             setTimeout(() => {
                 document.getElementById('force-sub').classList.add('hide-up');
                 document.getElementById('overlay').style.opacity = '0';
-                setTimeout(() => { document.getElementById('overlay').style.display = 'none'; }, 600);
-            }, 3000);
+                setTimeout(() => {
+                    document.getElementById('overlay').style.display = 'none';
+                }, 600);
+            }, 3000); 
         };
 
         const snowBox = document.getElementById('snowBox');
@@ -215,25 +236,4 @@
             let snow = document.createElement('div');
             snow.className = 'snow';
             let size = Math.random() * 3 + 2 + 'px';
-            snow.style.width = size; snow.style.height = size;
-            snow.style.left = Math.random() * 100 + '%';
-            snow.style.animationDelay = Math.random() * 6 + 's'; 
-            snowBox.appendChild(snow);
-        }
-
-        const snd = document.getElementById("clickSound");
-        function playAndGo(url) { snd.currentTime = 0; snd.play().catch(()=>{}); setTimeout(() => { window.location.href = url; }, 400); }
-        function copyCodeAndNotify(code) { snd.currentTime = 0; snd.play().catch(()=>{}); navigator.clipboard.writeText(code).then(() => { showToast(); }); }
-        function showToast() { const toast = document.getElementById('toast'); toast.classList.add('show'); setTimeout(() => { toast.classList.remove('show'); }, 2000); }
-
-        function switchPage(page) {
-            snd.currentTime = 0; snd.play().catch(()=>{});
-            document.querySelectorAll('.hub-card').forEach(p => p.classList.remove('active-page'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            if (page === 'home') { document.getElementById('pageHome').classList.add('active-page'); document.getElementById('btnHomeNav').classList.add('active'); }
-            else if (page === 'leaks') { document.getElementById('pageLeaks').classList.add('active-page'); document.getElementById('btnLeaksNav').classList.add('active'); }
-            else { document.getElementById('pageSupport').classList.add('active-page'); document.getElementById('btnSupportNav').classList.add('active'); }
-        }
-    </script>
-</body>
-</html>
+            snow
