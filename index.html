@@ -20,24 +20,27 @@
 
         /* حاوية الإعلان الإجباري (من أعلى الشاشة) */
         #force-sub {
-            position: fixed; top: -100%; left: 0; width: 100%;
+            position: fixed; top: 0; left: 0; width: 100%;
             background: rgba(10, 10, 10, 0.95);
             border-bottom: 2px solid #00e5ff;
             z-index: 9999; padding: 20px 0;
             text-align: center;
-            transition: 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: 0.8s ease-in-out;
             box-shadow: 0 5px 20px rgba(0, 229, 255, 0.3);
             backdrop-filter: blur(10px);
         }
-        #force-sub.show { top: 0; }
+        
+        /* كلاس الاختفاء */
+        .hide-up { top: -150% !important; }
 
         .sub-content { width: 90%; max-width: 400px; margin: 0 auto; }
-        .sub-content h2 { color: #fff; font-size: 16px; margin-bottom: 15px; }
+        .sub-content h2 { color: #fff; font-size: 15px; margin-bottom: 12px; }
         
         /* قناع التعتيم خلف الإعلان */
         #overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.7); z-index: 9998; display: none;
+            background: rgba(0,0,0,0.8); z-index: 9998;
+            transition: 0.5s;
         }
 
         /* حاوية النقاط الصاعدة */
@@ -100,7 +103,7 @@
             transition: 0.3s;
             cursor: pointer;
         }
-        .btn:hover { background: rgba(0, 229, 255, 0.2); transform: scale(1.02); }
+        .btn:hover { background: rgba(0, 180, 216, 0.2); transform: scale(1.02); }
 
         .leak-video, .leak-img {
             width: 100%;
@@ -139,7 +142,7 @@
             color: #fff; font-weight: bold; font-size: 16px;
             padding: 12px 25px;
             z-index: 200;
-            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: 0.5s;
             display: none;
         }
         #toast.show { display: block; bottom: 100px; transform: scale(1); }
@@ -147,12 +150,12 @@
 </head>
 <body oncontextmenu="return false;"> 
 
-    <div id="overlay" style="display: block;"></div>
-    <div id="force-sub" class="show">
+    <div id="overlay"></div>
+    <div id="force-sub">
         <div class="sub-content">
             <h2>اشترك بقناة التسريبات الرسميه فضلٱ وليس امرٱ</h2>
-            <a href="https://t.me/TSRPUBG_" class="btn" style="background: linear-gradient(90deg, #0088cc, #00e5ff); border: none;" onclick="unlockSite()">
-               <i class="fab fa-telegram-plane"></i> اشترك الآن لتشغيل الموقع
+            <a href="https://t.me/TSRPUBG_" class="btn" style="background: linear-gradient(90deg, #0088cc, #00e5ff); border: none;">
+               <i class="fab fa-telegram-plane"></i> زر الاشتراك في القناة
             </a>
         </div>
     </div>
@@ -202,11 +205,16 @@
     </audio>
 
     <script>
-        // إخفاء الإعلان عند الضغط
-        function unlockSite() {
-            document.getElementById('force-sub').classList.remove('show');
-            document.getElementById('overlay').style.display = 'none';
-        }
+        // إخفاء الإعلان تلقائياً بعد 3 ثواني
+        window.onload = function() {
+            setTimeout(() => {
+                document.getElementById('force-sub').classList.add('hide-up');
+                document.getElementById('overlay').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('overlay').style.display = 'none';
+                }, 500);
+            }, 3000); // 3000 ملي ثانية = 3 ثواني
+        };
 
         const snowBox = document.getElementById('snowBox');
         for (let i = 0; i < 60; i++) { 
@@ -226,9 +234,7 @@
 
         function switchPage(page) {
             snd.currentTime = 0; snd.play().catch(()=>{});
-            document.getElementById('pageHome').classList.remove('active-page');
-            document.getElementById('pageLeaks').classList.remove('active-page');
-            document.getElementById('pageSupport').classList.remove('active-page');
+            document.querySelectorAll('.hub-card').forEach(p => p.classList.remove('active-page'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
 
             if (page === 'home') { document.getElementById('pageHome').classList.add('active-page'); document.getElementById('btnHomeNav').classList.add('active'); }
