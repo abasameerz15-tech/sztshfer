@@ -18,7 +18,7 @@
             -webkit-user-select: none; user-select: none;
         }
 
-        /* حاوية الإعلان الإجباري (من أعلى الشاشة) */
+        /* حاوية الإعلان الإجباري */
         #force-sub {
             position: fixed; top: 0; left: 0; width: 100%;
             background: rgba(10, 10, 10, 0.98);
@@ -30,13 +30,11 @@
             backdrop-filter: blur(15px);
         }
         
-        /* كلاس الاختفاء */
-        .hide-up { top: -200% !important; }
+        .hide-up { transform: translateY(-100%); opacity: 0; pointer-events: none; }
 
         .sub-content { width: 90%; max-width: 400px; margin: 0 auto; position: relative; }
         .sub-content h2 { color: #fff; font-size: 15px; margin-bottom: 12px; }
         
-        /* شريط الوقت */
         .timer-bar-container {
             width: 100%; height: 4px; background: rgba(255,255,255,0.1);
             position: absolute; bottom: -15px; left: 0; overflow: hidden;
@@ -48,14 +46,12 @@
         }
         @keyframes progress { from { width: 100%; } to { width: 0%; } }
 
-        /* قناع التعتيم خلف الإعلان */
         #overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.85); z-index: 9998;
             transition: 0.6s;
         }
 
-        /* حاوية النقاط الصاعدة */
         .snow-container {
             position: absolute; width: 100%; height: 100%;
             top: 0; left: 0; z-index: 1; pointer-events: none;
@@ -95,7 +91,6 @@
             overflow-y: auto;
         }
         .hub-card::-webkit-scrollbar { width: 0; }
-
         .active-page { display: block !important; animation: fadeIn 0.4s ease-out; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -166,7 +161,7 @@
     <div id="force-sub">
         <div class="sub-content">
             <h2>اشترك بقناة التسريبات الرسميه فضلٱ وليس امرٱ</h2>
-            <a href="https://t.me/TSRPUBG_" target="_blank" rel="noopener noreferrer" class="btn" style="background: linear-gradient(90deg, #0088cc, #00e5ff); border: none;">
+            <a href="tg://resolve?domain=TSRPUBG_" class="btn" style="background: linear-gradient(90deg, #0088cc, #00e5ff); border: none;">
                <i class="fab fa-telegram-plane"></i> زر الاشتراك في القناة
             </a>
             <div class="timer-bar-container">
@@ -205,7 +200,7 @@
     <div id="pageSupport" class="hub-card">
         <h1>الدعم الفني</h1>
         <div class="support-text">اذا لديك استفسار او اقتراح تواصل معنا عبر حساباتنا على:</div>
-        <a href="javascript:void(0)" class="btn" onclick="playAndGo('https://t.me/DEVSZ_STORE')">حساب المطور على تيليجرام</a>
+        <a href="javascript:void(0)" class="btn" onclick="playAndGo('tg://resolve?domain=DEVSZ_STORE')">حساب المطور على تيليجرام</a>
         <a href="javascript:void(0)" class="btn" onclick="playAndGo('https://www.tiktok.com/@sz2st?_r=1&_t=ZS-952okvechm5')">حساب المطور على تيك توك</a>
     </div>
 
@@ -220,20 +215,45 @@
     </audio>
 
     <script>
-        // إخفاء الإعلان تلقائياً بعد 3 ثواني
-        window.onload = function() {
+        // إخفاء الإعلان وتعتيم الخلفية إجبارياً بعد 3 ثواني
+        window.addEventListener('load', function() {
             setTimeout(() => {
-                document.getElementById('force-sub').classList.add('hide-up');
-                document.getElementById('overlay').style.opacity = '0';
-                setTimeout(() => {
-                    document.getElementById('overlay').style.display = 'none';
-                }, 600);
+                const forceSub = document.getElementById('force-sub');
+                const overlay = document.getElementById('overlay');
+                
+                if(forceSub) forceSub.classList.add('hide-up');
+                if(overlay) {
+                    overlay.style.opacity = '0';
+                    setTimeout(() => { overlay.style.display = 'none'; }, 600);
+                }
             }, 3000); 
-        };
+        });
 
         const snowBox = document.getElementById('snowBox');
         for (let i = 0; i < 60; i++) { 
             let snow = document.createElement('div');
             snow.className = 'snow';
             let size = Math.random() * 3 + 2 + 'px';
-            snow
+            snow.style.width = size; snow.style.height = size;
+            snow.style.left = Math.random() * 100 + '%';
+            snow.style.animationDelay = Math.random() * 6 + 's'; 
+            snowBox.appendChild(snow);
+        }
+
+        const snd = document.getElementById("clickSound");
+        function playAndGo(url) { snd.currentTime = 0; snd.play().catch(()=>{}); setTimeout(() => { window.location.href = url; }, 400); }
+        function copyCodeAndNotify(code) { snd.currentTime = 0; snd.play().catch(()=>{}); navigator.clipboard.writeText(code).then(() => { showToast(); }); }
+        function showToast() { const toast = document.getElementById('toast'); toast.classList.add('show'); setTimeout(() => { toast.classList.remove('show'); }, 2000); }
+
+        function switchPage(page) {
+            snd.currentTime = 0; snd.play().catch(()=>{});
+            document.querySelectorAll('.hub-card').forEach(p => p.classList.remove('active-page'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+
+            if (page === 'home') { document.getElementById('pageHome').classList.add('active-page'); document.getElementById('btnHomeNav').classList.add('active'); }
+            else if (page === 'leaks') { document.getElementById('pageLeaks').classList.add('active-page'); document.getElementById('btnLeaksNav').classList.add('active'); }
+            else { document.getElementById('pageSupport').classList.add('active-page'); document.getElementById('btnSupportNav').classList.add('active'); }
+        }
+    </script>
+</body>
+</html>
