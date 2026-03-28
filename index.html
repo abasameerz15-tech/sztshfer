@@ -10,22 +10,15 @@
         html, body {
             margin: 0; padding: 0;
             width: 100%; height: 100%;
-            overflow: hidden; /* منع السكرول */
+            overflow: hidden; 
             font-family: 'Arial', sans-serif;
-            background: #000814;
-            display: flex; justify-content: center; align-items: center;
-            direction: rtl;
-            -webkit-user-select: none; user-select: none; /* منع تحديد النص */
-        }
-
-        /* الخلفية المائية المتحركة - تم إصلاح الحركة */
-        body::before {
-            content: "";
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            /* تم نقل الخلفية المتحركة هنا مباشرة لضمان ظهورها */
             background: linear-gradient(-45deg, #001219, #003049, #001d3d, #005f73);
             background-size: 400% 400%;
-            animation: gradientBG 10s ease infinite; /* حركة الخلفية */
-            z-index: -2;
+            animation: gradientBG 15s ease infinite;
+            display: flex; justify-content: center; align-items: center;
+            direction: rtl;
+            -webkit-user-select: none; user-select: none;
         }
 
         @keyframes gradientBG {
@@ -34,24 +27,23 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* الثلج الصاعد - تم التأكد من ظهوره */
+        /* حاوية الثلج الصاعد */
         .snow-container {
             position: absolute; width: 100%; height: 100%;
-            top: 0; left: 0; z-index: -1; pointer-events: none;
+            top: 0; left: 0; z-index: 1; pointer-events: none;
         }
         
-        /* تصميم شكل حبة الثلج */
         .snow {
-            position: absolute; bottom: -20px;
+            position: absolute; 
             background: rgba(255, 255, 255, 0.6); 
             border-radius: 50%;
-            animation: rise 6s linear infinite; /* حركة الصعود */
+            pointer-events: none;
         }
 
         @keyframes rise {
-            0% { transform: translateY(0) scale(1); opacity: 0; }
-            50% { opacity: 0.6; }
-            100% { transform: translateY(-110vh) scale(1.3); opacity: 0; }
+            0% { transform: translateY(110vh) scale(0.5); opacity: 0; }
+            50% { opacity: 0.7; }
+            100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
         }
 
         .rights {
@@ -72,7 +64,7 @@
             box-shadow: 0 0 30px rgba(0, 180, 216, 0.2);
             z-index: 10;
             text-align: center;
-            display: none; /* مخفي افتراضياً */
+            display: none; 
             color: #fff;
         }
 
@@ -97,13 +89,12 @@
         }
         .btn:hover { background: rgba(0, 180, 216, 0.2); transform: scale(1.02); }
 
-        /* حماية الصورة من الخيارات */
         .leak-img {
             width: 100%;
             border-radius: 15px;
             border: 1px solid rgba(0, 180, 216, 0.5);
             margin-top: 5px; margin-bottom: 15px;
-            pointer-events: none; /* منع أي تفاعل */
+            pointer-events: none;
             -webkit-touch-callout: none;
         }
 
@@ -133,14 +124,11 @@
             color: #00e5ff;
             text-shadow: 0 0 10px rgba(0, 229, 255, 0.6);
         }
-        .nav-item.active i { filter: drop-shadow(0 0 8px rgba(0, 229, 255, 0.6)); }
 
         .support-text { font-size: 13px; color: #caf0f8; line-height: 1.6; margin-bottom: 20px; }
 
-        /* رسالة النسخ الاحترافية (Custom Toast) */
         #toast {
-            position: absolute; bottom: -100px; /* مخفي تحت */
-            left: 50%; transform: translateX(-50%) scale(0.5);
+            position: absolute; bottom: -100px;
             background: rgba(0, 229, 255, 0.15);
             backdrop-filter: blur(10px);
             border: 2px solid #00e5ff;
@@ -151,16 +139,18 @@
             box-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
             z-index: 200;
             transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: none; /* مخفي بالجافا سكربت */
+            display: none; 
+            transform: scale(0.5);
         }
         #toast.show {
             display: block;
-            bottom: 100px; /* يظهر فوق الشريط السفلي */
-            transform: translateX(-50%) scale(1); /* يكبر ويتركز */
+            bottom: 100px;
+            transform: scale(1);
         }
     </style>
 </head>
 <body oncontextmenu="return false;"> 
+    
     <div class="snow-container" id="snowBox"></div>
 
     <div id="toast">✅ تم نسخ الرمز!</div>
@@ -179,7 +169,6 @@
 
     <div id="pageLeaks" class="hub-card">
         <h1>آخر التسريبات</h1>
-        
         <img src="https://raw.githubusercontent.com/abasameerz15-tech/sztshfer/refs/heads/main/Screenshot_%D9%A2%D9%A0%D9%A2%D9%A6%D9%A0%D9%A3%D9%A2%D9%A7-%D9%A2%D9%A3%D9%A5%D9%A5%D9%A2%D9%A4.jpg" class="leak-img" alt="PUBG Leak Image">
         
         <a href="javascript:void(0)" class="btn" style="background: linear-gradient(90deg, #886a11, #d4af37); color: #000;" onclick="playAndGo('https://www.midasbuy.com/shop/pagedoo/ct1744785094_QMGQJMGD/mobile/index.html?adtag=couponManage#/pages/p-wgbu/')">
@@ -212,12 +201,10 @@
             <i class="fas fa-house"></i>
             <span>الرئيسية</span>
         </div>
-
         <div class="nav-item" id="btnLeaksNav" onclick="switchPage('leaks')">
             <i class="fas fa-bolt"></i>
             <span>التسريبات</span>
         </div>
-
         <div class="nav-item" id="btnSupportNav" onclick="switchPage('support')">
             <i class="fas fa-headset"></i>
             <span>الدعم الفني</span>
@@ -229,47 +216,55 @@
     </audio>
 
     <script>
-        // كود الثلج الصاعد - تم إصلاح توليد العناصر
+        // كود توليد الثلج الصاعد المعدل
         const snowBox = document.getElementById('snowBox');
-        for (let i = 0; i < 45; i++) { 
+        for (let i = 0; i < 50; i++) { 
             let snow = document.createElement('div');
             snow.className = 'snow';
+            
             let size = Math.random() * 4 + 2 + 'px';
+            let leftPos = Math.random() * 100 + '%';
+            let duration = Math.random() * 5 + 5 + 's';
+            let delay = Math.random() * 5 + 's';
+            
             snow.style.width = size;
             snow.style.height = size;
-            snow.style.left = Math.random() * 100 + '%';
-            snow.style.animationDelay = Math.random() * 8 + 's';
+            snow.style.left = leftPos;
+            snow.style.bottom = "-20px";
+            snow.style.animation = `rise ${duration} linear infinite`;
+            snow.style.animationDelay = delay;
+            
             snowBox.appendChild(snow);
         }
 
         const snd = document.getElementById("clickSound");
 
         function playAndGo(url) {
-            snd.currentTime = 0; snd.play();
+            snd.currentTime = 0; 
+            snd.play().catch(() => {});
             setTimeout(() => { window.location.href = url; }, 400);
         }
 
         function copyCodeAndNotify(code) {
-            snd.currentTime = 0; snd.play();
+            snd.currentTime = 0; 
+            snd.play().catch(() => {});
             navigator.clipboard.writeText(code).then(() => {
-                showToast(); 
-            }).catch(err => {
-                console.log("فشل النسخ: " + err);
+                showToast();
             });
         }
 
         function showToast() {
             const toast = document.getElementById('toast');
             toast.classList.add('show');
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 2000);
+            setTimeout(() => { toast.classList.remove('show'); }, 2000);
         }
 
         function switchPage(page) {
-            snd.currentTime = 0; snd.play();
-            document.querySelectorAll('.hub-card').forEach(c => c.classList.remove('active-page'));
-            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+            snd.currentTime = 0; 
+            snd.play().catch(() => {});
+
+            document.querySelectorAll('.hub-card').forEach(p => p.classList.remove('active-page'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
 
             if (page === 'home') {
                 document.getElementById('pageHome').classList.add('active-page');
