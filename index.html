@@ -5,13 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>موقع اللغة العراقية</title>
     <style>
-        /* إعدادات الألوان والخلفية */
+        /* إعدادات الألوان والخلفية - تصميم Dark Mode احترافي */
         :root {
             --bg-color: #050505;
             --main-purple: #8a2be2;
             --main-blue: #007bff;
             --text-white: #ffffff;
             --card-bg: rgba(255, 255, 255, 0.05);
+            --alert-color: #ff3e3e; /* لون التنبيه الأحمر */
         }
 
         body {
@@ -23,36 +24,61 @@
             color: var(--text-white);
             margin: 0;
             display: flex;
+            flex-direction: column; /* لجعل التنبيه في الأعلى والمحتوى تحته */
             justify-content: center;
             align-items: center;
             height: 100vh;
             overflow: hidden;
         }
 
+        /* تنسيق التنبيه العلوي */
+        .top-alert {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(90deg, var(--alert-color), #8b0000);
+            color: white;
+            text-align: center;
+            padding: 12px 0;
+            font-weight: bold;
+            font-size: 18px;
+            box-shadow: 0 4px 15px rgba(255, 62, 62, 0.3);
+            z-index: 1000;
+            animation: pulse 2s infinite; /* حركة نبض للتنبيه */
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.8; }
+            100% { opacity: 1; }
+        }
+
         .container {
             text-align: center;
             background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            padding: 40px 30px;
-            border-radius: 25px;
+            backdrop-filter: blur(15px);
+            padding: 45px 35px;
+            border-radius: 30px;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-            max-width: 400px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+            max-width: 450px;
             width: 90%;
+            margin-top: 40px; /* لإعطاء مساحة تحت التنبيه */
         }
 
         h1 {
-            font-size: 24px;
-            margin-bottom: 10px;
-            background: linear-gradient(to right, #fff, #bbb);
+            font-size: 26px;
+            margin-bottom: 15px;
+            background: linear-gradient(to right, #ffffff, #a2a2a2);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .rights {
-            font-size: 16px;
-            margin-bottom: 25px;
-            color: #ccc;
+            font-size: 17px;
+            margin-bottom: 30px;
+            color: #ddd;
         }
 
         .rights a {
@@ -60,19 +86,22 @@
             text-decoration: none;
             font-weight: bold;
             transition: 0.3s;
-            border-bottom: 1px solid transparent;
+            padding: 2px 8px;
+            border-radius: 5px;
+            background: rgba(0, 123, 255, 0.1);
         }
 
         .rights a:hover {
-            color: var(--main-purple);
-            border-bottom: 1px solid var(--main-purple);
+            background: var(--main-purple);
+            color: white;
+            box-shadow: 0 0 10px var(--main-purple);
         }
 
         .instruction {
             font-size: 15px;
-            margin-top: 30px;
+            margin-top: 35px;
             margin-bottom: 15px;
-            color: #aaa;
+            color: #bbb;
         }
 
         /* تنسيق الزر الرئيسي */
@@ -80,35 +109,39 @@
             display: inline-block;
             background: linear-gradient(45deg, var(--main-purple), var(--main-blue));
             color: white;
-            padding: 15px 30px;
-            font-size: 18px;
+            padding: 16px 35px;
+            font-size: 19px;
             font-weight: bold;
             text-decoration: none;
-            border-radius: 12px;
+            border-radius: 15px;
             box-shadow: 0 4px 15px rgba(138, 43, 226, 0.4);
             transition: 0.4s;
-            width: 80%;
+            width: 85%;
         }
 
         .lang-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0, 123, 255, 0.5);
-            filter: brightness(1.1);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 123, 255, 0.6);
+            filter: brightness(1.15);
         }
 
         .lang-btn:active {
-            transform: scale(0.95);
+            transform: scale(0.96);
         }
 
     </style>
 </head>
 <body>
 
+    <div class="top-alert">
+        ⚠️ تنبيه: الموقع قيد التطوير حالياً!
+    </div>
+
     <div class="container">
         <h1>مرحبٱ بك في موقع اللغة العراقية</h1>
         
         <p class="rights">
-            حقوق عباس: <a href="https://t.me/abbasiraqsz" target="_blank">اضغط هنا</a>
+            حقوق عباس: <a href="https://t.me/DEVSZ_STORE" target="_blank">اضغط هنا</a>
         </p>
 
         <p class="instruction">لأختيار اللغة اضغط الزر إدناه.</p>
