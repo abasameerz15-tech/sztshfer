@@ -2,204 +2,180 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ŞZS DELTA</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>موقع اللهجة العراقية</title>
+    <!-- استدعاء خطوط وأيقونات -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* إعدادات الشاشة ومنع السحب */
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; }
-        body, html { 
-            width: 100%; height: 100%; overflow: hidden; 
-            font-family: 'Segoe UI', Tahoma, sans-serif;
-            background: linear-gradient(180deg, #0a2b3d 0%, #000000 100%); 
+        /* إعدادات الخلفية المتحركة (أحمر وأزرق) */
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(45deg, #8b0000, #00008b, #ff0000, #0000ff);
+            background-size: 400% 400%;
+            animation: gradientBG 10s ease infinite;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
         }
 
-        /* تنسيق عداد إجمالي المستخدمين */
-        .user-counter {
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* تأثير النجوم الصاعدة */
+        .star {
             position: absolute;
-            top: 15px;
-            right: 15px;
-            z-index: 100;
-            color: #fff;
-            font-size: 0.8rem;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 5px 12px;
+            bottom: -10px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: rise 5s linear infinite;
+        }
+
+        @keyframes rise {
+            from { transform: translateY(0); opacity: 0.5; }
+            to { transform: translateY(-110vh); opacity: 0; }
+        }
+
+        /* الحاوية الرئيسية */
+        .container {
+            text-align: center;
+            z-index: 10;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 40px;
             border-radius: 20px;
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            max-width: 90%;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+        }
+
+        p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        /* تصميم الأزرار */
+        .btn-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .btn {
+            text-decoration: none;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            gap: 5px;
+            justify-content: center;
+            gap: 10px;
+            border: 2px solid transparent;
         }
 
-        /* النجوم الصاعدة */
-        .stars-container { position: absolute; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
-        .star { position: absolute; background: #fff; border-radius: 50%; opacity: 0.6; animation: moveStars 8s linear infinite; }
-        @keyframes moveStars { from { transform: translateY(110vh); } to { transform: translateY(-10vh); } }
-
-        /* النص اللامع */
-        .shiny-title {
-            font-size: 2.2rem; font-weight: bold; text-align: center; margin: 40px 0 20px;
-            background: linear-gradient(120deg, #00d4ff 30%, #ffffff 50%, #00d4ff 70%);
-            background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            animation: shineEffect 3s linear infinite; position: relative; z-index: 10;
+        /* زر استخدام اللهجة */
+        .btn-use {
+            background: #ffffff;
+            color: #000;
         }
-        .sub-shiny {
-            font-weight: bold; font-size: 1.2rem; margin-bottom: 12px; display: block;
-            background: linear-gradient(120deg, #00d4ff 40%, #fff 50%, #00d4ff 60%);
-            background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            animation: shineEffect 4s linear infinite;
+        .btn-use:hover {
+            background: transparent;
+            color: #fff;
+            border-color: #fff;
         }
-        @keyframes shineEffect { to { background-position: 200% center; } }
 
-        /* البطاقات */
-        .container { position: relative; z-index: 10; padding: 0 20px; display: none; flex-direction: column; align-items: center; height: 100%; }
-        .active-page { display: flex; }
-        .card { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 22px; width: 100%; max-width: 380px; margin-bottom: 15px; text-align: center; backdrop-filter: blur(10px); }
-        .card p { color: #ddd; font-size: 0.95rem; line-height: 1.6; }
-
-        /* مؤشر الحالة */
-        .status-box { display: inline-flex; align-items: center; gap: 8px; background: rgba(0, 255, 120, 0.1); padding: 8px 15px; border-radius: 20px; border: 1px solid rgba(0, 255, 120, 0.3); margin-top: 15px; }
-        .dot { width: 8px; height: 8px; background: #00ff78; border-radius: 50%; box-shadow: 0 0 10px #00ff78; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.2); } }
-
-        /* زر التحميل */
-        .download-btn {
-            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 15px; padding: 18px; width: 190px; display: flex; flex-direction: column; 
-            align-items: center; text-decoration: none; color: #fff; margin-top: 10px; transition: 0.2s;
+        /* زر تليجرام */
+        .btn-tg {
+            background: #229ED9;
         }
-        .download-btn:active { background: rgba(0, 212, 255, 0.3); border-color: #00d4ff; }
-        .android-icon { width: 35px; height: 35px; fill: #3ddc84; margin-bottom: 8px; }
-
-        /* الشريط السفلي */
-        .bottom-nav {
-            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
-            width: 80%; max-width: 340px; height: 75px;
-            background: #0d0d0d; border-radius: 40px; display: flex;
-            justify-content: center; align-items: center; gap: 50px; 
-            border: 1px solid rgba(255, 255, 255, 0.1); z-index: 100;
+        .btn-tg:hover {
+            background: #1c8adb;
+            transform: scale(1.05);
         }
-        .nav-item { display: flex; flex-direction: column; align-items: center; color: #555; cursor: pointer; transition: 0.3s; min-width: 80px; }
-        .nav-item.active { color: #00d4ff; }
-        .nav-item:active { color: #00d4ff; background: rgba(0, 212, 255, 0.1); border-radius: 20px; }
-        .nav-item svg { width: 28px; height: 28px; fill: currentColor; margin-bottom: 4px; }
-        .nav-item.active svg { filter: drop-shadow(0 0 8px #00d4ff); }
-        .nav-item span { font-size: 11px; font-weight: bold; }
+
+        /* زر تيك توك */
+        .btn-tt {
+            background: #000000;
+            border: 1px solid #444;
+        }
+        .btn-tt:hover {
+            background: #222;
+            transform: scale(1.05);
+        }
+
+        /* توقيع المطور */
+        .dev-name {
+            color: #ffda44;
+            font-weight: bold;
+        }
     </style>
 </head>
-<body onclick="enableAudio()">
+<body>
 
-    <div class="user-counter">
-        <span>عدد مستخدمين موقعنا: 🌐</span>
-        <span id="visitorCount">...</span>
-    </div>
+    <!-- حاوية النجوم (يتم توليدها بالجافاسكريبت لسهولة التحكم) -->
+    <div id="stars-container"></div>
 
-    <div class="stars-container" id="starField"></div>
-    <div class="shiny-title">ŞZS DELTA</div>
+    <div class="container">
+        <h1>مرحباً بك في موقع اللهجة العراقية</h1>
+        <p>الموقع بالكامل تحت التطوير على يد <span class="dev-name">𝐴𝐵𝐵𝐴𝑆</span></p>
 
-    <div id="homePage" class="container active-page">
-        <div class="card">
-            <span class="sub-shiny">معلومات هاك دلتا</span>
-            <p>أهلاً بك في المركز الرسمي. دلتا إكسبلويت هو المحقن رقم #1 الذي يجمع بين القوة وسهولة الاستخدام. نقدم لك حماية متكاملة ضد أنظمة الباند مع سرعة حقن تتجاوز كل المنافسين.</p>
-            <div class="status-box">
-                <div class="dot"></div>
-                <span style="color: #00ff78; font-size: 0.85rem; font-weight: bold;">الحالة: يعمل بنجاح</span>
-            </div>
-        </div>
-        <div class="card">
-            <span class="sub-shiny">لماذا تختار دلتا؟</span>
-            <p>دعم كامل لجميع السكربتات الضخمة، تحديثات تلقائية، وواجهة مستخدم بستايل أيفون عصري.</p>
-        </div>
-    </div>
+        <div class="btn-container">
+            <a href="https://t.me/setlanguage/abbasiraqsz" class="btn btn-use" target="_blank">
+                <i class="fas fa-language"></i> استخدام اللهجة
+            </a>
 
-    <div id="hacksPage" class="container">
-        <div class="card">
-            <span class="sub-shiny">إصدارات الأجهزة</span>
-            <p style="margin-bottom: 15px;">اضغط لتحميل النسخة مباشرة</p>
-            <center>
-                <a href="https://deltaexecutor.filesadda.com/Delta-2.715.apk" class="download-btn" onclick="btnSound()">
-                    <svg class="android-icon" viewBox="0 0 24 24"><path d="M17.523 15.3414C17.025 15.3414 16.6215 14.9379 16.6215 14.4399C16.6215 13.9419 17.025 13.5384 17.523 13.5384C18.021 13.5384 18.4245 13.9419 18.4245 14.4399C18.4245 14.9379 18.021 15.3414 17.523 15.3414ZM6.477 15.3414C5.979 15.3414 5.5755 14.9379 5.5755 14.4399C5.5755 13.9419 5.979 13.5384 6.477 13.5384C6.975 13.5384 7.3785 13.9419 7.3785 14.4399C7.3785 14.9379 6.975 15.3414 6.477 15.3414ZM17.9175 11.2334L19.5585 8.3904C19.6845 8.1729 19.611 7.8939 19.3935 7.7679C19.176 7.6419 18.897 7.7154 18.771 7.9329L17.1045 10.8204C15.63 10.1514 13.902 9.7719 12 9.7719C10.098 9.7719 8.37 10.1514 6.8955 10.8204L5.229 7.9329C5.103 7.7154 4.824 7.6419 4.6065 7.7679C4.389 7.8939 4.3155 8.1729 4.4415 8.3904L6.0825 11.2334C3.5415 12.6374 1.83 15.1974 1.515 18.2314H22.485C22.17 15.1974 20.4585 12.6374 17.9175 11.2334Z"/></svg>
-                    <span style="font-weight: bold; font-size: 1.1rem;">Android</span>
-                    <span style="font-size: 10px; opacity: 0.7;">تحميل APK</span>
-                </a>
-            </center>
+            <a href="https://t.me/DEVSZ_STORE" class="btn btn-tg" target="_blank">
+                <i class="fab fa-telegram"></i> حساب المطور على تيليجرام
+            </a>
+
+            <a href="https://www.tiktok.com/@sz2st?_r=1&_t=ZS-96M8EAZjRRJ" class="btn btn-tt" target="_blank">
+                <i class="fab fa-tiktok"></i> حساب المطور على تيك توك
+            </a>
         </div>
     </div>
-
-    <nav class="bottom-nav">
-        <div class="nav-item active" id="mBtn" onclick="tab('homePage', this)">
-            <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-            <span>الرئيسية</span>
-        </div>
-        <div class="nav-item" id="hBtn" onclick="tab('hacksPage', this)">
-            <svg viewBox="0 0 24 24"><path d="M12,2A9,9 0 0,0 3,11V22L4.5,20.5L6,22L7.5,20.5L9,22L10.5,20.5L12,22L13.5,20.5L15,22L16.5,20.5L18,22L19.5,20.5L21,22V11A9,9 0 0,0 12,2M9,8A2,2 0 0,1 11,10A2,2 0 0,1 9,12A2,2 0 0,1 7,10A2,2 0 0,1 9,8M15,8A2,2 0 0,1 17,10A2,2 0 0,1 15,12A2,2 0 0,1 13,10A2,2 0 0,1 15,8Z"/></svg>
-            <span>هاكاتنا</span>
-        </div>
-    </nav>
-
-    <audio id="clickSfx" src="https://github.com/abasameerz15-tech/sz/raw/refs/heads/main/mixkit-modern-technology-select-3124%20(1).wav" preload="auto"></audio>
 
     <script>
-        const sfx = document.getElementById('clickSfx');
-        let isReady = false;
-
-        // العداد الجديد الموحد والدائم (Total Hits)
-        const visitorElement = document.getElementById('visitorCount');
-        const siteID = "szs-delta-abas-2026"; // معرّف خاص بموقعك
-
-        async function getCount() {
-            try {
-                // نستخدم API بديل مستقر جداً
-                const res = await fetch(`https://api.counterapi.dev/v1/${siteID}/total/increment`);
-                const data = await res.json();
-                visitorElement.innerText = data.count || 0;
-            } catch (e) {
-                visitorElement.innerText = "0";
+        // وظيفة إنشاء النجوم بشكل عشوائي
+        function createStars() {
+            const container = document.getElementById('stars-container');
+            for (let i = 0; i < 50; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                
+                // حجم عشوائي
+                const size = Math.random() * 4 + 'px';
+                star.style.width = size;
+                star.style.height = size;
+                
+                // موقع عشوائي
+                star.style.left = Math.random() * 100 + 'vw';
+                
+                // توقيت عشوائي للبداية والسرعة
+                star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                star.style.animationDelay = Math.random() * 5 + 's';
+                
+                container.appendChild(star);
             }
         }
-
-        // تحديث الرقم كل 5 ثوانٍ عشان لو حد دخل وأنت فاتح الموقع يزيد الرقم قدامك
-        async function updateOnly() {
-            try {
-                const res = await fetch(`https://api.counterapi.dev/v1/${siteID}/total`);
-                const data = await res.json();
-                if(data.count) visitorElement.innerText = data.count;
-            } catch (e) {}
-        }
-
-        getCount();
-        setInterval(updateOnly, 5000);
-
-        function enableAudio() {
-            if (!isReady) {
-                sfx.play().then(() => { sfx.pause(); sfx.currentTime = 0; isReady = true; });
-                document.body.removeAttribute('onclick');
-            }
-        }
-
-        function btnSound() { if (isReady) { sfx.currentTime = 0; sfx.play(); } }
-
-        function tab(pageId, el) {
-            btnSound();
-            document.querySelectorAll('.container').forEach(p => p.classList.remove('active-page'));
-            document.getElementById(pageId).classList.add('active-page');
-            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-            el.classList.add('active');
-        }
-
-        const field = document.getElementById('starField');
-        for (let i = 0; i < 40; i++) {
-            const star = document.createElement('div');
-            star.className = 'star';
-            star.style.left = Math.random() * 100 + 'vw';
-            star.style.width = (Math.random() * 2 + 1) + 'px';
-            star.style.height = star.style.width;
-            star.style.animationDuration = (Math.random() * 4 + 4) + 's';
-            star.style.animationDelay = Math.random() * 5 + 's';
-            field.appendChild(star);
-        }
-
-        document.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
+        createStars();
     </script>
 </body>
 </html>
