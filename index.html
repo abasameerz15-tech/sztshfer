@@ -3,179 +3,276 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>موقع اللهجة العراقية</title>
-    <!-- استدعاء خطوط وأيقونات -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>قائمة السكربتات 📜</title>
     <style>
-        /* إعدادات الخلفية المتحركة (أحمر وأزرق) */
-        body, html {
+        /* إعدادات الخلفية والألوان الاحترافية */
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(45deg, #8b0000, #00008b, #ff0000, #0000ff);
-            background-size: 400% 400%;
-            animation: gradientBG 10s ease infinite;
+        }
+
+        body {
+            background: radial-gradient(circle at center, #1a0b2e 0%, #090514 100%);
+            color: #fff;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            color: white;
+            overflow: hidden;
+            position: relative;
         }
 
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        /* كود النجوم المتحركة المتصاعدة */
+        .star-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
         }
 
-        /* تأثير النجوم الصاعدة */
         .star {
             position: absolute;
-            bottom: -10px;
             background: white;
             border-radius: 50%;
-            opacity: 0.5;
-            animation: rise 5s linear infinite;
+            animation: rise linear infinite;
+            opacity: 0.8;
+            box-shadow: 0 0 10px #fff, 0 0 20px #8a2be2;
         }
 
         @keyframes rise {
-            from { transform: translateY(0); opacity: 0.5; }
-            to { transform: translateY(-110vh); opacity: 0; }
+            0% {
+                transform: translateY(105vh) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-5vh) scale(1);
+                opacity: 0;
+            }
         }
 
-        /* الحاوية الرئيسية */
+        /* حاوية المحتوى الرئيسي */
         .container {
+            background: rgba(20, 12, 38, 0.65);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 2px solid rgba(138, 43, 226, 0.4);
+            border-radius: 24px;
+            padding: 35px;
+            width: 90%;
+            max-width: 480px;
             text-align: center;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7), 0 0 30px rgba(138, 43, 226, 0.2);
             z-index: 10;
-            background: rgba(0, 0, 0, 0.4);
-            padding: 40px;
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
-            max-width: 90%;
-        }
-
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
-        }
-
-        p {
-            font-size: 1.2rem;
-            margin-bottom: 30px;
-            opacity: 0.9;
-        }
-
-        /* تصميم الأزرار */
-        .btn-container {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .btn {
-            text-decoration: none;
-            color: white;
-            padding: 15px 25px;
-            border-radius: 50px;
-            font-weight: bold;
+            position: relative;
+            transform: translateY(0);
             transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            border: 2px solid transparent;
         }
 
-        /* زر استخدام اللهجة */
-        .btn-use {
-            background: #ffffff;
-            color: #000;
-        }
-        .btn-use:hover {
-            background: transparent;
-            color: #fff;
-            border-color: #fff;
+        .container:hover {
+            border-color: rgba(138, 43, 226, 0.8);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8), 0 0 40px rgba(138, 43, 226, 0.4);
         }
 
-        /* زر تليجرام */
-        .btn-tg {
-            background: #229ED9;
-        }
-        .btn-tg:hover {
-            background: #1c8adb;
-            transform: scale(1.05);
-        }
-
-        /* زر تيك توك */
-        .btn-tt {
-            background: #000000;
-            border: 1px solid #444;
-        }
-        .btn-tt:hover {
-            background: #222;
-            transform: scale(1.05);
+        /* العناوين والنصوص */
+        h1 {
+            font-size: 26px;
+            background: linear-gradient(45deg, #ff007f, #8a2be2, #00ffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 25px;
+            font-weight: 800;
+            text-shadow: 0 0 20px rgba(138, 43, 226, 0.3);
         }
 
-        /* توقيع المطور */
-        .dev-name {
-            color: #ffda44;
+        .subtitle {
+            font-size: 19px;
+            color: #e0d5ff;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        /* زر النسخ الاحترافي بتأثير الغلو */
+        .btn-copy {
+            background: linear-gradient(135deg, #8a2be2 0%, #4b0082 100%);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            font-size: 16px;
             font-weight: bold;
+            border-radius: 14px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(138, 43, 226, 0.4);
+            transition: all 0.2s ease;
+            width: 100%;
+            margin-bottom: 25px;
+            outline: none;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-copy:hover {
+            background: linear-gradient(135deg, #a142ff 0%, #5c00a3 100%);
+            box-shadow: 0 0 25px rgba(138, 43, 226, 0.8);
+            transform: translateY(-2px);
+        }
+
+        .btn-copy:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 8px rgba(138, 43, 226, 0.6);
+        }
+
+        /* رسالة تأكيد النسخ الناجح */
+        .toast {
+            position: absolute;
+            bottom: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #00ff88;
+            color: #000;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 14px;
+            opacity: 0;
+            transition: all 0.3s ease;
+            pointer-events: none;
+            box-shadow: 0 0 15px rgba(0,255,136,0.5);
+        }
+
+        .toast.show {
+            bottom: 20px;
+            opacity: 1;
+        }
+
+        /* تصميم الصورة بشكل احترافي */
+        .script-img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+            transition: transform 0.3s ease;
+        }
+
+        .script-img:hover {
+            transform: scale(1.03);
+            border-color: rgba(0, 255, 255, 0.5);
         }
     </style>
 </head>
 <body>
 
-    <!-- حاوية النجوم (يتم توليدها بالجافاسكريبت لسهولة التحكم) -->
-    <div id="stars-container"></div>
+    <!-- حاوية النجوم المتحركة -->
+    <div class="star-container" id="starContainer"></div>
 
-    <div class="container">
-        <h1>مرحباً بك في موقع اللهجة العراقية</h1>
-        <p>الموقع بالكامل تحت التطوير على يد <span class="dev-name">𝐴𝐵𝐵𝐴𝑆</span></p>
-
-        <div class="btn-container">
-            <a href="https://t.me/setlanguage/abbasiraqsz" class="btn btn-use" target="_blank">
-                <i class="fas fa-language"></i> استخدام اللهجة
-            </a>
-
-            <a href="https://t.me/DEVSZ_STORE" class="btn btn-tg" target="_blank">
-                <i class="fab fa-telegram"></i> حساب المطور على تيليجرام
-            </a>
-
-            <a href="https://www.tiktok.com/@sz2st?_r=1&_t=ZS-96M8EAZjRRJ" class="btn btn-tt" target="_blank">
-                <i class="fab fa-tiktok"></i> حساب المطور على تيك توك
-            </a>
-        </div>
+    <!-- كرت القائمة الرئيسي -->
+    <div class="container" onclick="playClickSound()">
+        <h1>مرحبٱ بك في قائمة السكربتات 📜</h1>
+        
+        <p class="subtitle">سكربت ماب الكيبورد👇🏻</p>
+        
+        <!-- زر النسخ -->
+        <button class="btn-copy" onclick="copyScript(event)">نسخ السكربت</button>
+        
+        <!-- الصورة -->
+        <img src="https://raw.githubusercontent.com/abasameerz15-tech/sztshfer/refs/heads/main/1780921910535.png" alt="Script Image" class="script-img">
+        
+        <!-- إشعار تم النسخ -->
+        <div class="toast" id="toast">تم النسخ بنجاح! ✅</div>
     </div>
 
     <script>
-        // وظيفة إنشاء النجوم بشكل عشوائي
-        function createStars() {
-            const container = document.getElementById('stars-container');
-            for (let i = 0; i < 50; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
+        // السكربت المطلوب نسخة
+        const scriptText = `loadstring(game:HttpGet("https://raw.githubusercontent.com/abasameerz15-tech/sz/refs/heads/main/keyboard.lua.txt"))();`;
+
+        // إنشاء صوت الـ Click هندسياً بدون روابط خارجية متعطلة
+        function playClickSound() {
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (!AudioContext) return;
+                const ctx = new AudioContext();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
                 
-                // حجم عشوائي
-                const size = Math.random() * 4 + 'px';
-                star.style.width = size;
-                star.style.height = size;
+                osc.type = 'sine'; // صوت ناعم ونقي
+                osc.frequency.setValueAtTime(600, ctx.currentTime); // تردد مناسب للنقرة
+                osc.frequency.exponentialRampToValueAtTime(150, ctx.currentTime + 0.08);
                 
-                // موقع عشوائي
-                star.style.left = Math.random() * 100 + 'vw';
+                gain.gain.setValueAtTime(0.15, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.08);
                 
-                // توقيت عشوائي للبداية والسرعة
-                star.style.animationDuration = (Math.random() * 3 + 2) + 's';
-                star.style.animationDelay = Math.random() * 5 + 's';
+                osc.connect(gain);
+                gain.connect(ctx.destination);
                 
-                container.appendChild(star);
+                osc.start();
+                osc.stop(ctx.currentTime + 0.08);
+            } catch (e) {
+                console.log("Audio not allowed yet");
             }
         }
-        createStars();
+
+        // وظيفة نسخ السكربت وتأثير التنبيه
+        function copyScript(event) {
+            event.stopPropagation(); // منع تكرار الصوت من الكانتينر الخارجي
+            playClickSound();
+
+            navigator.clipboard.writeText(scriptText).then(() => {
+                const toast = document.getElementById('toast');
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 2000);
+            }).catch(err => {
+                // طريقة احتياطية في حال المتصفحات القديمة
+                const el = document.createElement('textarea');
+                el.value = scriptText;
+                document.body.appendChild(el);
+                el.select();
+                document.execCommand('copy');
+                document.body.removeChild(el);
+                
+                const toast = document.getElementById('toast');
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 2000);
+            });
+        }
+
+        // توليد النجوم العشوائية وتوجيه حركتها للأعلى
+        const starContainer = document.getElementById('starContainer');
+        const starCount = 60; // عدد النجوم في الشاشة
+
+        for (let i = 0; i < starCount; i++) {
+            const star = document.createElement('div');
+            star.classList.add('star');
+            
+            // تخصيص أحجام ومواقع عشوائية
+            const size = Math.random() * 3 + 1; // بين 1px و 4px
+            star.style.width = `${size}px`;
+            star.style.height = `${size}px`;
+            
+            star.style.left = `${Math.random() * 100}%`;
+            
+            // سرعات حركة مختلفة لتأثير الـ 3D (Parallax)
+            const duration = Math.random() * 4 + 3; // بين 3 إلى 7 ثواني
+            star.style.animationDuration = `${duration}s`;
+            
+            // توقيت بدء مختلف حتى لا تظهر كلها معاً في البداية
+            star.style.animationDelay = `${Math.random() * 5}s`;
+            
+            starContainer.appendChild(star);
+        }
     </script>
 </body>
 </html>
