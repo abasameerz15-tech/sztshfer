@@ -32,28 +32,25 @@
             overflow: hidden;
         }
 
-        /* ===== الحاوية الرئيسية (تملأ الشاشة) ===== */
+        /* ===== الحاوية الرئيسية ===== */
         .container {
             width: 100%;
             max-width: 440px;
             height: 100%;
-            /* ياخذ كامل ارتفاع الشاشة */
+            max-height: 780px;
+            /* حد أعلى للشاشات الكبيرة عشان ما تطول زيادة */
             background: linear-gradient(145deg, #141215, #1b181c);
             border-radius: 40px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 215, 0, 0.08);
             border: 1px solid rgba(255, 215, 0, 0.07);
             position: relative;
             overflow: hidden;
-            /* يمنع خروج النجوم والتمرير داخله */
             display: flex;
             flex-direction: column;
-            /* عمودي */
             padding: 20px 18px 12px;
-            /* هامش داخلي */
-            transition: all 0.2s;
         }
 
-        /* ===== خلفية النجوم (داخل الحاوية فقط) ===== */
+        /* ===== خلفية النجوم داخل الحاوية ===== */
         #starfield {
             position: absolute;
             top: 0;
@@ -63,10 +60,9 @@
             z-index: 0;
             pointer-events: none;
             border-radius: 40px;
-            /* لتلتصق بالحافة الدائرية */
         }
 
-        /* تأثير الضباب الذهبي الخفيف */
+        /* تأثير الضباب الذهبي */
         .container::before {
             content: '';
             position: absolute;
@@ -80,61 +76,16 @@
             z-index: 0;
         }
 
-        /* ===== المحتوى القابل للتبديل (يأخذ المساحة المتبقية) ===== */
-        .pages-wrapper {
-            flex: 1;
-            /* يملأ كل المساحة بين البادج والشريط */
-            position: relative;
-            z-index: 1;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            /* يمنع خروج أي محتوى */
-            min-height: 0;
-            /* ضروري عشان flex ما يزيد عن حده */
-        }
-
-        .page {
-            display: none;
-            flex-direction: column;
-            flex: 1;
-            animation: fadeUp 0.25s ease forwards;
-            overflow-y: auto;
-            /* يسمح بسكرول داخلي لو المحتوى زاد (لكن احنا مصممينه ما يزيد) */
-            padding-bottom: 4px;
-        }
-
-        /* إخفاء السكرول الداخلي مع الحفاظ على الوظيفة */
-        .page::-webkit-scrollbar {
-            width: 0;
-            background: transparent;
-        }
-
-        .page.active {
-            display: flex;
-        }
-
-        @keyframes fadeUp {
-            0% {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* ===== الشريط العلوي (Badge) ===== */
+        /* ===== الشريط العلوي (زي الصور) ===== */
         .badge {
             display: flex;
             align-items: center;
             justify-content: space-between;
             flex-shrink: 0;
-            /* ما يتقلص */
             margin-bottom: 6px;
             position: relative;
             z-index: 2;
+            padding: 0 4px;
         }
 
         .badge-left {
@@ -158,7 +109,7 @@
         }
 
         .badge-title {
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 700;
             letter-spacing: 0.5px;
             background: rgba(255, 255, 255, 0.05);
@@ -169,21 +120,63 @@
         }
 
         .badge-status {
-            font-size: 11px;
+            font-size: 12px;
             font-weight: 600;
             background: rgba(0, 255, 150, 0.12);
             color: #00ff96;
-            padding: 4px 12px;
+            padding: 4px 14px;
             border-radius: 30px;
             border: 1px solid rgba(0, 255, 150, 0.15);
+            letter-spacing: 0.3px;
             white-space: nowrap;
         }
 
-        /* ===== عناوين الصفحات ===== */
+        /* ===== باقة الصفحات (تملأ المساحة) ===== */
+        .pages-wrapper {
+            flex: 1;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            min-height: 0;
+            margin-top: 4px;
+        }
+
+        .page {
+            display: none;
+            flex-direction: column;
+            flex: 1;
+            animation: fadeUp 0.25s ease forwards;
+            overflow-y: auto;
+            padding-bottom: 4px;
+        }
+
+        .page::-webkit-scrollbar {
+            width: 0;
+            background: transparent;
+        }
+
+        .page.active {
+            display: flex;
+        }
+
+        @keyframes fadeUp {
+            0% {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== عناوين رئيسية ===== */
         .main-title {
-            font-size: 24px;
+            font-size: 26px;
             font-weight: 900;
-            margin: 6px 0 4px;
+            margin: 4px 0 4px;
             background: linear-gradient(135deg, #ffd700, #f5a623);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -197,15 +190,15 @@
             background: none;
             -webkit-text-fill-color: #fff;
             font-weight: 300;
-            font-size: 18px;
+            font-size: 20px;
         }
 
         .sub-desc {
-            font-size: 12.5px;
+            font-size: 13px;
             color: #a8a3b0;
-            line-height: 1.6;
+            line-height: 1.7;
             margin: 4px 0 12px;
-            padding: 10px 14px;
+            padding: 10px 16px;
             background: rgba(255, 255, 255, 0.03);
             border-radius: 16px;
             border: 1px solid rgba(255, 255, 255, 0.04);
@@ -223,11 +216,11 @@
             align-items: center;
             gap: 10px;
             background: rgba(0, 255, 150, 0.05);
-            padding: 6px 16px;
+            padding: 8px 16px;
             border-radius: 30px;
             border: 1px solid rgba(0, 255, 150, 0.1);
             width: fit-content;
-            margin-bottom: 14px;
+            margin-bottom: 16px;
             flex-shrink: 0;
         }
 
@@ -253,7 +246,7 @@
         }
 
         .status-text {
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 600;
             color: #00ff96;
         }
@@ -262,14 +255,14 @@
         .why-box {
             background: rgba(255, 215, 0, 0.03);
             border-radius: 20px;
-            padding: 14px 16px;
-            margin-bottom: 14px;
+            padding: 16px 18px;
             border: 1px solid rgba(255, 215, 0, 0.06);
             flex-shrink: 0;
+            margin-bottom: 6px;
         }
 
         .why-box h3 {
-            font-size: 14px;
+            font-size: 15px;
             font-weight: 800;
             color: #ffd700;
             margin-bottom: 6px;
@@ -279,21 +272,21 @@
         }
 
         .why-box h3 i {
-            font-size: 15px;
+            font-size: 16px;
         }
 
         .why-box p {
-            font-size: 12.5px;
+            font-size: 13px;
             color: #b8b2c2;
             line-height: 1.7;
         }
 
-        /* ===== أقسام التحميل والقنوات (مرنة) ===== */
+        /* ===== محتوى قابل للتمرير داخلياً (للتحميل والقنوات) ===== */
         .scroll-content {
             flex: 1;
             overflow-y: auto;
             min-height: 0;
-            padding-bottom: 4px;
+            padding-top: 4px;
         }
 
         .scroll-content::-webkit-scrollbar {
@@ -302,10 +295,10 @@
         }
 
         .section-label {
-            font-size: 14px;
+            font-size: 15px;
             font-weight: 700;
             color: #ccc;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -319,6 +312,7 @@
             background: linear-gradient(to left, rgba(255, 215, 0, 0.15), transparent);
         }
 
+        /* ===== أزرار التحميل (iOS + Android) ===== */
         .device-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -329,14 +323,14 @@
             background: rgba(255, 255, 255, 0.04);
             border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 18px;
-            padding: 16px 8px;
+            padding: 18px 12px;
             text-align: center;
             transition: all 0.25s ease;
             cursor: pointer;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 4px;
+            gap: 6px;
             text-decoration: none;
             color: #fff;
         }
@@ -349,32 +343,32 @@
         }
 
         .device-btn .icon {
-            font-size: 26px;
+            font-size: 28px;
             color: #ffd700;
         }
 
         .device-btn .label {
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 700;
         }
 
         .device-btn .sub-label {
-            font-size: 10px;
+            font-size: 11px;
             color: #888;
             font-weight: 400;
         }
 
         .device-btn .download-badge {
-            font-size: 10px;
+            font-size: 11px;
             font-weight: 700;
             background: #ffd700;
             color: #0b0a0c;
-            padding: 2px 14px;
+            padding: 2px 16px;
             border-radius: 30px;
-            margin-top: 2px;
+            margin-top: 4px;
         }
 
-        /* ===== قنواتنا ===== */
+        /* ===== قنواتنا (يوتيوب + تيليجرام) ===== */
         .channels-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -385,7 +379,7 @@
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 18px;
-            padding: 20px 10px;
+            padding: 22px 10px;
             text-align: center;
             transition: all 0.25s ease;
             text-decoration: none;
@@ -393,7 +387,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 4px;
+            gap: 6px;
         }
 
         .channel-btn:hover {
@@ -404,16 +398,16 @@
         }
 
         .channel-btn .icon {
-            font-size: 32px;
+            font-size: 34px;
         }
 
         .channel-btn .label {
-            font-size: 15px;
+            font-size: 16px;
             font-weight: 800;
         }
 
         .channel-btn .sub-label {
-            font-size: 11px;
+            font-size: 12px;
             color: #888;
             font-weight: 400;
         }
@@ -432,20 +426,18 @@
             justify-content: space-around;
             align-items: center;
             flex-shrink: 0;
-            /* ما يتقلص أبداً */
             margin-top: 12px;
             padding-top: 14px;
             border-top: 1px solid rgba(255, 255, 255, 0.05);
             position: relative;
             z-index: 2;
-            background: transparent;
         }
 
         .nav-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            font-size: 10.5px;
+            font-size: 11px;
             color: #777;
             font-weight: 600;
             gap: 2px;
@@ -459,7 +451,7 @@
         }
 
         .nav-item i {
-            font-size: 19px;
+            font-size: 20px;
             color: #555;
             transition: color 0.2s;
         }
@@ -474,7 +466,7 @@
             color: #ffd700;
         }
 
-        /* ===== ريسponsive ===== */
+        /* ===== ريسponsive للشاشات الصغيرة ===== */
         @media (max-width: 460px) {
             body {
                 padding: 8px;
@@ -482,18 +474,19 @@
             .container {
                 padding: 16px 14px 10px;
                 border-radius: 32px;
+                max-height: 100vh;
             }
             #starfield {
                 border-radius: 32px;
             }
             .main-title {
-                font-size: 20px;
+                font-size: 22px;
             }
             .main-title span {
-                font-size: 16px;
+                font-size: 17px;
             }
             .badge-title {
-                font-size: 11px;
+                font-size: 12px;
                 padding: 3px 10px;
             }
             .badge-status {
@@ -501,7 +494,7 @@
                 padding: 3px 10px;
             }
             .device-btn .icon {
-                font-size: 22px;
+                font-size: 24px;
             }
             .channel-btn .icon {
                 font-size: 28px;
@@ -510,16 +503,16 @@
 
         @media (max-height: 650px) {
             .sub-desc {
-                font-size: 11px;
+                font-size: 12px;
                 padding: 6px 12px;
                 margin-bottom: 6px;
             }
             .why-box {
-                padding: 10px 12px;
-                margin-bottom: 8px;
+                padding: 10px 14px;
+                margin-bottom: 4px;
             }
             .why-box p {
-                font-size: 11px;
+                font-size: 12px;
             }
             .device-btn {
                 padding: 12px 6px;
@@ -538,6 +531,10 @@
                 margin: 2px 0 2px;
                 font-size: 20px;
             }
+            .status-row {
+                margin-bottom: 8px;
+                padding: 4px 14px;
+            }
         }
     </style>
 </head>
@@ -545,22 +542,22 @@
 
     <div class="container">
 
-        <!-- خلفية النجوم داخل الحاوية -->
+        <!-- نجوم متحركة داخل الصندوق -->
         <canvas id="starfield"></canvas>
 
-        <!-- ===== الشريط العلوي ===== -->
+        <!-- ===== الشريط العلوي (بادج) ===== -->
         <div class="badge">
             <div class="badge-left">
-                <div class="badge-icon">SZ</div>
+                <div class="badge-icon">SZ</div> <!-- شعار SZ -->
                 <span class="badge-title">OFFICIAL HUB</span>
             </div>
             <span class="badge-status"><i class="fas fa-check-circle" style="margin-left:6px;"></i>يعمل بنجاح</span>
         </div>
 
-        <!-- ===== باقة الصفحات (تأخذ المساحة المتبقية) ===== -->
+        <!-- ===== حاوية الصفحات (تملأ المساحة) ===== -->
         <div class="pages-wrapper">
 
-            <!-- الصفحة الرئيسية -->
+            <!-- ========== الصفحة الرئيسية ========== -->
             <div class="page active" id="page-home">
                 <div class="main-title">
                     DELTA EXPLOIT <span>| V3.0</span>
@@ -577,26 +574,27 @@
                     <h3><i class="fas fa-bolt"></i> لماذا تختار دلتا؟</h3>
                     <p>دعم كامل لجميع السكريبتات الضخمة، تحديثات تلقائية، وواجهة مستخدم بستايل أيفون عصري.</p>
                 </div>
-                <!-- مساحة مرنة تدفع أي محتوى زائد للأسفل (اختياري) -->
-                <div style="flex:1; min-height:8px;"></div>
+                <div style="flex:1; min-height:6px;"></div>
             </div>
 
-            <!-- صفحة هاكاتنا (تحميل iOS + Android فقط) -->
+            <!-- ========== صفحة هاكاتنا (iOS + Android فقط) ========== -->
             <div class="page" id="page-hacks">
-                <div class="main-title" style="font-size:20px;">
-                    هاكاتنا <span style="font-size:16px;">| التحميل</span>
+                <div class="main-title" style="font-size:22px;">
+                    هاكاتنا <span style="font-size:18px;">| التحميل</span>
                 </div>
                 <div class="scroll-content">
-                    <div class="section-label" style="margin-top: 6px;">
+                    <div class="section-label" style="margin-top: 4px;">
                         <i class="fas fa-download" style="color:#ffd700;"></i> إصدارات الأجهزة
                     </div>
                     <div class="device-grid">
+                        <!-- iOS -->
                         <a href="#" class="device-btn" id="iosBtn">
                             <i class="fab fa-apple icon"></i>
                             <span class="label">iOS / iPhone</span>
                             <span class="sub-label">تحميل IPA</span>
                             <span class="download-badge">تحميل</span>
                         </a>
+                        <!-- Android -->
                         <a href="#" class="device-btn" id="androidBtn">
                             <i class="fab fa-android icon"></i>
                             <span class="label">Android</span>
@@ -604,54 +602,58 @@
                             <span class="download-badge">تحميل</span>
                         </a>
                     </div>
-                    <!-- تم حذف PC نهائياً -->
+                    <!-- تم حذف (PC) وملخص التحميل نهائياً -->
                     <div style="height: 10px;"></div>
                 </div>
             </div>
 
-            <!-- صفحة قنواتنا (يوتيوب + تيليجرام) -->
+            <!-- ========== صفحة قنواتنا (يوتيوب + تيليجرام) ========== -->
             <div class="page" id="page-channels">
-                <div class="main-title" style="font-size:20px;">
-                    قنواتنا <span style="font-size:16px;">| تابعنا</span>
+                <div class="main-title" style="font-size:22px;">
+                    قنواتنا <span style="font-size:18px;">| تابعنا</span>
                 </div>
                 <div class="scroll-content">
-                    <div class="section-label" style="margin-top: 6px;">
+                    <div class="section-label" style="margin-top: 4px;">
                         <i class="fas fa-hashtag" style="color:#ffd700;"></i> قنواتنا ومجتمعاتنا
                     </div>
                     <div class="channels-grid">
+                        <!-- YouTube -->
                         <a href="https://www.youtube.com/@ABBAS%C5%9EZS" target="_blank" class="channel-btn youtube">
                             <i class="fab fa-youtube icon"></i>
                             <span class="label">يوتيوب</span>
                             <span class="sub-label">ABBAS ŞZS</span>
                         </a>
+                        <!-- Telegram -->
                         <a href="https://t.me/SZSTORE_1" target="_blank" class="channel-btn telegram">
                             <i class="fab fa-telegram-plane icon"></i>
                             <span class="label">تيليجرام</span>
                             <span class="sub-label">SZSTORE_1</span>
                         </a>
                     </div>
-                    <!-- تم حذف جميع الحقوق -->
+                    <!-- تم حذف جميع الحقوق والنصوص الإضافية -->
                     <div style="height: 10px;"></div>
                 </div>
             </div>
 
         </div>
 
-        <!-- ===== الشريط السفلي (ثابت) ===== -->
+        <!-- ===== الشريط السفلي (مرتب: قنواتنا - هاكاتنا - الرئيسية) ===== -->
         <div class="bottom-nav">
+            <!-- الرئيسية (يظهر في أقصى اليسار لأن الاتجاه RTL، لكن معناه أقصى اليمين في الصور) -->
             <button class="nav-item active" data-page="home">
                 <i class="fas fa-home"></i>
                 <span>الرئيسية</span>
             </button>
+            <!-- هاكاتنا -->
             <button class="nav-item" data-page="hacks">
                 <i class="fas fa-skull"></i>
                 <span>هاكاتنا</span>
             </button>
+            <!-- قنواتنا -->
             <button class="nav-item" data-page="channels">
                 <i class="fas fa-users"></i>
                 <span>قنواتنا</span>
             </button>
-            <!-- تم حذف زر "هاتف" و "المفتاح" نهائياً -->
         </div>
 
     </div>
@@ -676,7 +678,7 @@
         resizeCanvas();
 
         const stars = [];
-        const NUM_STARS = 75;
+        const NUM_STARS = 80;
 
         class Star {
             constructor() {
@@ -728,12 +730,12 @@
         }
         animateStars();
 
-        // إعادة ضبط حجم الكانفس إذا تغير حجم الحاوية (مثلاً دوران الشاشة)
+        // مراقبة تغيير حجم الحاوية
         const resizeObserver = new ResizeObserver(() => resizeCanvas());
         resizeObserver.observe(canvas.parentElement);
 
         // ========================================
-        // 2. التنقل بين الصفحات (الشريط ثابت)
+        // 2. التنقل بين الصفحات
         // ========================================
         const pages = {
             home: document.getElementById('page-home'),
@@ -780,8 +782,8 @@
             alert('رابط تحميل Android سيتم إضافته لاحقاً');
         });
 
-        console.log('✅ SZ DELTA V3.0 - أقوى كود مع هيكلة ثابتة');
+        console.log('✅ SZ DELTA V3.0 - الموقع الكامل جاهز');
     </script>
 
 </body>
-</html>
+    </html>
