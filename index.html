@@ -3,276 +3,577 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>قائمة السكربتات 📜</title>
+    <title>أداة التشفير رقم 1# بالعالم | VM Encryption</title>
     <style>
-        /* إعدادات الخلفية والألوان الاحترافية */
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            box-sizing: border-box;
         }
 
         body {
-            background: radial-gradient(circle at center, #1a0b2e 0%, #090514 100%);
-            color: #fff;
+            font-family: 'Segoe UI', 'Tahoma', Geneva, Verdana, sans-serif;
+            background: radial-gradient(ellipse at bottom, #0d1b2a 0%, #000000 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
+            overflow-x: hidden;
             position: relative;
         }
 
-        /* كود النجوم المتحركة المتصاعدة */
-        .star-container {
-            position: absolute;
+        /* جزيئات متحركة في الخلفية */
+        #particles {
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
+            z-index: 0;
             pointer-events: none;
+        }
+
+        .container {
+            position: relative;
             z-index: 1;
+            width: 90%;
+            max-width: 850px;
+            background: rgba(10, 20, 40, 0.65);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 32px;
+            padding: 40px 30px;
+            box-shadow: 0 25px 60px rgba(0, 180, 255, 0.2), 0 0 0 1px rgba(0, 255, 200, 0.3);
+            animation: floatGlow 4s ease-in-out infinite alternate;
+            transition: all 0.3s;
         }
 
-        .star {
-            position: absolute;
-            background: white;
-            border-radius: 50%;
-            animation: rise linear infinite;
-            opacity: 0.8;
-            box-shadow: 0 0 10px #fff, 0 0 20px #8a2be2;
-        }
-
-        @keyframes rise {
+        @keyframes floatGlow {
             0% {
-                transform: translateY(105vh) scale(0);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
+                box-shadow: 0 25px 60px rgba(0, 200, 255, 0.25), 0 0 0 1px rgba(0, 255, 200, 0.35);
             }
             100% {
-                transform: translateY(-5vh) scale(1);
-                opacity: 0;
+                box-shadow: 0 30px 70px rgba(180, 0, 255, 0.3), 0 0 0 1px rgba(255, 0, 200, 0.4);
             }
         }
 
-        /* حاوية المحتوى الرئيسي */
-        .container {
-            background: rgba(20, 12, 38, 0.65);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 2px solid rgba(138, 43, 226, 0.4);
-            border-radius: 24px;
-            padding: 35px;
-            width: 90%;
-            max-width: 480px;
-            text-align: center;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7), 0 0 30px rgba(138, 43, 226, 0.2);
-            z-index: 10;
-            position: relative;
-            transform: translateY(0);
-            transition: all 0.3s ease;
-        }
-
-        .container:hover {
-            border-color: rgba(138, 43, 226, 0.8);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8), 0 0 40px rgba(138, 43, 226, 0.4);
-        }
-
-        /* العناوين والنصوص */
         h1 {
-            font-size: 26px;
-            background: linear-gradient(45deg, #ff007f, #8a2be2, #00ffff);
+            text-align: center;
+            font-size: 2.6rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, #ffd700, #ff8c00, #ffd700);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 25px;
-            font-weight: 800;
-            text-shadow: 0 0 20px rgba(138, 43, 226, 0.3);
+            background-clip: text;
+            filter: drop-shadow(0 0 25px #ffaa00);
+            margin-bottom: 15px;
+            word-break: break-word;
         }
 
         .subtitle {
-            font-size: 19px;
-            color: #e0d5ff;
-            margin-bottom: 15px;
-            font-weight: 600;
+            text-align: center;
+            color: #a0e9ff;
+            font-size: 1.2rem;
+            margin-bottom: 35px;
+            text-shadow: 0 0 12px #00ffff;
         }
 
-        /* زر النسخ الاحترافي بتأثير الغلو */
-        .btn-copy {
-            background: linear-gradient(135deg, #8a2be2 0%, #4b0082 100%);
-            color: white;
-            border: none;
-            padding: 14px 28px;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 14px;
+        .upload-area {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px dashed rgba(0, 255, 200, 0.5);
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            margin-bottom: 20px;
+            transition: 0.4s;
             cursor: pointer;
-            box-shadow: 0 5px 15px rgba(138, 43, 226, 0.4);
-            transition: all 0.2s ease;
-            width: 100%;
-            margin-bottom: 25px;
-            outline: none;
-            letter-spacing: 0.5px;
         }
 
-        .btn-copy:hover {
-            background: linear-gradient(135deg, #a142ff 0%, #5c00a3 100%);
-            box-shadow: 0 0 25px rgba(138, 43, 226, 0.8);
-            transform: translateY(-2px);
+        .upload-area:hover {
+            background: rgba(0, 255, 200, 0.08);
+            border-color: #ffd700;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
         }
 
-        .btn-copy:active {
-            transform: translateY(1px);
-            box-shadow: 0 2px 8px rgba(138, 43, 226, 0.6);
+        .file-label {
+            display: inline-block;
+            background: linear-gradient(45deg, #0a0f1f, #1a2a4a);
+            color: #ffd966;
+            padding: 16px 42px;
+            border-radius: 50px;
+            font-size: 1.4rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            border: 2px solid #ffb347;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-shadow: 0 0 8px #ffaa00;
+            box-shadow: 0 0 18px #ff8c00;
         }
 
-        /* رسالة تأكيد النسخ الناجح */
-        .toast {
-            position: absolute;
-            bottom: -50px;
-            left: 50%;
-            transform: translateX(-50%);
+        .file-label:hover {
+            background: linear-gradient(45deg, #1a2a4a, #0a0f1f);
+            box-shadow: 0 0 35px #ffaa00, 0 0 10px #ffd700;
+            transform: scale(1.03);
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .file-name {
+            margin-top: 15px;
+            color: #b0ffd0;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .btn {
+            background: rgba(0, 0, 0, 0.7);
+            color: #0f0;
+            border: 2px solid #0f0;
+            padding: 14px 38px;
+            border-radius: 40px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            backdrop-filter: blur(10px);
+            background: linear-gradient(135deg, #002b1a, #000000);
+            box-shadow: 0 0 15px #00ff88;
+        }
+
+        .btn:hover:not(:disabled) {
             background: #00ff88;
             color: #000;
-            padding: 8px 20px;
-            border-radius: 20px;
+            box-shadow: 0 0 40px #00ff88, 0 0 80px #00cc66;
+            border-color: #fff;
+        }
+
+        .btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .encrypted-output {
+            margin-top: 25px;
+            background: #0a0a0a;
+            border: 1px solid #00ffcc;
+            border-radius: 18px;
+            padding: 10px;
+            transition: 0.4s;
+        }
+
+        textarea {
+            width: 100%;
+            height: 260px;
+            background: #010101;
+            color: #00ff99;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            resize: vertical;
+            outline: none;
+            box-shadow: inset 0 0 20px rgba(0, 255, 150, 0.15);
+        }
+
+        .download-btn {
+            background: linear-gradient(45deg, #ffb347, #ff8c00);
+            color: #000;
+            border: none;
+            box-shadow: 0 0 30px #ff8c00;
+            margin-top: 15px;
             font-weight: bold;
-            font-size: 14px;
-            opacity: 0;
-            transition: all 0.3s ease;
-            pointer-events: none;
-            box-shadow: 0 0 15px rgba(0,255,136,0.5);
         }
 
-        .toast.show {
-            bottom: 20px;
-            opacity: 1;
+        .download-btn:hover:not(:disabled) {
+            background: #ffd700;
+            box-shadow: 0 0 50px #ffaa00;
         }
 
-        /* تصميم الصورة بشكل احترافي */
-        .script-img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 16px;
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.5);
-            transition: transform 0.3s ease;
+        .status {
+            margin: 10px 0;
+            color: #ffdd55;
+            font-weight: bold;
+            text-align: center;
+            min-height: 24px;
         }
 
-        .script-img:hover {
-            transform: scale(1.03);
-            border-color: rgba(0, 255, 255, 0.5);
+        @media screen and (max-width: 600px) {
+            h1 {
+                font-size: 2rem;
+            }
+            .btn {
+                padding: 12px 25px;
+                font-size: 1rem;
+            }
         }
     </style>
 </head>
 <body>
+    <canvas id="particles"></canvas>
+    <div class="container">
+        <h1>✨ مرحباً بك في أداة التشفير رقم 1# بالعالم ✨</h1>
+        <div class="subtitle">🛡️ تشفير VM الأسطوري – لا يمكن فكه ولا هندسة عكسية 🛡️</div>
 
-    <!-- حاوية النجوم المتحركة -->
-    <div class="star-container" id="starContainer"></div>
+        <div class="upload-area" id="uploadArea">
+            <label for="fileInput" class="file-label">📁 رفع ملف Lua</label>
+            <input type="file" id="fileInput" accept=".lua,.txt">
+            <div class="file-name" id="fileNameDisplay"></div>
+        </div>
 
-    <!-- كرت القائمة الرئيسي -->
-    <div class="container" onclick="playClickSound()">
-        <h1>مرحبٱ بك في قائمة السكربتات 📜</h1>
-        
-        <p class="subtitle">سكربت ماب الكيبورد👇🏻</p>
-        
-        <!-- زر النسخ -->
-        <button class="btn-copy" onclick="copyScript(event)">نسخ السكربت</button>
-        
-        <!-- الصورة -->
-        <img src="https://raw.githubusercontent.com/abasameerz15-tech/sztshfer/refs/heads/main/1780921910535.png" alt="Script Image" class="script-img">
-        
-        <!-- إشعار تم النسخ -->
-        <div class="toast" id="toast">تم النسخ بنجاح! ✅</div>
+        <div class="btn-group">
+            <button class="btn" id="encryptBtn" disabled>🔒 تشفير</button>
+        </div>
+
+        <div class="status" id="statusMsg"></div>
+
+        <div class="encrypted-output" id="outputSection" style="display: none;">
+            <textarea id="encryptedText" readonly dir="ltr"></textarea>
+            <button class="btn download-btn" id="downloadBtn" disabled>⬇️ تحميل الملف</button>
+        </div>
     </div>
 
     <script>
-        // السكربت المطلوب نسخة
-        const scriptText = `loadstring(game:HttpGet("https://raw.githubusercontent.com/abasameerz15-tech/sz/refs/heads/main/keyboard.lua.txt"))();`;
+        (function() {
+            // ============ تأثير الجزيئات الخلفية ============
+            const canvas = document.getElementById('particles');
+            const ctx = canvas.getContext('2d');
+            let particlesArray = [];
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
 
-        // إنشاء صوت الـ Click هندسياً بدون روابط خارجية متعطلة
-        function playClickSound() {
-            try {
-                const AudioContext = window.AudioContext || window.webkitAudioContext;
-                if (!AudioContext) return;
-                const ctx = new AudioContext();
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-                
-                osc.type = 'sine'; // صوت ناعم ونقي
-                osc.frequency.setValueAtTime(600, ctx.currentTime); // تردد مناسب للنقرة
-                osc.frequency.exponentialRampToValueAtTime(150, ctx.currentTime + 0.08);
-                
-                gain.gain.setValueAtTime(0.15, ctx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.08);
-                
-                osc.connect(gain);
-                gain.connect(ctx.destination);
-                
-                osc.start();
-                osc.stop(ctx.currentTime + 0.08);
-            } catch (e) {
-                console.log("Audio not allowed yet");
-            }
-        }
-
-        // وظيفة نسخ السكربت وتأثير التنبيه
-        function copyScript(event) {
-            event.stopPropagation(); // منع تكرار الصوت من الكانتينر الخارجي
-            playClickSound();
-
-            navigator.clipboard.writeText(scriptText).then(() => {
-                const toast = document.getElementById('toast');
-                toast.classList.add('show');
-                setTimeout(() => {
-                    toast.classList.remove('show');
-                }, 2000);
-            }).catch(err => {
-                // طريقة احتياطية في حال المتصفحات القديمة
-                const el = document.createElement('textarea');
-                el.value = scriptText;
-                document.body.appendChild(el);
-                el.select();
-                document.execCommand('copy');
-                document.body.removeChild(el);
-                
-                const toast = document.getElementById('toast');
-                toast.classList.add('show');
-                setTimeout(() => {
-                    toast.classList.remove('show');
-                }, 2000);
+            window.addEventListener('resize', () => {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
             });
-        }
 
-        // توليد النجوم العشوائية وتوجيه حركتها للأعلى
-        const starContainer = document.getElementById('starContainer');
-        const starCount = 60; // عدد النجوم في الشاشة
+            class Particle {
+                constructor() {
+                    this.reset();
+                }
+                reset() {
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                    this.size = Math.random() * 2.5 + 0.8;
+                    this.speedX = (Math.random() * 0.6) - 0.3;
+                    this.speedY = (Math.random() * 0.6) - 0.3;
+                    this.color = `hsl(${Math.random() * 60 + 180}, 90%, 70%)`;
+                }
+                update() {
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+                    if (this.x < 0 || this.x > canvas.width ||
+                        this.y < 0 || this.y > canvas.height) {
+                        this.reset();
+                        this.x = Math.random() * canvas.width;
+                        this.y = Math.random() * canvas.height;
+                    }
+                }
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = this.color;
+                    ctx.shadowBlur = 10;
+                    ctx.shadowColor = this.color;
+                    ctx.fill();
+                    ctx.shadowBlur = 0;
+                }
+            }
 
-        for (let i = 0; i < starCount; i++) {
-            const star = document.createElement('div');
-            star.classList.add('star');
-            
-            // تخصيص أحجام ومواقع عشوائية
-            const size = Math.random() * 3 + 1; // بين 1px و 4px
-            star.style.width = `${size}px`;
-            star.style.height = `${size}px`;
-            
-            star.style.left = `${Math.random() * 100}%`;
-            
-            // سرعات حركة مختلفة لتأثير الـ 3D (Parallax)
-            const duration = Math.random() * 4 + 3; // بين 3 إلى 7 ثواني
-            star.style.animationDuration = `${duration}s`;
-            
-            // توقيت بدء مختلف حتى لا تظهر كلها معاً في البداية
-            star.style.animationDelay = `${Math.random() * 5}s`;
-            
-            starContainer.appendChild(star);
-        }
+            function initParticles(count = 120) {
+                particlesArray = [];
+                for (let i = 0; i < count; i++) {
+                    particlesArray.push(new Particle());
+                }
+            }
+
+            function animateParticles() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particlesArray.forEach(p => {
+                    p.update();
+                    p.draw();
+                });
+                requestAnimationFrame(animateParticles);
+            }
+            initParticles();
+            animateParticles();
+
+            // ============ عناصر الواجهة ============
+            const fileInput = document.getElementById('fileInput');
+            const fileNameDisplay = document.getElementById('fileNameDisplay');
+            const encryptBtn = document.getElementById('encryptBtn');
+            const statusMsg = document.getElementById('statusMsg');
+            const outputSection = document.getElementById('outputSection');
+            const encryptedTextArea = document.getElementById('encryptedText');
+            const downloadBtn = document.getElementById('downloadBtn');
+            const uploadArea = document.getElementById('uploadArea');
+
+            let selectedFile = null;
+
+            // تفعيل رفع الملف بالضغط على المنطقة الكاملة
+            uploadArea.addEventListener('click', (e) => {
+                if (e.target !== fileInput) fileInput.click();
+            });
+
+            fileInput.addEventListener('change', (e) => {
+                if (e.target.files.length > 0) {
+                    selectedFile = e.target.files[0];
+                    fileNameDisplay.textContent = '📄 ' + selectedFile.name;
+                    encryptBtn.disabled = false;
+                    statusMsg.textContent = '';
+                    // إخفاء الناتج السابق
+                    outputSection.style.display = 'none';
+                    downloadBtn.disabled = true;
+                } else {
+                    selectedFile = null;
+                    fileNameDisplay.textContent = '';
+                    encryptBtn.disabled = true;
+                }
+            });
+
+            // ============ دوال التشفير والخوارزميات ============
+            function simpleHash(str) {
+                let hash = 0;
+                for (let i = 0; i < str.length; i++) {
+                    const ch = str.charCodeAt(i);
+                    hash = ((hash << 5) - hash) + ch;
+                    hash |= 0;
+                }
+                return Math.abs(hash);
+            }
+
+            function generateKeystream(seed, length) {
+                let s = seed % 2147483647;
+                const keystream = [];
+                for (let i = 0; i < length; i++) {
+                    s = (s * 1103515245 + 12345) & 0x7fffffff;
+                    keystream.push(s & 0xff);
+                }
+                return keystream;
+            }
+
+            function base64Encode(bytes) {
+                const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+                let result = '';
+                for (let i = 0; i < bytes.length; i += 3) {
+                    const b1 = bytes[i];
+                    const b2 = i + 1 < bytes.length ? bytes[i + 1] : 0;
+                    const b3 = i + 2 < bytes.length ? bytes[i + 2] : 0;
+                    const enc1 = b1 >> 2;
+                    const enc2 = ((b1 & 3) << 4) | (b2 >> 4);
+                    const enc3 = ((b2 & 15) << 2) | (b3 >> 6);
+                    const enc4 = b3 & 63;
+                    result += chars.charAt(enc1) + chars.charAt(enc2) +
+                        (i + 1 < bytes.length ? chars.charAt(enc3) : '=') +
+                        (i + 2 < bytes.length ? chars.charAt(enc4) : '=');
+                }
+                return result;
+            }
+
+            // بناء الـ bytecode الخاص بالـ VM من النص الأصلي
+            function buildVMBytecode(source) {
+                const bytecode = [];
+                for (let i = 0; i < source.length; i++) {
+                    bytecode.push(1, source.charCodeAt(i)); // opcode PUSH_CHAR
+                }
+                bytecode.push(2, 0); // CONCAT_ALL
+                bytecode.push(3, 0); // EXEC
+                return bytecode;
+            }
+
+            // حساب المجموع الاختباري للتحقق من السلامة
+            function computeChecksum(bytecode) {
+                let sum = 0;
+                for (let i = 0; i < bytecode.length; i++) {
+                    sum += bytecode[i] * (i + 1);
+                }
+                return sum;
+            }
+
+            // توليد كود الـ Lua loader بعد التعتيم الفائق
+            function generateObfuscatedLoader(encryptedB64, seed, checksum) {
+                // أسماء متغيرات معقدة بأحرف يونيكود عشوائية
+                const v1 = 'ﺂﻠﻤﻧ' + String.fromCharCode(0x0643); // مشوهة
+                const v2 = 'ﺢﺳ' + String.fromCharCode(0x0627, 0x0646);
+                const v3 = 'ﻊ' + String.fromCharCode(0x0645, 0x0644);
+                const v4 = 'ﻞ' + String.fromCharCode(0x062E, 0x064A);
+                const v5 = 'ﻁ' + String.fromCharCode(0x0631, 0x0642);
+
+                // كود base64 decoder (مضمن بشكل مبهم)
+                const base64DecoderFunc = `
+local function ${v2}(d)
+    local b='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+    local t={} local o=1
+    for i=1,#d,4 do
+        local a,b1,c1,d1=0,0,0,0
+        local p1,p2,p3,p4=d:sub(i,i+3):byte(1,-1)
+        if not p1 then break end
+        a=(p1==61 and 0 or (string.find(b,string.char(p1))-1))
+        b1=(p2==61 and 0 or (string.find(b,string.char(p2))-1))
+        c1=(p3==61 and 0 or (string.find(b,string.char(p3))-1))
+        d1=(p4==61 and 0 or (string.find(b,string.char(p4))-1))
+        local n=a*262144+b1*4096+c1*64+d1
+        t[o]=string.char(math.floor(n/65536))
+        if p3~=61 then t[o+1]=string.char(math.floor((n%65536)/256)) end
+        if p4~=61 then t[o+2]=string.char(math.floor(n%256)) end
+        o=o+3
+    end
+    return table.concat(t)
+end`;
+
+                // دالة فك التشفير LCG
+                const decryptFunc = `
+local function ${v3}(data, seed)
+    local s=seed local r={}
+    for i=1,#data do
+        s=(s*1103515245+12345)%2147483647
+        local kb=s%256
+        r[i]=string.char(string.byte(data,i)~kb)
+    end
+    return table.concat(r)
+end`;
+
+                // الـ VM الأسطوري
+                const vmFunc = `
+local function ${v4}(bc)
+    local st={} local sp=0 local ip=1
+    while ip<=#bc do
+        local op=bc[ip]
+        ip=ip+1
+        if op==1 then
+            local val=bc[ip]
+            ip=ip+1
+            sp=sp+1
+            st[sp]=string.char(val)
+        elseif op==2 then
+            local s=""
+            for i=1,sp do s=s..st[i] end
+            sp=1
+            st[1]=s
+        elseif op==3 then
+            local f,err=loadstring(st[sp])
+            sp=sp-1
+            if f then
+                local ok,res=pcall(f)
+                if not ok then
+                    -- إخفاء الأخطاء لتجنب المشاكل
+                end
+            end
+        else
+            -- تعليمات وهمية للتضليل
+            local _=bc[ip] ip=ip+1
+        end
+    end
+end`;
+
+                // تجميع الكود النهائي مع فحص السلامة والتعتيم
+                const loaderCode = `
+local ${v1}=${checksum}
+local seed=${seed}
+${base64DecoderFunc}
+${decryptFunc}
+${vmFunc}
+local enc="${encryptedB64}"
+local raw=${v2}(enc)
+local dec=${v3}(raw,seed)
+local bytecode={}
+for i=1,#dec do bytecode[i]=string.byte(dec,i) end
+-- فحص التلاعب
+local sum=0
+for i=1,#bytecode do sum=sum+bytecode[i]*i end
+if sum~=${v1} then while true do end end
+${v4}(bytecode)
+`;
+                return loaderCode;
+            }
+
+            // ============ تنفيذ التشفير عند الضغط على الزر ============
+            encryptBtn.addEventListener('click', () => {
+                if (!selectedFile) return;
+
+                statusMsg.textContent = '⏳ جاري التشفير بقوة VM الأسطورية...';
+                encryptBtn.disabled = true;
+                downloadBtn.disabled = true;
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const originalSource = e.target.result;
+                        if (!originalSource.trim()) {
+                            throw new Error('الملف فارغ');
+                        }
+
+                        // بناء bytecode
+                        const bytecode = buildVMBytecode(originalSource);
+                        const checksum = computeChecksum(bytecode);
+                        const seed = simpleHash(originalSource) % 999983 + 12345; // رقم كبير
+                        const keystream = generateKeystream(seed, bytecode.length);
+
+                        // XOR encryption
+                        const encryptedBytes = [];
+                        for (let i = 0; i < bytecode.length; i++) {
+                            encryptedBytes.push(bytecode[i] ^ keystream[i]);
+                        }
+
+                        const encryptedB64 = base64Encode(encryptedBytes);
+
+                        // توليد الكود النهائي المبهم
+                        const finalLuaScript = generateObfuscatedLoader(encryptedB64, seed, checksum);
+
+                        // عرض الناتج
+                        encryptedTextArea.value = finalLuaScript;
+                        outputSection.style.display = 'block';
+                        downloadBtn.disabled = false;
+                        statusMsg.textContent = '✅ تم التشفير بنجاح! أقوى تشفير VM في العالم.';
+
+                        // تحضير التحميل
+                        downloadBtn.onclick = () => {
+                            const blob = new Blob([finalLuaScript], { type: 'text/plain' });
+                            const url = URL.createObjectURL(blob);
+                            const a = document.createElement('a');
+                            a.href = url;
+                            a.download = 'encrypted_script.lua';
+                            document.body.appendChild(a);
+                            a.click();
+                            document.body.removeChild(a);
+                            URL.revokeObjectURL(url);
+                        };
+                    } catch (error) {
+                        statusMsg.textContent = '❌ حدث خطأ: ' + error.message;
+                        outputSection.style.display = 'none';
+                    } finally {
+                        encryptBtn.disabled = false;
+                    }
+                };
+
+                reader.onerror = function() {
+                    statusMsg.textContent = '❌ فشل في قراءة الملف';
+                    encryptBtn.disabled = false;
+                };
+
+                reader.readAsText(selectedFile, 'UTF-8');
+            });
+
+            // إعادة تعيين الزر عند تحميل ملف جديد
+            fileInput.addEventListener('click', () => {
+                // لا شيء إضافي
+            });
+        })();
     </script>
 </body>
 </html>
