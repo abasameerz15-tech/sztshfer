@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>أداة التشفير رقم 1# بالعالم | VM 6-Layer Encryption</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>SZ DELTA EXPLOIT | OFFICIAL HUB V3.0</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <style>
         * {
             margin: 0;
@@ -11,497 +13,688 @@
             box-sizing: border-box;
         }
 
+        html, body {
+            height: 100%;
+            overflow: hidden; /* منع التمرير نهائياً */
+        }
+
         body {
-            font-family: 'Segoe UI', 'Tahoma', Geneva, sans-serif;
-            background: #000011;
-            min-height: 100vh;
+            font-family: 'Cairo', sans-serif;
+            background: #0b0a0c;
+            color: #fff;
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow-x: hidden;
-            position: relative;
-            background-image: radial-gradient(circle at 20% 30%, #0a0f30 0%, #000000 80%);
+            min-height: 100vh;
+            padding: 16px;
+            direction: rtl;
+            overflow: hidden; /* تأكيد منع التمرير */
+        }
+
+        /* خلفية النجوم المتحركة */
+        #starfield {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
         }
 
         .container {
+            max-width: 420px;
+            width: 100%;
+            background: linear-gradient(145deg, #141215, #1b181c);
+            border-radius: 40px;
+            padding: 28px 22px 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 215, 0, 0.08);
+            border: 1px solid rgba(255, 215, 0, 0.07);
             position: relative;
-            z-index: 2;
-            width: 92%;
-            max-width: 900px;
-            background: rgba(0, 10, 30, 0.75);
-            backdrop-filter: blur(35px);
-            border-radius: 38px;
-            padding: 45px 30px;
-            box-shadow: 0 30px 70px rgba(0, 170, 255, 0.4), 0 0 0 2px rgba(0, 255, 200, 0.5);
-            animation: borderPulse 3s infinite alternate;
+            z-index: 1;
+            overflow: hidden; /* منع التمرير داخل الحاوية */
+            min-height: 560px;
+            max-height: 95vh;
+            transition: all 0.2s;
         }
 
-        @keyframes borderPulse {
-            0% { box-shadow: 0 30px 70px rgba(0, 180, 255, 0.4), 0 0 0 2px #00ffcc; }
-            100% { box-shadow: 0 40px 80px rgba(200, 0, 255, 0.5), 0 0 0 3px #ff00ff; }
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -60px;
+            right: -60px;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.06), transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
         }
 
-        h1 {
-            text-align: center;
-            font-size: 3rem;
+        /* ===== الأقسام ===== */
+        .page {
+            display: none;
+            animation: fadeUp 0.3s ease forwards;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeUp {
+            0% {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== Badge ===== */
+        .badge {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .badge-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .badge-icon {
+            background: #ffd700;
+            color: #0b0a0c;
+            width: 34px;
+            height: 34px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
             font-weight: 900;
-            background: linear-gradient(135deg, #ffbb00, #ff4d00, #ffbb00);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.25);
+        }
+
+        .badge-title {
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 4px 14px 4px 16px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 215, 0, 0.15);
+            color: #ffd700;
+        }
+
+        .badge-status {
+            font-size: 12px;
+            font-weight: 600;
+            background: rgba(0, 255, 150, 0.12);
+            color: #00ff96;
+            padding: 4px 14px;
+            border-radius: 30px;
+            border: 1px solid rgba(0, 255, 150, 0.15);
+            letter-spacing: 0.3px;
+        }
+
+        /* ===== عنوان رئيسي ===== */
+        .main-title {
+            font-size: 26px;
+            font-weight: 900;
+            margin: 12px 0 6px;
+            background: linear-gradient(135deg, #ffd700, #f5a623);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 35px #ff8800);
-            margin-bottom: 20px;
+            background-clip: text;
+            letter-spacing: -0.5px;
+            line-height: 1.2;
         }
 
-        .subtitle {
-            color: #b0f0ff;
-            text-align: center;
-            font-size: 1.4rem;
-            margin-bottom: 35px;
-            text-shadow: 0 0 20px #00ffff;
-            letter-spacing: 2px;
+        .main-title span {
+            background: none;
+            -webkit-text-fill-color: #fff;
+            font-weight: 300;
+            font-size: 20px;
         }
 
-        .upload-box {
+        .sub-desc {
+            font-size: 13px;
+            color: #a8a3b0;
+            line-height: 1.6;
+            margin: 6px 0 16px;
+            padding: 10px 16px;
             background: rgba(255, 255, 255, 0.03);
-            border: 2px dashed #00ffcc;
-            border-radius: 28px;
-            padding: 30px;
-            text-align: center;
-            margin-bottom: 20px;
-            cursor: pointer;
-            transition: 0.4s;
-        }
-
-        .upload-box:hover {
-            border-color: #ffaa00;
-            background: rgba(255, 170, 0, 0.08);
-            box-shadow: 0 0 40px #ffaa00;
-        }
-
-        .file-label {
-            background: linear-gradient(45deg, #000c1a, #001a33);
-            color: #ffcc00;
-            padding: 18px 50px;
-            border-radius: 60px;
-            font-size: 1.6rem;
-            font-weight: bold;
-            border: 2px solid #ff9900;
-            box-shadow: 0 0 30px #ff8800;
-            cursor: pointer;
-            transition: 0.3s;
-            display: inline-block;
-        }
-
-        .file-label:hover {
-            box-shadow: 0 0 55px #ffaa00;
-            transform: scale(1.04);
-        }
-
-        #fileInput {
-            display: none;
-        }
-
-        .file-name {
-            color: #aaffdd;
-            margin-top: 18px;
-            font-size: 1.2rem;
-            font-weight: 600;
-        }
-
-        .btn-gang {
-            display: flex;
-            justify-content: center;
-            gap: 25px;
-            margin: 25px 0;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            background: #001a1a;
-            color: #00ff99;
-            border: 2px solid #00ff99;
-            padding: 15px 45px;
-            font-size: 1.4rem;
-            font-weight: bold;
-            border-radius: 45px;
-            cursor: pointer;
-            transition: 0.3s;
-            box-shadow: 0 0 20px #00ff88;
-            letter-spacing: 2px;
-            backdrop-filter: blur(10px);
-        }
-
-        .btn:hover:not(:disabled) {
-            background: #00ff88;
-            color: #000;
-            box-shadow: 0 0 45px #00ff88;
-            border-color: #ffffff;
-        }
-
-        .btn:disabled {
-            opacity: 0.35;
-            cursor: not-allowed;
-            box-shadow: none;
-        }
-
-        .output-panel {
-            margin-top: 25px;
-            background: #010a14;
-            border: 1px solid #00ffcc;
-            border-radius: 24px;
-            padding: 15px;
-        }
-
-        textarea {
-            width: 100%;
-            height: 280px;
-            background: #000000;
-            color: #00eeff;
-            font-family: 'Courier New', monospace;
-            font-size: 1rem;
-            padding: 18px;
-            border: none;
             border-radius: 16px;
-            outline: none;
-            resize: vertical;
-            box-shadow: inset 0 0 25px rgba(0, 255, 200, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.04);
         }
 
-        .download-btn {
-            background: #ff7700;
-            color: #000;
-            border: none;
-            box-shadow: 0 0 35px #ff7700;
-            margin-top: 18px;
-            width: 100%;
-            text-align: center;
+        .sub-desc strong {
+            color: #ffd700;
+            font-weight: 700;
         }
 
-        .download-btn:hover:not(:disabled) {
-            background: #ffaa00;
-            box-shadow: 0 0 55px #ffaa00;
+        /* ===== حالة ===== */
+        .status-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(0, 255, 150, 0.05);
+            padding: 8px 16px;
+            border-radius: 30px;
+            border: 1px solid rgba(0, 255, 150, 0.1);
+            width: fit-content;
+            margin-bottom: 22px;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            background: #00ff96;
+            border-radius: 50%;
+            box-shadow: 0 0 14px rgba(0, 255, 150, 0.5);
+            animation: pulse-dot 1.8s infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.5;
+                transform: scale(0.85);
+            }
         }
 
         .status-text {
+            font-size: 14px;
+            font-weight: 600;
+            color: #00ff96;
+        }
+
+        /* ===== لماذا ===== */
+        .why-box {
+            background: rgba(255, 215, 0, 0.03);
+            border-radius: 20px;
+            padding: 16px 18px;
+            margin-bottom: 24px;
+            border: 1px solid rgba(255, 215, 0, 0.06);
+        }
+
+        .why-box h3 {
+            font-size: 15px;
+            font-weight: 800;
+            color: #ffd700;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .why-box h3 i {
+            font-size: 16px;
+        }
+
+        .why-box p {
+            font-size: 13px;
+            color: #b8b2c2;
+            line-height: 1.7;
+        }
+
+        /* ===== تحميل الأجهزة ===== */
+        .download-section {
+            margin-bottom: 12px;
+        }
+
+        .section-label {
+            font-size: 15px;
+            font-weight: 700;
+            color: #ccc;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-label::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(to left, rgba(255, 215, 0, 0.15), transparent);
+        }
+
+        .device-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .device-btn {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 18px;
+            padding: 18px 12px;
             text-align: center;
-            color: #ffcc44;
-            font-weight: bold;
-            margin: 10px 0;
-            min-height: 28px;
+            transition: all 0.25s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .device-btn:hover {
+            background: rgba(255, 215, 0, 0.07);
+            border-color: rgba(255, 215, 0, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        }
+
+        .device-btn .icon {
+            font-size: 28px;
+            color: #ffd700;
+        }
+
+        .device-btn .label {
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .device-btn .sub-label {
+            font-size: 11px;
+            color: #888;
+            font-weight: 400;
+        }
+
+        .device-btn .download-badge {
+            font-size: 11px;
+            font-weight: 700;
+            background: #ffd700;
+            color: #0b0a0c;
+            padding: 2px 16px;
+            border-radius: 30px;
+            margin-top: 4px;
+        }
+
+        /* ===== قنواتنا (يوتيوب + تيليجرام فقط) ===== */
+        .channels-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 6px;
+        }
+
+        .channel-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 18px;
+            padding: 22px 10px;
+            text-align: center;
+            transition: all 0.25s ease;
+            text-decoration: none;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .channel-btn:hover {
+            background: rgba(255, 215, 0, 0.07);
+            border-color: rgba(255, 215, 0, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        }
+
+        .channel-btn .icon {
+            font-size: 34px;
+        }
+
+        .channel-btn .label {
+            font-size: 16px;
+            font-weight: 800;
+        }
+
+        .channel-btn .sub-label {
+            font-size: 12px;
+            color: #888;
+            font-weight: 400;
+        }
+
+        .channel-btn.youtube .icon {
+            color: #ff0033;
+        }
+
+        .channel-btn.telegram .icon {
+            color: #0088cc;
+        }
+
+        /* ===== الشريط السفلي (بعد حذف زر هاتف) ===== */
+        .bottom-nav {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-top: 24px;
+            padding-top: 18px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 11px;
+            color: #777;
+            font-weight: 600;
+            gap: 2px;
+            cursor: pointer;
+            transition: color 0.2s;
+            background: none;
+            border: none;
+            font-family: 'Cairo', sans-serif;
+            padding: 4px 12px;
+            text-decoration: none;
+        }
+
+        .nav-item i {
+            font-size: 20px;
+            color: #555;
+            transition: color 0.2s;
+        }
+
+        .nav-item.active i,
+        .nav-item.active {
+            color: #ffd700;
+        }
+
+        .nav-item:hover i,
+        .nav-item:hover {
+            color: #ffd700;
+        }
+
+        /* ===== مسافة إضافية ===== */
+        .mt-2 {
+            margin-top: 8px;
+        }
+
+        .page-channels .section-label {
+            margin-bottom: 6px;
+        }
+
+        @media (max-width: 400px) {
+            .container {
+                padding: 20px 14px 16px;
+            }
+            .main-title {
+                font-size: 22px;
+            }
+            .device-btn .icon {
+                font-size: 24px;
+            }
+            .channel-btn .icon {
+                font-size: 28px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>✨ مرحباً بك في أداة التشفير رقم 1# بالعالم ✨</h1>
-        <div class="subtitle">🛡️ تشفير VM الأسطوري × 6 طبقات – لا فك ولا هندسة عكسية 🛡️</div>
 
-        <div class="upload-box" id="uploadBox">
-            <label for="fileInput" class="file-label">📂 رفع ملف Lua</label>
-            <input type="file" id="fileInput" accept=".lua,.txt">
-            <div class="file-name" id="fileDisplay"></div>
+    <!-- خلفية النجوم المتحركة -->
+    <canvas id="starfield"></canvas>
+
+    <div class="container" id="appContainer">
+
+        <!-- ========== الصفحة الرئيسية ========== -->
+        <div class="page active" id="page-home">
+            <div class="badge">
+                <div class="badge-left">
+                    <div class="badge-icon">SZ</div> <!-- تم التغيير من EX إلى SZ -->
+                    <span class="badge-title">OFFICIAL HUB</span>
+                </div>
+                <span class="badge-status"><i class="fas fa-check-circle" style="margin-left:6px;"></i>يعمل بنجاح</span>
+            </div>
+
+            <div class="main-title">
+                DELTA EXPLOIT <span>| V3.0</span>
+            </div>
+
+            <div class="sub-desc">
+                <strong>معلومات هاك دلتا</strong><br /> <!-- تم التعديل -->
+                أهلا بك في المركز الرسمي. دلتا إكسابويت هو المحقق رقم #1 الذي يجمع بين القوة وسهولة الاستخدام. نقدم لك حماية متكاملة ضد أنظمة الباند مع سرعة حقن تتجاوز كل المنافسين.
+            </div>
+
+            <div class="status-row">
+                <span class="status-dot"></span>
+                <span class="status-text">الحالة: يعمل بنجاح</span>
+            </div>
+
+            <div class="why-box">
+                <h3><i class="fas fa-bolt"></i> لماذا تختار دلتا؟</h3> <!-- تم التعديل -->
+                <p>دعم كامل لجميع السكريبتات الضخمة، تحديثات تلقائية، وواجهة مستخدم بستايل أيفون عصري.</p> <!-- تم التعديل -->
+            </div>
+
+            <div style="display: none;" id="dummyLoader"></div>
         </div>
 
-        <div class="btn-gang">
-            <button class="btn" id="encryptBtn" disabled>🔐 تشفير 6X</button>
+        <!-- ========== صفحة هاكاتنا (تحميلات بدون PC) ========== -->
+        <div class="page" id="page-hacks">
+            <div class="badge">
+                <div class="badge-left">
+                    <div class="badge-icon">SZ</div> <!-- تم التغيير -->
+                    <span class="badge-title">OFFICIAL HUB</span>
+                </div>
+                <span class="badge-status"><i class="fas fa-check-circle" style="margin-left:6px;"></i>يعمل بنجاح</span>
+            </div>
+
+            <div class="main-title" style="font-size:22px;">
+                هاكاتنا <span style="font-size:18px;">| التحميل</span>
+            </div>
+
+            <div class="download-section" style="margin-top: 16px;">
+                <div class="section-label">
+                    <i class="fas fa-download" style="color:#ffd700;"></i> إصدارات الأجهزة
+                </div>
+                <div class="device-grid">
+                    <!-- iOS -->
+                    <a href="#" class="device-btn" id="iosBtn">
+                        <i class="fab fa-apple icon"></i>
+                        <span class="label">iOS / iPhone</span>
+                        <span class="sub-label">تحميل IPA</span>
+                        <span class="download-badge">تحميل</span>
+                    </a>
+                    <!-- Android -->
+                    <a href="#" class="device-btn" id="androidBtn">
+                        <i class="fab fa-android icon"></i>
+                        <span class="label">Android</span>
+                        <span class="sub-label">تحميل APK</span>
+                        <span class="download-badge">تحميل</span>
+                    </a>
+                </div>
+                <!-- تم حذف (PC) نسخة الكمبيوتر وكل ما تحتها نهائياً -->
+            </div>
+
+            <div style="height: 20px;"></div>
         </div>
 
-        <div class="status-text" id="statusMsg"></div>
+        <!-- ========== صفحة قنواتنا (يوتيوب + تيليجرام فقط) ========== -->
+        <div class="page page-channels" id="page-channels">
+            <div class="badge">
+                <div class="badge-left">
+                    <div class="badge-icon">SZ</div> <!-- تم التغيير -->
+                    <span class="badge-title">OFFICIAL HUB</span>
+                </div>
+                <span class="badge-status"><i class="fas fa-check-circle" style="margin-left:6px;"></i>يعمل بنجاح</span>
+            </div>
 
-        <div class="output-panel" id="outputPanel" style="display: none;">
-            <textarea id="encryptedCode" readonly dir="ltr"></textarea>
-            <button class="btn download-btn" id="downloadBtn" disabled>⬇️ تحميل الملف المشفر</button>
+            <div class="main-title" style="font-size:22px;">
+                قنواتنا <span style="font-size:18px;">| تابعنا</span>
+            </div>
+
+            <div class="section-label" style="margin-top:16px; margin-bottom:10px;">
+                <i class="fas fa-hashtag" style="color:#ffd700;"></i> قنواتنا ومجتمعاتنا
+            </div>
+
+            <div class="channels-grid">
+                <!-- YouTube -->
+                <a href="https://www.youtube.com/@ABBAS%C5%9EZS" target="_blank" class="channel-btn youtube">
+                    <i class="fab fa-youtube icon"></i>
+                    <span class="label">يوتيوب</span>
+                    <span class="sub-label">ABBAS ŞZS</span>
+                </a>
+                <!-- Telegram -->
+                <a href="https://t.me/SZSTORE_1" target="_blank" class="channel-btn telegram">
+                    <i class="fab fa-telegram-plane icon"></i>
+                    <span class="label">تيليجرام</span>
+                    <span class="sub-label">SZSTORE_1</span>
+                </a>
+            </div>
+
+            <!-- تم حذف جميع الحقوق القديمة -->
+            <div style="height: 30px;"></div>
         </div>
+
+        <!-- ========== الشريط السفلي (تم حذف زر هاتف) ========== -->
+        <div class="bottom-nav">
+            <button class="nav-item active" data-page="home">
+                <i class="fas fa-home"></i>
+                <span>الرئيسية</span>
+            </button>
+            <button class="nav-item" data-page="hacks">
+                <i class="fas fa-skull"></i>
+                <span>هاكاتنا</span>
+            </button>
+            <button class="nav-item" data-page="channels">
+                <i class="fas fa-users"></i>
+                <span>قنواتنا</span>
+            </button>
+            <!-- تم حذف زر "هاتف" و "المفتاح" نهائياً -->
+        </div>
+
     </div>
 
     <script>
-        (function() {
-            const fileInput = document.getElementById('fileInput');
-            const fileDisplay = document.getElementById('fileDisplay');
-            const encryptBtn = document.getElementById('encryptBtn');
-            const statusMsg = document.getElementById('statusMsg');
-            const outputPanel = document.getElementById('outputPanel');
-            const encryptedCodeArea = document.getElementById('encryptedCode');
-            const downloadBtn = document.getElementById('downloadBtn');
-            const uploadBox = document.getElementById('uploadBox');
+        // ========================================
+        // 1. النجوم المتحركة (Canvas)
+        // ========================================
+        const canvas = document.getElementById('starfield');
+        const ctx = canvas.getContext('2d');
+        let w, h;
+        const stars = [];
+        const NUM_STARS = 90;
 
-            let selectedFile = null;
+        function resizeCanvas() {
+            w = canvas.width = window.innerWidth;
+            h = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
 
-            uploadBox.addEventListener('click', (e) => {
-                if (e.target !== fileInput) fileInput.click();
+        class Star {
+            constructor() {
+                this.reset(true);
+            }
+            reset(init) {
+                this.x = Math.random() * w;
+                this.y = init ? Math.random() * h : h + 10;
+                this.size = Math.random() * 2.2 + 1.2;
+                this.speed = Math.random() * 1.8 + 0.8;
+                this.opacity = Math.random() * 0.7 + 0.3;
+                this.color = Math.random() > 0.6 ? '#ffd700' : '#ffffff';
+            }
+            update() {
+                this.y -= this.speed;
+                if (this.y < -10) {
+                    this.reset(false);
+                    this.y = h + 10;
+                }
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.globalAlpha = this.opacity;
+                ctx.fill();
+                if (this.color === '#ffd700') {
+                    ctx.shadowColor = '#ffd700';
+                    ctx.shadowBlur = 10;
+                    ctx.fill();
+                    ctx.shadowBlur = 0;
+                }
+                ctx.globalAlpha = 1;
+            }
+        }
+
+        for (let i = 0; i < NUM_STARS; i++) {
+            stars.push(new Star());
+        }
+
+        function animateStars() {
+            ctx.clearRect(0, 0, w, h);
+            stars.forEach(star => {
+                star.update();
+                star.draw();
             });
+            requestAnimationFrame(animateStars);
+        }
+        animateStars();
 
-            fileInput.addEventListener('change', (e) => {
-                if (e.target.files.length > 0) {
-                    selectedFile = e.target.files[0];
-                    fileDisplay.textContent = '📄 ' + selectedFile.name;
-                    encryptBtn.disabled = false;
-                    statusMsg.textContent = '';
-                    outputPanel.style.display = 'none';
-                    downloadBtn.disabled = true;
-                } else {
-                    selectedFile = null;
-                    fileDisplay.textContent = '';
-                    encryptBtn.disabled = true;
+        // ========================================
+        // 2. التنقل بين الصفحات (تم حذف صفحة الهاتف)
+        // ========================================
+        const pages = {
+            home: document.getElementById('page-home'),
+            hacks: document.getElementById('page-hacks'),
+            channels: document.getElementById('page-channels')
+        };
+
+        const navBtns = document.querySelectorAll('.nav-item');
+
+        function showPage(pageId) {
+            Object.keys(pages).forEach(key => {
+                pages[key].classList.remove('active');
+            });
+            if (pages[pageId]) {
+                pages[pageId].classList.add('active');
+            } else {
+                pages.home.classList.add('active');
+            }
+            navBtns.forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.page === pageId) {
+                    btn.classList.add('active');
                 }
             });
+        }
 
-            // ============= دوال التشفير المساعدة =============
-            function hashString(str) {
-                let hash = 0;
-                for (let i = 0; i < str.length; i++) {
-                    const ch = str.charCodeAt(i);
-                    hash = ((hash << 5) - hash) + ch;
-                    hash |= 0;
-                }
-                return Math.abs(hash);
-            }
-
-            function generateKeystream(seed, length) {
-                let s = seed % 2147483647;
-                const stream = [];
-                for (let i = 0; i < length; i++) {
-                    s = (s * 1103515245 + 12345) & 0x7fffffff;
-                    stream.push(s & 0xff);
-                }
-                return stream;
-            }
-
-            function xorBytes(bytes, keystream) {
-                return bytes.map((b, i) => b ^ keystream[i]);
-            }
-
-            function base64Encode(bytes) {
-                const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
-                let result = '';
-                for (let i = 0; i < bytes.length; i += 3) {
-                    const b1 = bytes[i];
-                    const b2 = i + 1 < bytes.length ? bytes[i + 1] : 0;
-                    const b3 = i + 2 < bytes.length ? bytes[i + 2] : 0;
-                    result += chars.charAt(b1 >> 2);
-                    result += chars.charAt(((b1 & 3) << 4) | (b2 >> 4));
-                    result += i + 1 < bytes.length ? chars.charAt(((b2 & 15) << 2) | (b3 >> 6)) : '=';
-                    result += i + 2 < bytes.length ? chars.charAt(b3 & 63) : '=';
-                }
-                return result;
-            }
-
-            function buildVMBytecode(source) {
-                const bc = [];
-                for (let i = 0; i < source.length; i++) {
-                    bc.push(1, source.charCodeAt(i)); // PUSH_CHAR
-                }
-                bc.push(2, 0); // CONCAT
-                bc.push(3, 0); // EXEC
-                // إضافة تعليمات وهمية للتضليل
-                bc.push(99, 0); bc.push(99, 1); bc.push(99, 2);
-                return bc;
-            }
-
-            function generateObfuscatedLoader(encryptedFinal, seeds, checksum) {
-                // أسماء متغيرات مشوشة
-                const varNames = [
-                    'ﺂﻠﻤﻧ' + String.fromCharCode(0x0643) + 'ء',
-                    'ﻊﻤﻠ' + String.fromCharCode(0x064A) + 'ة',
-                    'ﺢﺳ' + String.fromCharCode(0x0627) + 'ن',
-                    'ﻞ' + String.fromCharCode(0x062E) + 'ي',
-                    'ﻁ' + String.fromCharCode(0x0631) + 'ق',
-                    'د' + String.fromCharCode(0x0645) + 'ار'
-                ];
-
-                // base64 decoder
-                const b64dec = `
-local function ${varNames[1]}(d)
-    local b='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
-    local t={}
-    for i=1,#d,4 do
-        local a,b1,c1,d1=0,0,0,0
-        local p1,p2,p3,p4=d:sub(i,i+3):byte(1,-1)
-        if not p1 then break end
-        a=(p1==61 and 0 or (string.find(b,string.char(p1))-1))
-        b1=(p2==61 and 0 or (string.find(b,string.char(p2))-1))
-        c1=(p3==61 and 0 or (string.find(b,string.char(p3))-1))
-        d1=(p4==61 and 0 or (string.find(b,string.char(p4))-1))
-        local n=a*262144+b1*4096+c1*64+d1
-        t[#t+1]=string.char(math.floor(n/65536))
-        if p3~=61 then t[#t+1]=string.char(math.floor((n%65536)/256)) end
-        if p4~=61 then t[#t+1]=string.char(math.floor(n%256)) end
-    end
-    return table.concat(t)
-end`;
-
-                // XOR decrypt
-                const xorDec = `
-local function ${varNames[2]}(data, seed)
-    local s=seed
-    local r={}
-    for i=1,#data do
-        s=(s*1103515245+12345)%2147483647
-        r[i]=string.char(string.byte(data,i)~(s%256))
-    end
-    return table.concat(r)
-end`;
-
-                // VM executor
-                const vmExec = `
-local function ${varNames[3]}(bc)
-    local st={}
-    local sp=0
-    local ip=1
-    while ip<=#bc do
-        local op=bc[ip]
-        ip=ip+1
-        if op==1 then
-            local val=bc[ip]
-            ip=ip+1
-            sp=sp+1
-            st[sp]=string.char(val)
-        elseif op==2 then
-            local s=""
-            for i=1,sp do s=s..st[i] end
-            sp=1
-            st[1]=s
-        elseif op==3 then
-            local f,err=loadstring(st[sp])
-            sp=sp-1
-            if f then pcall(f) end
-        else
-            -- تعليمات وهمية
-            local _=bc[ip] ip=ip+1
-        end
-    end
-end`;
-
-                // بناء حلقات فك التشفير الستة
-                let decryptSteps = '';
-                for (let i = 0; i < 6; i++) {
-                    const seed = seeds[i];
-                    decryptSteps += `
-    data = ${varNames[2]}(data, ${seed})
-    data = ${varNames[1]}(data)  -- بعد كل XOR نفك base64 لنحصل على بايتات صافية للطبقة التالية
-    `;
-                }
-                // الترتيب الصحيح: نحتاج البدء من base64 النهائي، ثم فك XOR ثم base64 decode? يجب الانتباه:
-                // في التشفير قمنا بـ: bytes -> xor -> base64 -> (bytes للدورة التالية) -> xor -> base64 ...
-                // إذن المحمل يستقبل base64 نهائي، يفك base64 -> bytes -> XOR decode -> يحصل على نص (قد يكون base64 سابق) -> يفك base64 مرة أخرى... وهكذا.
-                // سأقوم بجعل كل طبقة تنتج base64 string يمثل الطبقة التالية.
-                // لتسهيل الأمر: سأجعل عملية التشفير تنتج base64 string نهائي، وعملية فك التشفير بالعكس:
-                // for i=6 down to 1: base64 decode -> xor decode -> output string (الذي هو base64 للطبقة الأعمق).
-                // ولكن في التصميم الحالي للتشفير، كنت سأطبق: (xor ثم base64) لكل طبقة، بدءًا من bytecode الداخلي.
-                // لذا فك التشفير: base64 decode -> xor decode = ينتج base64 string للطبقة السابقة... وهكذا حتى نصل إلى bytecode raw.
-                // سأكتب الحلقات في المحمل بالعكس.
-
-                let reverseSteps = '';
-                for (let i = 5; i >= 0; i--) {
-                    const seed = seeds[i];
-                    reverseSteps += `
-    data = ${varNames[1]}(data)   -- base64 decode
-    data = ${varNames[2]}(data, ${seed})  -- xor decode
-    `;
-                }
-
-                const finalLoader = `
-local ${varNames[4]} = ${checksum}  -- المجموع الاختباري
-${b64dec}
-${xorDec}
-${vmExec}
-local data = "${encryptedFinal}"
-${reverseSteps}
--- الآن data هو bytecode الخام كنص، نحوله إلى جدول أرقام
-local bytecode = {}
-for i=1, #data do
-    bytecode[i] = string.byte(data, i)
-end
--- التحقق من التلاعب
-local sum = 0
-for i=1, #bytecode do
-    sum = sum + bytecode[i] * i
-end
-if sum ~= ${varNames[4]} then
-    while true do end  -- تجميد في حلقة لا نهائية
-end
-${varNames[3]}(bytecode)
-`;
-                return finalLoader;
-            }
-
-            // ============ تنفيذ التشفير بست طبقات ============
-            encryptBtn.addEventListener('click', () => {
-                if (!selectedFile) return;
-
-                statusMsg.textContent = '⏳ جاري التشفير بـ 6 طبقات VM...';
-                encryptBtn.disabled = true;
-                downloadBtn.disabled = true;
-
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    try {
-                        const original = e.target.result;
-                        if (!original.trim()) throw new Error('الملف فارغ');
-
-                        // بناء bytecode الداخلي
-                        const bytecode = buildVMBytecode(original);
-                        const checksum = bytecode.reduce((s, v, i) => s + v * (i + 1), 0);
-
-                        // توليد 6 بذور من النص الأصلي
-                        const seeds = [];
-                        let baseHash = hashString(original);
-                        for (let i = 0; i < 6; i++) {
-                            seeds.push((baseHash + i * 7919 + 1) % 999999937 + 10000);
-                        }
-
-                        // تطبيق 6 طبقات تشفير
-                        let currentBytes = bytecode.slice(); // نسخة
-                        for (let layer = 0; layer < 6; layer++) {
-                            const keystream = generateKeystream(seeds[layer], currentBytes.length);
-                            currentBytes = xorBytes(currentBytes, keystream);
-                            // تحويل إلى base64 string (يمثل مدخلات الطبقة التالية)
-                            const b64 = base64Encode(currentBytes);
-                            // تحويل b64 string إلى bytes للطبقة التالية (كتحضير)
-                            currentBytes = [];
-                            for (let j = 0; j < b64.length; j++) {
-                                currentBytes.push(b64.charCodeAt(j));
-                            }
-                        }
-                        // الناتج النهائي base64 string
-                        const finalBase64 = base64Encode(currentBytes);
-
-                        // توليد المحمل الأسطوري
-                        const obfuscatedCode = generateObfuscatedLoader(finalBase64, seeds, checksum);
-
-                        // عرض الناتج
-                        encryptedCodeArea.value = obfuscatedCode;
-                        outputPanel.style.display = 'block';
-                        downloadBtn.disabled = false;
-                        statusMsg.textContent = '✅ تم التشفير بـ 6 طبقات VM! لا يمكن فكه.';
-
-                        downloadBtn.onclick = () => {
-                            const blob = new Blob([obfuscatedCode], { type: 'text/plain' });
-                            const url = URL.createObjectURL(blob);
-                            const a = document.createElement('a');
-                            a.href = url;
-                            a.download = 'encrypted_lvl6.lua';
-                            document.body.appendChild(a);
-                            a.click();
-                            document.body.removeChild(a);
-                            URL.revokeObjectURL(url);
-                        };
-                    } catch (err) {
-                        statusMsg.textContent = '❌ خطأ: ' + err.message;
-                        outputPanel.style.display = 'none';
-                    } finally {
-                        encryptBtn.disabled = false;
-                    }
-                };
-
-                reader.onerror = () => {
-                    statusMsg.textContent = '❌ فشل قراءة الملف';
-                    encryptBtn.disabled = false;
-                };
-
-                reader.readAsText(selectedFile, 'UTF-8');
+        navBtns.forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                const page = this.dataset.page;
+                showPage(page);
             });
-        })();
+        });
+
+        // ========================================
+        // 3. أزرار التحميل (فارغة حالياً)
+        // ========================================
+        document.getElementById('iosBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            alert('رابط تحميل iOS سيتم إضافته لاحقاً');
+        });
+
+        document.getElementById('androidBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            alert('رابط تحميل Android سيتم إضافته لاحقاً');
+        });
+
+        console.log('✅ SZ DELTA V3.0 - جميع التعديلات منفذة بنجاح');
     </script>
+
 </body>
 </html>
