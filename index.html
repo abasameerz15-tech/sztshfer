@@ -21,7 +21,7 @@
 
         body {
             font-family: 'Cairo', sans-serif;
-            background: #0b0a0c;
+            background: #000;
             color: #fff;
             display: flex;
             justify-content: center;
@@ -36,10 +36,10 @@
             max-width: 440px;
             height: 100%;
             max-height: 780px;
-            background: linear-gradient(145deg, #141215, #1b181c);
+            background: #0a0a0a;
             border-radius: 40px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 215, 0, 0.08);
-            border: 1px solid rgba(255, 215, 0, 0.07);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 215, 0, 0.06);
+            border: 1px solid rgba(255, 215, 0, 0.05);
             position: relative;
             overflow: hidden;
             display: flex;
@@ -47,7 +47,6 @@
             padding: 22px 20px 12px;
         }
 
-        /* نجوم داخل الصندوق */
         #starfield {
             position: absolute;
             top: 0;
@@ -59,20 +58,6 @@
             border-radius: 40px;
         }
 
-        .container::before {
-            content: '';
-            position: absolute;
-            top: -60px;
-            right: -60px;
-            width: 200px;
-            height: 200px;
-            background: radial-gradient(circle, rgba(255, 215, 0, 0.05), transparent 70%);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        /* ===== العنوان العلوي (زي الصور بالضبط) ===== */
         .main-header {
             font-size: 24px;
             font-weight: 900;
@@ -90,7 +75,6 @@
             font-weight: 300;
         }
 
-        /* ===== حاوية الصفحات ===== */
         .pages-wrapper {
             flex: 1;
             position: relative;
@@ -128,7 +112,6 @@
             }
         }
 
-        /* ===== الصفحة الرئيسية (نفس النصوص بالضبط) ===== */
         .page-home .sub-title {
             font-size: 18px;
             font-weight: 800;
@@ -137,7 +120,7 @@
         }
         .page-home .desc {
             font-size: 13.5px;
-            color: #b8b2c2;
+            color: #ccc;
             line-height: 1.8;
             margin-bottom: 12px;
         }
@@ -193,11 +176,10 @@
         }
         .page-home .why p {
             font-size: 13px;
-            color: #b8b2c2;
+            color: #ccc;
             line-height: 1.7;
         }
 
-        /* ===== صفحة التحميلات (زي الصور بدون PC) ===== */
         .page-hacks .section-label {
             font-size: 16px;
             font-weight: 700;
@@ -206,7 +188,7 @@
         }
         .page-hacks .sub-desc-small {
             font-size: 13px;
-            color: #a8a3b0;
+            color: #aaa;
             margin-bottom: 14px;
         }
         .device-grid {
@@ -252,13 +234,12 @@
             font-size: 11px;
             font-weight: 700;
             background: #ffd700;
-            color: #0b0a0c;
+            color: #0a0a0a;
             padding: 2px 16px;
             border-radius: 30px;
             margin-top: 4px;
         }
 
-        /* ===== صفحة القنوات (زي الصور مع تعديل الروابط) ===== */
         .page-channels .section-label {
             font-size: 16px;
             font-weight: 700;
@@ -267,7 +248,7 @@
         }
         .page-channels .sub-desc-small {
             font-size: 13px;
-            color: #a8a3b0;
+            color: #aaa;
             margin-bottom: 14px;
         }
         .channels-grid {
@@ -314,7 +295,6 @@
             color: #0088cc;
         }
 
-        /* ===== الشريط السفلي (ترتيب: قنواتنا - هاكاتنا - الرئيسية) ===== */
         .bottom-nav {
             display: flex;
             justify-content: space-around;
@@ -356,7 +336,6 @@
             color: #ffd700;
         }
 
-        /* ===== ريسponsive ===== */
         @media (max-width: 460px) {
             body {
                 padding: 8px;
@@ -418,18 +397,15 @@
 <body>
 
     <div class="container">
-
         <canvas id="starfield"></canvas>
 
-        <!-- ===== العنوان العلوي (نفس الصور، بس EX صارت SZ) ===== -->
         <div class="main-header">
             SZ DELTA EXPLOIT <span>| OFFICIAL HUB V3.0</span>
         </div>
 
-        <!-- ===== حاوية الصفحات ===== -->
         <div class="pages-wrapper">
 
-            <!-- ========== الصفحة الرئيسية (نفس النصوص بالضبط) ========== -->
+            <!-- الصفحة الرئيسية -->
             <div class="page page-home active" id="page-home">
                 <div class="sub-title">معلوما ت هاك دلتا</div>
                 <div class="desc">
@@ -446,7 +422,7 @@
                 <div style="flex:1; min-height:6px;"></div>
             </div>
 
-            <!-- ========== صفحة هاكاتنا (تم حذف PC والملخص) ========== -->
+            <!-- صفحة هاكاتنا -->
             <div class="page page-hacks" id="page-hacks">
                 <div style="margin-bottom: 8px;">
                     <span style="font-size:20px; font-weight:800; color:#ffd700;">هاكاتنا</span>
@@ -468,11 +444,10 @@
                         <span class="download-badge">تحميل</span>
                     </a>
                 </div>
-                <!-- تم حذف (PC) نسخة الكمبيوتر وملخص شرح التحميل نهائياً -->
                 <div style="flex:1; min-height:6px;"></div>
             </div>
 
-            <!-- ========== صفحة قنواتنا (حقوقك فقط + قنواتك) ========== -->
+            <!-- صفحة قنواتنا -->
             <div class="page page-channels" id="page-channels">
                 <div style="margin-bottom: 8px;">
                     <span style="font-size:20px; font-weight:800; color:#ffd700;">قنواتنا</span>
@@ -480,7 +455,6 @@
                 </div>
                 <div class="section-label">قنواتنا ومجتمعاتنا</div>
                 <div class="sub-desc-small">تابعنا على جميع المنصات</div>
-                <!-- تم حذف جميع الحقوق القديمة (EX DELTA — ITZDEVAXL, KROLOEX, الخ) -->
                 <div class="channels-grid">
                     <a href="https://www.youtube.com/@ABBAS%C5%9EZS" target="_blank" class="channel-btn youtube">
                         <i class="fab fa-youtube icon"></i>
@@ -498,7 +472,7 @@
 
         </div>
 
-        <!-- ===== الشريط السفلي (مرتب: قنواتنا - هاكاتنا - الرئيسية) ===== -->
+        <!-- الشريط السفلي -->
         <div class="bottom-nav">
             <button class="nav-item active" data-page="home">
                 <i class="fas fa-home"></i>
@@ -512,13 +486,12 @@
                 <i class="fas fa-users"></i>
                 <span>قنواتنا</span>
             </button>
-            <!-- تم حذف "المفتاح" و "هاتف" نهائياً -->
         </div>
 
     </div>
 
     <script>
-        // ===== نجوم متحركة (داخل الصندوق) =====
+        // نجوم متحركة
         const canvas = document.getElementById('starfield');
         const ctx = canvas.getContext('2d');
         let w, h;
@@ -583,7 +556,7 @@
         const resizeObserver = new ResizeObserver(() => resizeCanvas());
         resizeObserver.observe(canvas.parentElement);
 
-        // ===== التنقل بين الصفحات =====
+        // التنقل بين الصفحات
         const pages = {
             home: document.getElementById('page-home'),
             hacks: document.getElementById('page-hacks'),
@@ -607,7 +580,7 @@
             });
         });
 
-        // ===== أزرار التحميل (فارغة حالياً) =====
+        // أزرار التحميل
         document.getElementById('iosBtn').addEventListener('click', e => {
             e.preventDefault();
             alert('رابط تحميل iOS سيتم إضافته لاحقاً');
@@ -616,8 +589,6 @@
             e.preventDefault();
             alert('رابط تحميل Android سيتم إضافته لاحقاً');
         });
-
-        console.log('✅ SZ DELTA V3.0 - نسخة طبق الأصل من الصور مع التعديلات');
     </script>
 
 </body>
