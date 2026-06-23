@@ -431,13 +431,15 @@
                 <div class="section-label">إصدارات الأجهزة</div>
                 <div class="sub-desc-small">اضغط لتحميل النسخة مباشرة</div>
                 <div class="device-grid">
-                    <a href="#" class="device-btn" id="iosBtn">
+                    <!-- رابط iOS -->
+                    <a href="https://www.mediafire.com/file/avplhpg957t8kee/Delta-2.725.1142.ipa/file?dkey=22qlxv9nroa&r=694" target="_blank" class="device-btn" id="iosBtn">
                         <i class="fab fa-apple icon"></i>
                         <span class="label">iOS / iPhone</span>
                         <span class="sub-label">تحميل IPA</span>
                         <span class="download-badge">تحميل</span>
                     </a>
-                    <a href="#" class="device-btn" id="androidBtn">
+                    <!-- رابط Android -->
+                    <a href="https://delta.filenetwork.vip/file/Delta-2.725.1142.apk" target="_blank" class="device-btn" id="androidBtn">
                         <i class="fab fa-android icon"></i>
                         <span class="label">Android</span>
                         <span class="sub-label">تحميل APK</span>
@@ -578,16 +580,6 @@
             btn.addEventListener('click', function() {
                 showPage(this.dataset.page);
             });
-        });
-
-        // أزرار التحميل
-        document.getElementById('iosBtn').addEventListener('click', e => {
-            e.preventDefault();
-            alert('رابط تحميل iOS سيتم إضافته لاحقاً');
-        });
-        document.getElementById('androidBtn').addEventListener('click', e => {
-            e.preventDefault();
-            alert('رابط تحميل Android سيتم إضافته لاحقاً');
         });
     </script>
 
