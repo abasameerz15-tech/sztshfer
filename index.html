@@ -1,587 +1,367 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>SZ DELTA EXPLOIT | OFFICIAL HUB V3.0</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SZ Script Encryptor & Obfuscator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: #111827;
+            --accent-color: #ef4444;
+            --accent-hover: #dc2626;
+            --text-main: #f9fafb;
+            --text-muted: #9ca3af;
+            --border-color: #1f2937;
+            --code-bg: #030712;
+            --success: #10b981;
+        }
+
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-        }
-
-        html,
-        body {
-            height: 100%;
-            overflow: hidden;
-        }
-
-        body {
             font-family: 'Cairo', sans-serif;
-            background: #000;
-            color: #fff;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 12px;
-            direction: rtl;
-            overflow: hidden;
+            padding: 20px;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(239, 68, 68, 0.08) 0%, transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(59, 130, 246, 0.05) 0%, transparent 25%);
         }
 
         .container {
             width: 100%;
-            max-width: 440px;
-            height: 100%;
-            max-height: 780px;
-            background: #0a0a0a;
-            border-radius: 40px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 215, 0, 0.06);
-            border: 1px solid rgba(255, 215, 0, 0.05);
+            max-width: 850px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
             position: relative;
             overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            padding: 22px 20px 12px;
         }
 
-        #starfield {
+        .container::before {
+            content: '';
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            pointer-events: none;
-            border-radius: 40px;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #ef4444, #3b82f6, #ef4444);
         }
 
-        .main-header {
-            font-size: 24px;
-            font-weight: 900;
+        .header {
             text-align: center;
-            color: #ffd700;
-            letter-spacing: 0.5px;
-            flex-shrink: 0;
-            z-index: 1;
-            position: relative;
-            margin-bottom: 8px;
-            line-height: 1.3;
-        }
-        .main-header span {
-            color: #fff;
-            font-weight: 300;
+            margin-bottom: 25px;
         }
 
-        .pages-wrapper {
-            flex: 1;
-            position: relative;
-            z-index: 1;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            min-height: 0;
-        }
-
-        .page {
-            display: none;
-            flex-direction: column;
-            flex: 1;
-            animation: fadeUp 0.25s ease forwards;
-            overflow-y: auto;
-            padding-bottom: 4px;
-        }
-        .page::-webkit-scrollbar {
-            width: 0;
-            background: transparent;
-        }
-        .page.active {
-            display: flex;
-        }
-
-        @keyframes fadeUp {
-            0% {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .page-home .sub-title {
-            font-size: 18px;
+        .header h1 {
+            font-size: 26px;
             font-weight: 800;
-            color: #ffd700;
-            margin: 4px 0 2px;
-        }
-        .page-home .desc {
-            font-size: 13.5px;
-            color: #ccc;
-            line-height: 1.8;
-            margin-bottom: 12px;
-        }
-        .page-home .status {
+            color: var(--text-main);
+            letter-spacing: -0.5px;
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 10px;
-            background: rgba(0, 255, 150, 0.05);
-            padding: 8px 16px;
-            border-radius: 30px;
-            border: 1px solid rgba(0, 255, 150, 0.1);
-            width: fit-content;
-            margin-bottom: 16px;
         }
-        .page-home .status .dot {
-            width: 10px;
-            height: 10px;
-            background: #00ff96;
-            border-radius: 50%;
-            box-shadow: 0 0 14px rgba(0, 255, 150, 0.5);
-            animation: pulse-dot 1.8s infinite;
+
+        .header h1 span {
+            color: var(--accent-color);
         }
-        @keyframes pulse-dot {
-            0%,
-            100% {
-                opacity: 1;
-                transform: scale(1);
-            }
-            50% {
-                opacity: 0.5;
-                transform: scale(0.85);
-            }
-        }
-        .page-home .status .text {
+
+        .header p {
+            color: var(--text-muted);
             font-size: 14px;
-            font-weight: 600;
-            color: #00ff96;
-        }
-        .page-home .why {
-            background: rgba(255, 215, 0, 0.03);
-            border-radius: 20px;
-            padding: 16px 18px;
-            border: 1px solid rgba(255, 215, 0, 0.06);
-        }
-        .page-home .why h3 {
-            font-size: 15px;
-            font-weight: 800;
-            color: #ffd700;
-            margin-bottom: 6px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .page-home .why p {
-            font-size: 13px;
-            color: #ccc;
-            line-height: 1.7;
+            margin-top: 5px;
         }
 
-        .page-hacks .section-label {
-            font-size: 16px;
-            font-weight: 700;
-            color: #ffd700;
-            margin-bottom: 2px;
-        }
-        .page-hacks .sub-desc-small {
-            font-size: 13px;
-            color: #aaa;
-            margin-bottom: 14px;
-        }
-        .device-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-        .device-btn {
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 18px;
-            padding: 18px 12px;
-            text-align: center;
-            transition: all 0.25s ease;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 6px;
-            text-decoration: none;
-            color: #fff;
-        }
-        .device-btn:hover {
-            background: rgba(255, 215, 0, 0.07);
-            border-color: rgba(255, 215, 0, 0.2);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-        }
-        .device-btn .icon {
-            font-size: 28px;
-            color: #ffd700;
-        }
-        .device-btn .label {
-            font-size: 14px;
-            font-weight: 700;
-        }
-        .device-btn .sub-label {
-            font-size: 11px;
-            color: #888;
-            font-weight: 400;
-        }
-        .device-btn .download-badge {
-            font-size: 11px;
-            font-weight: 700;
-            background: #ffd700;
-            color: #0a0a0a;
-            padding: 2px 16px;
-            border-radius: 30px;
-            margin-top: 4px;
-        }
-
-        .page-channels .section-label {
-            font-size: 16px;
-            font-weight: 700;
-            color: #ffd700;
-            margin-bottom: 2px;
-        }
-        .page-channels .sub-desc-small {
-            font-size: 13px;
-            color: #aaa;
-            margin-bottom: 14px;
-        }
-        .channels-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-        .channel-btn {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 18px;
-            padding: 22px 10px;
-            text-align: center;
-            transition: all 0.25s ease;
-            text-decoration: none;
-            color: #fff;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 6px;
-        }
-        .channel-btn:hover {
-            background: rgba(255, 215, 0, 0.07);
-            border-color: rgba(255, 215, 0, 0.2);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-        }
-        .channel-btn .icon {
-            font-size: 34px;
-        }
-        .channel-btn .label {
-            font-size: 16px;
-            font-weight: 800;
-        }
-        .channel-btn .sub-label {
-            font-size: 12px;
-            color: #888;
-            font-weight: 400;
-        }
-        .channel-btn.youtube .icon {
-            color: #ff0033;
-        }
-        .channel-btn.telegram .icon {
-            color: #0088cc;
-        }
-
-        .bottom-nav {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            flex-shrink: 0;
-            margin-top: 14px;
-            padding-top: 14px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            position: relative;
-            z-index: 2;
-        }
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            font-size: 11px;
-            color: #777;
-            font-weight: 600;
-            gap: 2px;
-            cursor: pointer;
-            transition: color 0.2s;
-            background: none;
-            border: none;
-            font-family: 'Cairo', sans-serif;
+        .badge {
+            display: inline-block;
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--accent-color);
             padding: 4px 12px;
-            text-decoration: none;
-        }
-        .nav-item i {
-            font-size: 20px;
-            color: #555;
-            transition: color 0.2s;
-        }
-        .nav-item.active i,
-        .nav-item.active {
-            color: #ffd700;
-        }
-        .nav-item:hover i,
-        .nav-item:hover {
-            color: #ffd700;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            margin-top: 10px;
         }
 
-        @media (max-width: 460px) {
-            body {
-                padding: 8px;
-            }
-            .container {
-                padding: 16px 14px 10px;
-                border-radius: 32px;
-                max-height: 100vh;
-            }
-            #starfield {
-                border-radius: 32px;
-            }
-            .main-header {
-                font-size: 18px;
-            }
-            .page-home .sub-title {
-                font-size: 16px;
-            }
-            .device-btn .icon {
-                font-size: 24px;
-            }
-            .channel-btn .icon {
-                font-size: 28px;
-            }
+        .form-group {
+            margin-bottom: 20px;
         }
 
-        @media (max-height: 650px) {
-            .main-header {
-                font-size: 16px;
-                margin-bottom: 4px;
-            }
-            .page-home .desc {
-                font-size: 12px;
-                margin-bottom: 6px;
-            }
-            .page-home .status {
-                padding: 4px 12px;
-                margin-bottom: 8px;
-            }
-            .page-home .why {
-                padding: 10px 14px;
-            }
-            .page-home .why p {
-                font-size: 12px;
-            }
-            .device-btn {
-                padding: 12px 6px;
-            }
-            .channel-btn {
-                padding: 14px 6px;
-            }
-            .bottom-nav {
-                margin-top: 6px;
-                padding-top: 10px;
-            }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-main);
+        }
+
+        textarea {
+            width: 100%;
+            height: 220px;
+            background-color: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 15px;
+            color: #38bdf8;
+            font-family: 'Fira Code', monospace;
+            font-size: 13px;
+            resize: vertical;
+            outline: none;
+            transition: border-color 0.2s;
+            direction: ltr;
+            text-align: left;
+        }
+
+        textarea:focus {
+            border-color: var(--accent-color);
+        }
+
+        .btn {
+            width: 100%;
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);
+        }
+
+        .btn:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .result-box {
+            margin-top: 25px;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .result-header label {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--success);
+        }
+
+        .output-wrapper {
+            position: relative;
+        }
+
+        .output-code {
+            background: var(--code-bg);
+            border: 1px solid var(--border-color);
+            padding: 14px;
+            border-radius: 10px;
+            font-family: 'Fira Code', monospace;
+            font-size: 12px;
+            color: #a7f3d0;
+            word-break: break-all;
+            direction: ltr;
+            text-align: left;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background-color: var(--success);
+            color: #000;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 14px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 1000;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .footer {
+            margin-top: 25px;
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-color);
+            padding-top: 15px;
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 0.8s ease-in-out infinite;
+            display: none;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <canvas id="starfield"></canvas>
-
-        <div class="main-header">
-            SZ DELTA EXPLOIT <span>| OFFICIAL HUB V3.0</span>
+        <div class="header">
+            <h1>SZ <span>Script Encryptor</span></h1>
+            <p>نظام التشفير الحصري والرفع التلقائي المباشر</p>
+            <span class="badge">محمي بواسطة SZ System</span>
         </div>
 
-        <div class="pages-wrapper">
-
-            <!-- الصفحة الرئيسية -->
-            <div class="page page-home active" id="page-home">
-                <div class="sub-title">معلومات هاك دلتا</div>
-                <div class="desc">
-                    أهلا بك في المركز الرسمي. دلتا إكسبلويت هو المحقق رقم #1 الذي يجمع بين القوة وسهولة الاستخدام. نقدم لك حماية متكاملة ضد أنظمة الباند مع سرعة حقن تتجاوز كل المنافسين.
-                </div>
-                <div class="status">
-                    <span class="dot"></span>
-                    <span class="text">الحالة: يعمل بنجاح</span>
-                </div>
-                <div class="why">
-                    <h3><i class="fas fa-bolt"></i> لماذا تختر دلتا؟</h3>
-                    <p>دعم كامل لجميع السكريات الضخمة، تحديثات تلقائية، وواجهة مستخدم بستايل أيفون عصري.</p>
-                </div>
-                <div style="flex:1; min-height:6px;"></div>
-            </div>
-
-            <!-- صفحة هاكاتنا -->
-            <div class="page page-hacks" id="page-hacks">
-                <div style="margin-bottom: 8px;">
-                    <span style="font-size:20px; font-weight:800; color:#ffd700;">هاكاتنا</span>
-                    <span style="font-size:16px; color:#aaa; font-weight:300;"> | التحميل</span>
-                </div>
-                <div class="section-label">إصدارات الأجهزة</div>
-                <div class="sub-desc-small">اضغط لتحميل النسخة مباشرة</div>
-                <div class="device-grid">
-                    <!-- رابط iOS -->
-                    <a href="https://www.mediafire.com/file/avplhpg957t8kee/Delta-2.725.1142.ipa/file?dkey=22qlxv9nroa&r=694" target="_blank" class="device-btn" id="iosBtn">
-                        <i class="fab fa-apple icon"></i>
-                        <span class="label">iOS / iPhone</span>
-                        <span class="sub-label">تحميل IPA</span>
-                        <span class="download-badge">تحميل</span>
-                    </a>
-                    <!-- رابط Android -->
-                    <a href="https://delta.filenetwork.vip/file/Delta-2.725.1142.apk" target="_blank" class="device-btn" id="androidBtn">
-                        <i class="fab fa-android icon"></i>
-                        <span class="label">Android</span>
-                        <span class="sub-label">تحميل APK</span>
-                        <span class="download-badge">تحميل</span>
-                    </a>
-                </div>
-                <div style="flex:1; min-height:6px;"></div>
-            </div>
-
-            <!-- صفحة قنواتنا -->
-            <div class="page page-channels" id="page-channels">
-                <div style="margin-bottom: 8px;">
-                    <span style="font-size:20px; font-weight:800; color:#ffd700;">قنواتنا</span>
-                    <span style="font-size:16px; color:#aaa; font-weight:300;"> | تابعنا</span>
-                </div>
-                <div class="section-label">قنواتنا ومجتمعاتنا</div>
-                <div class="sub-desc-small">تابعنا على جميع المنصات</div>
-                <div class="channels-grid">
-                    <a href="https://www.youtube.com/@ABBAS%C5%9EZS" target="_blank" class="channel-btn youtube">
-                        <i class="fab fa-youtube icon"></i>
-                        <span class="label">يوتيوب</span>
-                        <span class="sub-label">ABBAS ŞZS</span>
-                    </a>
-                    <a href="https://t.me/SZSTORE_1" target="_blank" class="channel-btn telegram">
-                        <i class="fab fa-telegram-plane icon"></i>
-                        <span class="label">تيليجرام</span>
-                        <span class="sub-label">SZSTORE_1</span>
-                    </a>
-                </div>
-                <div style="flex:1; min-height:6px;"></div>
-            </div>
-
+        <div class="form-group">
+            <label for="scriptInput">ضع السكربت الأصلي الخاص بك هنا (Lua Code):</label>
+            <textarea id="scriptInput" placeholder="-- ضع كود اللوا الخاص بك هنا&#10;print('Hello World!')"></textarea>
         </div>
 
-        <!-- الشريط السفلي -->
-        <div class="bottom-nav">
-            <button class="nav-item active" data-page="home">
-                <i class="fas fa-home"></i>
-                <span>الرئيسية</span>
-            </button>
-            <button class="nav-item" data-page="hacks">
-                <i class="fas fa-skull"></i>
-                <span>هاكاتنا</span>
-            </button>
-            <button class="nav-item" data-page="channels">
-                <i class="fas fa-users"></i>
-                <span>قنواتنا</span>
-            </button>
+        <button class="btn" id="encryptBtn" onclick="processAndUpload()">
+            <div class="spinner" id="btnSpinner"></div>
+            <span id="btnText">🔒 تشفير السكربت والرفع الفوري</span>
+        </button>
+
+        <div class="result-box" id="resultBox">
+            <div class="result-header">
+                <label>✅ تم الرفع والتشفير بنجاح (تم النسخ تلقائياً للجهاز):</label>
+            </div>
+            <div class="output-wrapper">
+                <div class="output-code" id="outputCode"></div>
+            </div>
         </div>
 
+        <div class="footer">
+            جميع الحقوق محفوظة &copy; SZ Security System | Encrypt X
+        </div>
     </div>
 
+    <div class="toast" id="toast">📋 تم نسخ كود loadstring إلى جهازك تلقائياً!</div>
+
     <script>
-        // نجوم متحركة
-        const canvas = document.getElementById('starfield');
-        const ctx = canvas.getContext('2d');
-        let w, h;
+        const FIREBASE_URL = "https://sz-chat-1306e-default-rtdb.firebaseio.com/scripts";
 
-        function resizeCanvas() {
-            const rect = canvas.parentElement.getBoundingClientRect();
-            canvas.width = rect.width;
-            canvas.height = rect.height;
-            w = canvas.width;
-            h = canvas.height;
+        function generateUniqueId() {
+            return Math.floor(1000000000000 + Math.random() * 9000000000000).toString();
         }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
 
-        const stars = [];
-        const NUM_STARS = 80;
-        class Star {
-            constructor() {
-                this.reset(true);
+        async function processAndUpload() {
+            const rawScript = document.getElementById('scriptInput').value.trim();
+            const btn = document.getElementById('encryptBtn');
+            const btnText = document.getElementById('btnText');
+            const spinner = document.getElementById('btnSpinner');
+            const resultBox = document.getElementById('resultBox');
+            const outputCode = document.getElementById('outputCode');
+
+            if (!rawScript) {
+                alert("يرجى كتابة السكربت أولاً!");
+                return;
             }
-            reset(init) {
-                this.x = Math.random() * w;
-                this.y = init ? Math.random() * h : h + 5;
-                this.size = Math.random() * 2.4 + 1.0;
-                this.speed = Math.random() * 1.6 + 0.6;
-                this.opacity = Math.random() * 0.7 + 0.3;
-                this.color = Math.random() > 0.6 ? '#ffd700' : '#ffffff';
-            }
-            update() {
-                this.y -= this.speed;
-                if (this.y < -10) {
-                    this.reset(false);
-                    this.y = h + 5;
-                    this.x = Math.random() * w;
+
+            // UI Loading state
+            btn.disabled = true;
+            spinner.style.display = 'block';
+            btnText.innerText = 'جاري التشفير والرفع...';
+
+            const scriptId = generateUniqueId();
+            const securityHash = "SZ_" + Math.random().toString(36).substring(2, 10).toUpperCase();
+
+            // Structure data to be uploaded
+            const payload = {
+                script: rawScript,
+                protection: "Protected by SZ Security System",
+                provider: "Encrypt X Access",
+                site: "https://encrypt-x.pages.dev",
+                hash: securityHash,
+                timestamp: Date.now()
+            };
+
+            try {
+                // Upload to Firebase Realtime Database
+                const response = await fetch(`${FIREBASE_URL}/${scriptId}.json`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    throw new Error("فشل الرفع إلى السيرفر");
                 }
+
+                // Generate loadstring code
+                const loadstringCode = `loadstring(game:HttpGet("https://encrypt-x.pages.dev/Scripts?Id=${scriptId}"))("${scriptId}")`;
+
+                outputCode.innerText = loadstringCode;
+                resultBox.style.display = 'block';
+
+                // Copy directly to clipboard
+                await navigator.clipboard.writeText(loadstringCode);
+                showToast();
+
+            } catch (error) {
+                alert("حدث خطأ أثناء الاتصال بالسيرفر: " + error.message);
+            } finally {
+                // Restore button state
+                btn.disabled = false;
+                spinner.style.display = 'none';
+                btnText.innerText = '🔒 تشفير السكربت والرفع الفوري';
             }
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fillStyle = this.color;
-                ctx.globalAlpha = this.opacity;
-                ctx.fill();
-                if (this.color === '#ffd700') {
-                    ctx.shadowColor = '#ffd700';
-                    ctx.shadowBlur = 12;
-                    ctx.fill();
-                    ctx.shadowBlur = 0;
-                }
-                ctx.globalAlpha = 1;
-            }
-        }
-        for (let i = 0; i < NUM_STARS; i++) stars.push(new Star());
-
-        function animateStars() {
-            ctx.clearRect(0, 0, w, h);
-            stars.forEach(s => { s.update();
-                s.draw(); });
-            requestAnimationFrame(animateStars);
-        }
-        animateStars();
-
-        const resizeObserver = new ResizeObserver(() => resizeCanvas());
-        resizeObserver.observe(canvas.parentElement);
-
-        // التنقل بين الصفحات
-        const pages = {
-            home: document.getElementById('page-home'),
-            hacks: document.getElementById('page-hacks'),
-            channels: document.getElementById('page-channels')
-        };
-        const navBtns = document.querySelectorAll('.nav-item');
-
-        function showPage(pageId) {
-            Object.keys(pages).forEach(key => pages[key].classList.remove('active'));
-            if (pages[pageId]) pages[pageId].classList.add('active');
-            else pages.home.classList.add('active');
-            navBtns.forEach(btn => {
-                btn.classList.remove('active');
-                if (btn.dataset.page === pageId) btn.classList.add('active');
-            });
         }
 
-        navBtns.forEach(btn => {
-            btn.addEventListener('click', function() {
-                showPage(this.dataset.page);
-            });
-        });
+        function showToast() {
+            const toast = document.getElementById('toast');
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3500);
+        }
     </script>
-
 </body>
 </html>
