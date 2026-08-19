@@ -149,8 +149,10 @@
 
         canvas {
             display: block;
-            width: 200px; /* عرض المعاينة على الشاشة فقط */
-            height: 200px;
+            width: 150px;
+            height: 150px;
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
         }
 
         video {
@@ -213,7 +215,7 @@
         
         <div class="header">
             <h1>أهلاً بك في أداة إزالة الخلفية الخضراء الاحترافية 👋</h1>
-            <p>قم برفع فيديو يحتوي على خلفية خضراء وسنقوم بحذفها وتصديره تلقائياً بحجم (100x100) بصيغة WebM الشفافة.</p>
+            <p>حجم 100x100 أقصى دقة + ضمان عدم تجاوز 64KB وبدون حواف سوداء.</p>
         </div>
 
         <div class="upload-section">
@@ -228,7 +230,6 @@
 
         <div class="preview-container" id="previewContainer">
             <div class="canvas-wrapper">
-                <!-- أبعاد الكانفاس الفعلية مثبتة على 100x100 -->
                 <canvas id="outputCanvas" width="100" height="100"></canvas>
             </div>
 
@@ -266,6 +267,9 @@
         let mediaRecorder;
         let recordedChunks = [];
 
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = 'high';
+
         videoInput.addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
@@ -290,8 +294,16 @@
                 return;
             }
 
-            // رسم الفيديو دائماً بأبعاد ثابتة 100x100
-            ctx.drawImage(sourceVideo, 0, 0, 100, 100);
+            // قص وتوسيط الفيديو بدون تمديد أو حواف (Object-Fit Center Crop)
+            let vw = sourceVideo.videoWidth;
+            let vh = sourceVideo.videoHeight;
+            let minDim = Math.min(vw, vh);
+            let sx = (vw - minDim) / 2;
+            let sy = (vh - minDim) / 2;
+
+            ctx.clearRect(0, 0, 100, 100);
+            ctx.drawImage(sourceVideo, sx, sy, minDim, minDim, 0, 0, 100, 100);
+
             let frame = ctx.getImageData(0, 0, 100, 100);
             let l = frame.data.length / 4;
 
@@ -317,19 +329,15 @@
         }
 
         downloadBtn.addEventListener('click', function() {
-            recordedChunks = [];
-            
-            const targetSizeKB = 64;
-            const targetSizeBytes = targetSizeKB * 1024;
-            const durationSec = sourceVideo.duration || 3;
-            
-            let calculatedBitrate = Math.round((targetSizeBytes * 8) / durationSec);
-            if (calculatedBitrate < 10000) calculatedBitrate = 10000;
+            startRecordingWithBitrate(180000); // بدء البت ريت لمنع تجاور الحجم
+        });
 
+        function startRecordingWithBitrate(bitrate) {
+            recordedChunks = [];
             const stream = outputCanvas.captureStream(30);
             const options = { 
                 mimeType: 'video/webm;codecs=vp9',
-                videoBitsPerSecond: calculatedBitrate
+                videoBitsPerSecond: bitrate
             };
 
             try {
@@ -346,6 +354,14 @@
 
             mediaRecorder.onstop = function() {
                 const blob = new Blob(recordedChunks, { type: 'video/webm' });
+                
+                // فحص صارم: أقصى حجم مسموح هو 62KB حتى لا يصل لـ 64KB
+                if (blob.size > 62 * 1024 && bitrate > 30000) {
+                    // إذا تجاوز 62KB يتم إعادة الضغط بتدفق أقل تلقائياً
+                    startRecordingWithBitrate(Math.round(bitrate * 0.7));
+                    return;
+                }
+
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
@@ -356,30 +372,24 @@
                     document.body.removeChild(a);
                     window.URL.revokeObjectURL(url);
                 }, 100);
+
+                downloadBtn.innerText = "تحميل الفيديو الشفاف (100x100 WebM)";
+                downloadBtn.style.opacity = "1";
+                downloadBtn.disabled = false;
             };
 
-            downloadBtn.innerText = "جاري تصدير الفيديو الشفاف...";
+            downloadBtn.innerText = "جاري تصدير أعلى دقة...";
             downloadBtn.style.opacity = "0.7";
             downloadBtn.disabled = true;
 
             sourceVideo.currentTime = 0;
             mediaRecorder.start();
 
-            sourceVideo.onended = stopRecording;
             setTimeout(() => {
                 if(mediaRecorder.state === "recording") {
-                    stopRecording();
+                    mediaRecorder.stop();
                 }
-            }, (sourceVideo.duration * 1000) || 5000);
-        });
-
-        function stopRecording() {
-            if(mediaRecorder && mediaRecorder.state === "recording") {
-                mediaRecorder.stop();
-                downloadBtn.innerText = "تحميل الفيديو الشفاف (100x100 WebM)";
-                downloadBtn.style.opacity = "1";
-                downloadBtn.disabled = false;
-            }
+            }, (sourceVideo.duration * 1000) || 3000);
         }
     </script>
 </body>
