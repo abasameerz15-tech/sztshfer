@@ -27,7 +27,7 @@
 
         body {
             background-color: var(--bg-color);
-            background-image: 
+            background-image:
                 radial-gradient(circle at 15% 20%, rgba(138, 43, 226, 0.15) 0%, transparent 40%),
                 radial-gradient(circle at 85% 80%, rgba(157, 78, 221, 0.15) 0%, transparent 40%);
             min-height: 100vh;
@@ -110,6 +110,12 @@
             transform: translateY(0);
         }
 
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
         .btn-download {
             background: linear-gradient(135deg, #10b981, #059669);
             box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
@@ -137,10 +143,10 @@
             overflow: hidden;
             border: 2px solid rgba(255, 255, 255, 0.1);
             background-color: #1a1a24;
-            background-image: 
-                linear-gradient(45deg, #252533 25%, transparent 25%), 
-                linear-gradient(-45deg, #252533 25%, transparent 25%), 
-                linear-gradient(45deg, transparent 75%, #252533 75%), 
+            background-image:
+                linear-gradient(45deg, #252533 25%, transparent 25%),
+                linear-gradient(-45deg, #252533 25%, transparent 25%),
+                linear-gradient(45deg, transparent 75%, #252533 75%),
                 linear-gradient(-45deg, transparent 75%, #252533 75%);
             background-size: 20px 20px;
             background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
@@ -149,10 +155,9 @@
 
         canvas {
             display: block;
-            width: 150px;
-            height: 150px;
-            image-rendering: -webkit-optimize-contrast;
-            image-rendering: crisp-edges;
+            max-width: 100%;
+            height: auto;
+            max-height: 500px;
         }
 
         video {
@@ -174,7 +179,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             font-size: 0.95rem;
             color: var(--text-sub);
         }
@@ -184,9 +189,20 @@
         }
 
         input[type=range] {
-            width: 60%;
+            width: 55%;
             accent-color: var(--primary-purple);
             cursor: pointer;
+        }
+
+        input[type=number] {
+            width: 90px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 8px;
+            color: #fff;
+            padding: 6px 10px;
+            font-size: 0.95rem;
+            text-align: center;
         }
 
         .status-badge {
@@ -201,6 +217,41 @@
             margin-bottom: 20px;
         }
 
+        .size-warning {
+            font-size: 0.85rem;
+            color: #ffb454;
+            margin-top: 4px;
+            display: none;
+        }
+
+        .status-log {
+            display: none;
+            width: 100%;
+            max-width: 500px;
+            margin-top: 15px;
+            background: rgba(0,0,0,0.35);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 14px;
+            font-size: 0.82rem;
+            color: var(--text-sub);
+            text-align: right;
+            max-height: 160px;
+            overflow-y: auto;
+            direction: rtl;
+        }
+
+        .status-log div {
+            padding: 3px 0;
+            border-bottom: 1px dashed rgba(255,255,255,0.06);
+        }
+
+        .status-log div:last-child {
+            color: var(--success-green);
+            font-weight: 700;
+            border-bottom: none;
+        }
+
         .footer-tag {
             margin-top: 30px;
             font-size: 0.85rem;
@@ -211,11 +262,11 @@
 <body>
 
     <div class="container">
-        <div class="status-badge">SZ GREEN SCREEN REMOVER v2.0</div>
-        
+        <div class="status-badge">SZ GREEN SCREEN REMOVER v3.0 — Sticker Ready</div>
+
         <div class="header">
             <h1>أهلاً بك في أداة إزالة الخلفية الخضراء الاحترافية 👋</h1>
-            <p>تصدير الفيديو بحجم 64KB بدقة أقصاها المتاحة وبدون حواف سوداء.</p>
+            <p>ارفع فيديو خلفيته خضراء، وحدد حجم الملف المستهدف (افتراضي 64KB لملصقات تيليجرام)، وسنبحث تلقائياً عن أفضل جودة ممكنة تحت هذا الحجم.</p>
         </div>
 
         <div class="upload-section">
@@ -230,7 +281,7 @@
 
         <div class="preview-container" id="previewContainer">
             <div class="canvas-wrapper">
-                <canvas id="outputCanvas" width="100" height="100"></canvas>
+                <canvas id="outputCanvas"></canvas>
             </div>
 
             <div class="controls-panel" id="controlsPanel">
@@ -242,12 +293,23 @@
                     <label for="smoothness">نعومة الحواف:</label>
                     <input type="range" id="smoothness" min="0" max="50" value="15">
                 </div>
+                <div class="control-group">
+                    <label for="targetSize">الحجم المستهدف (KB):</label>
+                    <input type="number" id="targetSize" min="16" max="1024" value="64">
+                </div>
+                <div class="control-group">
+                    <label for="maxRes">أقصى دقة (أطول ضلع بالبكسل):</label>
+                    <input type="number" id="maxRes" min="128" max="1024" value="512" step="32">
+                </div>
             </div>
+            <div class="size-warning" id="durationWarning">⚠️ ملصقات الفيديو في تيليجرام يجب ألا تتجاوز 3 ثوانٍ.</div>
 
             <button class="btn btn-download" id="downloadBtn">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                تحميل الفيديو الشفاف (64KB WebM)
+                تحويل وتحميل بالحجم المطلوب
             </button>
+
+            <div class="status-log" id="statusLog"></div>
         </div>
 
         <div class="footer-tag">تصميم وتطوير احترافي بواسطة SZ Studio</div>
@@ -263,14 +325,34 @@
         const downloadBtn = document.getElementById('downloadBtn');
         const toleranceInput = document.getElementById('tolerance');
         const smoothnessInput = document.getElementById('smoothness');
+        const targetSizeInput = document.getElementById('targetSize');
+        const maxResInput = document.getElementById('maxRes');
+        const durationWarning = document.getElementById('durationWarning');
+        const statusLog = document.getElementById('statusLog');
 
-        let mediaRecorder;
-        let recordedChunks = [];
+        let isProcessing = false;
+        let baseWidth = 0, baseHeight = 0; // original video dimensions
 
-        ctx.imageSmoothingEnabled = true;
-        ctx.imageSmoothingQuality = 'high';
+        function logStatus(msg, final) {
+            statusLog.style.display = 'block';
+            const line = document.createElement('div');
+            line.textContent = msg;
+            if (final) statusLog.querySelectorAll('div').forEach(d => d.style.color = '');
+            statusLog.appendChild(line);
+            statusLog.scrollTop = statusLog.scrollHeight;
+        }
 
-        videoInput.addEventListener('change', function(e) {
+        function clearLog() {
+            statusLog.innerHTML = '';
+        }
+
+        function fitDimensions(w, h, maxSide) {
+            if (w <= maxSide && h <= maxSide) return { w, h };
+            const scale = w > h ? maxSide / w : maxSide / h;
+            return { w: Math.round(w * scale / 2) * 2, h: Math.round(h * scale / 2) * 2 };
+        }
+
+        videoInput.addEventListener('change', function (e) {
             const file = e.target.files[0];
             if (file) {
                 const fileURL = URL.createObjectURL(file);
@@ -281,29 +363,40 @@
                 previewContainer.style.display = 'flex';
                 controlsPanel.style.display = 'block';
                 downloadBtn.style.display = 'inline-flex';
+                clearLog();
             }
         });
 
-        sourceVideo.addEventListener('loadedmetadata', function() {
+        sourceVideo.addEventListener('loadedmetadata', function () {
+            baseWidth = sourceVideo.videoWidth;
+            baseHeight = sourceVideo.videoHeight;
+            applyCanvasSize(parseInt(maxResInput.value));
+
+            durationWarning.style.display = sourceVideo.duration > 3 ? 'block' : 'none';
+
+            isProcessing = true;
             requestAnimationFrame(processFrame);
         });
 
+        maxResInput.addEventListener('change', function () {
+            if (baseWidth) applyCanvasSize(parseInt(maxResInput.value));
+        });
+
+        function applyCanvasSize(maxSide) {
+            const { w, h } = fitDimensions(baseWidth, baseHeight, maxSide);
+            outputCanvas.width = w;
+            outputCanvas.height = h;
+        }
+
         function processFrame() {
+            if (!isProcessing) return;
             if (sourceVideo.paused || sourceVideo.ended) {
                 requestAnimationFrame(processFrame);
                 return;
             }
 
-            let vw = sourceVideo.videoWidth;
-            let vh = sourceVideo.videoHeight;
-            let minDim = Math.min(vw, vh);
-            let sx = (vw - minDim) / 2;
-            let sy = (vh - minDim) / 2;
-
-            ctx.clearRect(0, 0, 100, 100);
-            ctx.drawImage(sourceVideo, sx, sy, minDim, minDim, 0, 0, 100, 100);
-
-            let frame = ctx.getImageData(0, 0, 100, 100);
+            ctx.drawImage(sourceVideo, 0, 0, outputCanvas.width, outputCanvas.height);
+            let frame = ctx.getImageData(0, 0, outputCanvas.width, outputCanvas.height);
             let l = frame.data.length / 4;
 
             let tolerance = parseInt(toleranceInput.value);
@@ -327,81 +420,117 @@
             requestAnimationFrame(processFrame);
         }
 
-        downloadBtn.addEventListener('click', function() {
-            // حساب الـ Bitrate بدقة لتحقيق 63.8KB ملموسة
-            const targetBytes = 63.8 * 1024;
-            const durationSec = sourceVideo.duration || 3;
-            let calculatedBitrate = Math.round((targetBytes * 8) / durationSec);
+        // يسجل الفيديو كاملاً مرة واحدة بمعدل بت (bitrate) محدد، ويرجع الـ Blob الناتج
+        function recordAttempt(bitrate) {
+            return new Promise((resolve, reject) => {
+                const recordedChunks = [];
+                const stream = outputCanvas.captureStream(30);
+                let recorder;
 
-            optimizeAndRecord(calculatedBitrate, 1);
-        });
+                const tryOptions = [
+                    { mimeType: 'video/webm;codecs=vp9', videoBitsPerSecond: bitrate },
+                    { mimeType: 'video/webm', videoBitsPerSecond: bitrate },
+                    { videoBitsPerSecond: bitrate }
+                ];
 
-        function optimizeAndRecord(bitrate, attempt) {
-            recordedChunks = [];
-            const stream = outputCanvas.captureStream(30);
-            const options = { 
-                mimeType: 'video/webm;codecs=vp9',
-                videoBitsPerSecond: bitrate
-            };
+                for (const opt of tryOptions) {
+                    try { recorder = new MediaRecorder(stream, opt); break; } catch (e) { /* try next */ }
+                }
+                if (!recorder) { reject(new Error('MediaRecorder غير مدعوم')); return; }
 
-            try {
-                mediaRecorder = new MediaRecorder(stream, options);
-            } catch (e) {
-                mediaRecorder = new MediaRecorder(stream);
+                recorder.ondataavailable = e => { if (e.data.size > 0) recordedChunks.push(e.data); };
+                recorder.onstop = () => resolve(new Blob(recordedChunks, { type: 'video/webm' }));
+                recorder.onerror = reject;
+
+                sourceVideo.pause();
+                sourceVideo.currentTime = 0;
+
+                const startRecording = () => {
+                    recorder.start();
+                    sourceVideo.play();
+                    const durationMs = (sourceVideo.duration * 1000) || 3000;
+                    const finish = () => { if (recorder.state === 'recording') recorder.stop(); };
+                    sourceVideo.onended = finish;
+                    setTimeout(finish, durationMs + 250);
+                };
+
+                if (sourceVideo.readyState >= 2) startRecording();
+                else sourceVideo.addEventListener('seeked', startRecording, { once: true });
+            });
+        }
+
+        function triggerDownload(blob) {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'sticker_SZ.webm';
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(() => {
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, 100);
+        }
+
+        downloadBtn.addEventListener('click', async function () {
+            downloadBtn.disabled = true;
+            clearLog();
+
+            const targetBytes = Math.max(8, parseInt(targetSizeInput.value)) * 1024;
+            const duration = sourceVideo.duration || 3;
+            const MIN_BITRATE = 20000; // 20 kbps floor, below this quality is unusable
+            const MAX_ATTEMPTS = 7;
+
+            let bitrate = Math.floor((targetBytes * 8) / duration); // تقدير أولي
+            let currentMaxRes = parseInt(maxResInput.value);
+            let bestBlob = null;
+
+            downloadBtn.innerText = 'جاري البحث عن أفضل جودة...';
+
+            for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+                logStatus(`محاولة ${attempt}: دقة ${outputCanvas.width}x${outputCanvas.height} — بترايت ${(bitrate / 1000).toFixed(0)} kbps`);
+
+                let blob;
+                try {
+                    blob = await recordAttempt(bitrate);
+                } catch (err) {
+                    logStatus('حدث خطأ أثناء التسجيل: ' + err.message);
+                    break;
+                }
+
+                const sizeKB = (blob.size / 1024).toFixed(1);
+                logStatus(`⤷ الناتج: ${sizeKB} KB`);
+
+                if (blob.size <= targetBytes) {
+                    bestBlob = blob;
+                    logStatus(`✅ تم الوصول للحجم المطلوب: ${sizeKB} KB (الحد ${(targetBytes / 1024).toFixed(0)} KB)`, true);
+                    break;
+                }
+
+                // البترايت لسه كبير، نقلله بنسبة الحجم الزايد + هامش أمان
+                const ratio = targetBytes / blob.size;
+                let nextBitrate = Math.floor(bitrate * ratio * 0.88);
+
+                if (nextBitrate < MIN_BITRATE && currentMaxRes > 160) {
+                    // البترايت وصل لأدنى حد مفيد، قلل الدقة بدل ما نخرب الجودة أكثر
+                    currentMaxRes = Math.round(currentMaxRes * 0.8 / 2) * 2;
+                    applyCanvasSize(currentMaxRes);
+                    logStatus(`↓ تقليل الدقة إلى أقصى ضلع ${currentMaxRes}px لإفساح مجال أكبر للبترايت`);
+                    bitrate = Math.floor((targetBytes * 8) / duration);
+                } else {
+                    bitrate = Math.max(nextBitrate, MIN_BITRATE);
+                }
             }
 
-            mediaRecorder.ondataavailable = function(e) {
-                if (e.data.size > 0) {
-                    recordedChunks.push(e.data);
-                }
-            };
+            if (bestBlob) {
+                triggerDownload(bestBlob);
+            } else {
+                logStatus('⚠️ تعذر الوصول للحجم المطلوب حتى بعد تقليل الدقة والبترايت. جرّب فيديو أقصر (1-2 ثانية) أو ارفع الحد المستهدف قليلاً.', true);
+            }
 
-            mediaRecorder.onstop = function() {
-                const blob = new Blob(recordedChunks, { type: 'video/webm' });
-                const sizeKB = blob.size / 1024;
-
-                // لو الحجم طلع أكثر من 63.9KB يقلل البت ريت فوراً ويقيد الحجم
-                if (sizeKB > 63.9 && attempt < 5) {
-                    optimizeAndRecord(Math.round(bitrate * (63.5 / sizeKB)), attempt + 1);
-                    return;
-                }
-                
-                // لو الحجم طلع أقل من 60KB يحاول يرفع الدقة للوصول إلى 63.8KB
-                if (sizeKB < 60 && attempt < 5) {
-                    optimizeAndRecord(Math.round(bitrate * (63.5 / sizeKB)), attempt + 1);
-                    return;
-                }
-
-                // تحميل الملف فور الوصول لأعلى حجم مناسب تحتاجه
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'transparent_100x100_SZ.webm';
-                document.body.appendChild(a);
-                a.click();
-                setTimeout(() => {
-                    document.body.removeChild(a);
-                    window.URL.revokeObjectURL(url);
-                }, 100);
-
-                downloadBtn.innerText = "تحميل الفيديو الشفاف (64KB WebM)";
-                downloadBtn.style.opacity = "1";
-                downloadBtn.disabled = false;
-            };
-
-            downloadBtn.innerText = `جاري الضبط لأقصى دقة (${attempt})...`;
-            downloadBtn.style.opacity = "0.7";
-            downloadBtn.disabled = true;
-
-            sourceVideo.currentTime = 0;
-            mediaRecorder.start();
-
-            setTimeout(() => {
-                if(mediaRecorder.state === "recording") {
-                    mediaRecorder.stop();
-                }
-            }, (sourceVideo.duration * 1000) || 3000);
-        }
+            downloadBtn.innerText = 'تحويل وتحميل بالحجم المطلوب';
+            downloadBtn.disabled = false;
+        });
     </script>
 </body>
 </html>
