@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مُزيل الخلفية الخضراء الاحترافي | SZ Studio</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
-    <!-- مكتبة تحويل GIF الحقيقية بأعلى جودة -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.js"></script>
     <style>
         :root {
             --bg-color: #0b0c10;
@@ -112,10 +110,16 @@
             transform: translateY(0);
         }
 
-        .btn-convert {
-            background: linear-gradient(135deg, #8a2be2, #4c1d95);
-            box-shadow: 0 8px 25px rgba(138, 43, 226, 0.4);
-            margin-top: 20px;
+        .btn-download {
+            background: linear-gradient(135deg, #10b981, #059669);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+            display: none;
+            margin-top: 25px;
+        }
+
+        .btn-download:hover {
+            background: linear-gradient(135deg, #34d399, #10b981);
+            box-shadow: 0 12px 30px rgba(52, 211, 153, 0.5);
         }
 
         .preview-container {
@@ -132,6 +136,7 @@
             border-radius: 16px;
             overflow: hidden;
             border: 2px solid rgba(255, 255, 255, 0.1);
+            /* الشطرنج لبيان الشفافية */
             background-color: #1a1a24;
             background-image: 
                 linear-gradient(45deg, #252533 25%, transparent 25%), 
@@ -145,9 +150,9 @@
 
         canvas {
             display: block;
-            width: 150px;
-            height: 150px;
-            image-rendering: pixelated;
+            max-width: 100%;
+            height: auto;
+            max-height: 500px;
         }
 
         video {
@@ -169,7 +174,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             font-size: 0.95rem;
             color: var(--text-sub);
         }
@@ -210,7 +215,7 @@
         
         <div class="header">
             <h1>أهلاً بك في أداة إزالة الخلفية الخضراء الاحترافية 👋</h1>
-            <p>قم برفع الفيديو لإزالة الخلفية الخضراء وتحويله مباشرة إلى GIF بأعلى دقة ونقاء 100x100.</p>
+            <p>قم برفع فيديو يحتوي على خلفية خضراء (Green Screen / Chroma Key) وسنقوم بحذف الخلفية تلقائياً وإتاحة تحميله كملف شفاف جودة عالية.</p>
         </div>
 
         <div class="upload-section">
@@ -225,7 +230,7 @@
 
         <div class="preview-container" id="previewContainer">
             <div class="canvas-wrapper">
-                <canvas id="outputCanvas" width="100" height="100"></canvas>
+                <canvas id="outputCanvas"></canvas>
             </div>
 
             <div class="controls-panel" id="controlsPanel">
@@ -239,9 +244,9 @@
                 </div>
             </div>
 
-            <button class="btn btn-convert" id="convertBtn">
+            <button class="btn btn-download" id="downloadBtn">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                تحويل (GIF بحجم 100x100)
+                تحميل الفيديو بدون خلفية (WebM الشفاف)
             </button>
         </div>
 
@@ -255,9 +260,13 @@
         const ctx = outputCanvas.getContext('2d', { willReadFrequently: true });
         const previewContainer = document.getElementById('previewContainer');
         const controlsPanel = document.getElementById('controlsPanel');
-        const convertBtn = document.getElementById('convertBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
         const toleranceInput = document.getElementById('tolerance');
         const smoothnessInput = document.getElementById('smoothness');
+
+        let mediaRecorder;
+        let recordedChunks = [];
+        let isProcessing = false;
 
         videoInput.addEventListener('change', function(e) {
             const file = e.target.files[0];
@@ -269,10 +278,14 @@
 
                 previewContainer.style.display = 'flex';
                 controlsPanel.style.display = 'block';
+                downloadBtn.style.display = 'inline-flex';
             }
         });
 
         sourceVideo.addEventListener('loadedmetadata', function() {
+            outputCanvas.width = sourceVideo.videoWidth;
+            outputCanvas.height = sourceVideo.videoHeight;
+            isProcessing = true;
             requestAnimationFrame(processFrame);
         });
 
@@ -282,21 +295,8 @@
                 return;
             }
 
-            renderToCanvas();
-            requestAnimationFrame(processFrame);
-        }
-
-        function renderToCanvas() {
-            let vw = sourceVideo.videoWidth;
-            let vh = sourceVideo.videoHeight;
-            let minDim = Math.min(vw, vh);
-            let sx = (vw - minDim) / 2;
-            let sy = (vh - minDim) / 2;
-
-            ctx.clearRect(0, 0, 100, 100);
-            ctx.drawImage(sourceVideo, sx, sy, minDim, minDim, 0, 0, 100, 100);
-
-            let frame = ctx.getImageData(0, 0, 100, 100);
+            ctx.drawImage(sourceVideo, 0, 0, outputCanvas.width, outputCanvas.height);
+            let frame = ctx.getImageData(0, 0, outputCanvas.width, outputCanvas.height);
             let l = frame.data.length / 4;
 
             let tolerance = parseInt(toleranceInput.value);
@@ -307,6 +307,7 @@
                 let g = frame.data[i * 4 + 1];
                 let b = frame.data[i * 4 + 2];
 
+                // خوارزمية تفكيك وإزالة اللون الأخضر Chroma Key
                 if (g > 70 && g > r * 1.1 && g > b * 1.1) {
                     let diff = g - Math.max(r, b);
                     if (diff > (150 - tolerance)) {
@@ -317,64 +318,67 @@
             }
 
             ctx.putImageData(frame, 0, 0);
+            requestAnimationFrame(processFrame);
         }
 
-        // تحويل وتجميع الإطارات إلى ملف GIF حقيقي عالي الجودة
-        convertBtn.addEventListener('click', function() {
-            convertBtn.innerText = "جاري المعالجة بأعلى جودة...";
-            convertBtn.disabled = true;
+        // تسجيل وتحميل الفيديو الشفاف
+        downloadBtn.addEventListener('click', function() {
+            recordedChunks = [];
+            
+            // استخدام كوديك ينعم الشفافية WebM
+            const stream = outputCanvas.captureStream(30);
+            const options = { mimeType: 'video/webm;codecs=vp9' };
 
-            const gif = new GIF({
-                workers: 2,
-                quality: 1, // أعلى جودة ممكنة (Quality 1)
-                width: 100,
-                height: 100,
-                transparent: 0x00000000,
-                workerScript: 'https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.worker.js'
-            });
-
-            sourceVideo.pause();
-            sourceVideo.currentTime = 0;
-
-            const fps = 20;
-            const interval = 1 / fps;
-            const duration = sourceVideo.duration || 3;
-            let currentTime = 0;
-
-            function captureNextFrame() {
-                if (currentTime < duration) {
-                    sourceVideo.currentTime = currentTime;
-                } else {
-                    gif.render();
-                }
+            try {
+                mediaRecorder = new MediaRecorder(stream, options);
+            } catch (e) {
+                mediaRecorder = new MediaRecorder(stream);
             }
 
-            sourceVideo.onseeked = function() {
-                renderToCanvas();
-                gif.addFrame(ctx, {copy: true, delay: interval * 1000});
-                currentTime += interval;
-                captureNextFrame();
+            mediaRecorder.ondataavailable = function(e) {
+                if (e.data.size > 0) {
+                    recordedChunks.push(e.data);
+                }
             };
 
-            gif.on('finished', function(blob) {
+            mediaRecorder.onstop = function() {
+                const blob = new Blob(recordedChunks, { type: 'video/webm' });
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
-                a.download = 'result_high_quality_SZ.gif';
+                a.download = 'transparent_video_SZ.webm';
                 document.body.appendChild(a);
                 a.click();
                 setTimeout(() => {
                     document.body.removeChild(a);
                     window.URL.revokeObjectURL(url);
                 }, 100);
+            };
 
-                convertBtn.innerText = "تحويل (GIF بحجم 100x100)";
-                convertBtn.disabled = false;
-                sourceVideo.play();
-            });
+            downloadBtn.innerText = "جاري تحضير وتصدير الفيديو...";
+            downloadBtn.style.opacity = "0.7";
+            downloadBtn.disabled = true;
 
-            captureNextFrame();
+            // إعادة التشغيل للتسجيل من البداية
+            sourceVideo.currentTime = 0;
+            mediaRecorder.start();
+
+            sourceVideo.onended = stopRecording;
+            setTimeout(() => {
+                if(mediaRecorder.state === "recording") {
+                    stopRecording();
+                }
+            }, (sourceVideo.duration * 1000) || 5000);
         });
+
+        function stopRecording() {
+            if(mediaRecorder && mediaRecorder.state === "recording") {
+                mediaRecorder.stop();
+                downloadBtn.innerText = "تحميل الفيديو بدون خلفية (WebM الشفاف)";
+                downloadBtn.style.opacity = "1";
+                downloadBtn.disabled = false;
+            }
+        }
     </script>
 </body>
 </html>
