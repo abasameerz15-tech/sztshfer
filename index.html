@@ -110,27 +110,10 @@
             transform: translateY(0);
         }
 
-        .btn-download-gif {
+        .btn-convert {
             background: linear-gradient(135deg, #8a2be2, #4c1d95);
-            box-shadow: 0 8px 25px rgba(138, 43, 226, 0.3);
-        }
-
-        .btn-download-webm {
-            background: linear-gradient(135deg, #10b981, #059669);
-            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
-        }
-
-        .btn-download-webm:hover {
-            background: linear-gradient(135deg, #34d399, #10b981);
-            box-shadow: 0 12px 30px rgba(52, 211, 153, 0.5);
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-top: 25px;
+            box-shadow: 0 8px 25px rgba(138, 43, 226, 0.4);
+            margin-top: 20px;
         }
 
         .preview-container {
@@ -226,7 +209,7 @@
         
         <div class="header">
             <h1>أهلاً بك في أداة إزالة الخلفية الخضراء الاحترافية 👋</h1>
-            <p>اختر الخيار المناسب للتحويل والتصدير حسب دقة الملف والحجم المطلوب.</p>
+            <p>قم برفع الفيديو لإزالة الخلفية الخضراء وتحويله مباشرة إلى GIF بأعلى دقة وأبعاد 100x100.</p>
         </div>
 
         <div class="upload-section">
@@ -255,17 +238,10 @@
                 </div>
             </div>
 
-            <div class="action-buttons">
-                <button class="btn btn-download-gif" id="downloadGifBtn">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                    تحويل إلى GIF (أعلى دقة 100x100)
-                </button>
-
-                <button class="btn btn-download-webm" id="downloadWebmBtn">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                    تحويل الـ GIF إلى WEBM (مضبوط على 64KB)
-                </button>
-            </div>
+            <button class="btn btn-convert" id="convertBtn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                تحويل (GIF بحجم 100x100)
+            </button>
         </div>
 
         <div class="footer-tag">تصميم وتطوير احترافي بواسطة SZ Studio</div>
@@ -278,8 +254,7 @@
         const ctx = outputCanvas.getContext('2d', { willReadFrequently: true });
         const previewContainer = document.getElementById('previewContainer');
         const controlsPanel = document.getElementById('controlsPanel');
-        const downloadGifBtn = document.getElementById('downloadGifBtn');
-        const downloadWebmBtn = document.getElementById('downloadWebmBtn');
+        const convertBtn = document.getElementById('convertBtn');
         const toleranceInput = document.getElementById('tolerance');
         const smoothnessInput = document.getElementById('smoothness');
 
@@ -345,13 +320,12 @@
             requestAnimationFrame(processFrame);
         }
 
-        // الخيار الأول: تحويل وتصدير بأعلى دقة وبدون قيود حجم (100x100)
-        downloadGifBtn.addEventListener('click', function() {
+        // تحويل وتصدير الملف بصيغة GIF وبأعلى معدل بت ودقة ممكنة
+        convertBtn.addEventListener('click', function() {
             recordedChunks = [];
             const stream = outputCanvas.captureStream(30);
             const options = { 
-                mimeType: 'video/webm;codecs=vp9',
-                videoBitsPerSecond: 2500000 // معدل بت عالي جداً لضمان أقصى دقة للجيف
+                videoBitsPerSecond: 8000000 // معدل بت عالٍ جداً للحفاظ على جودة الإطارات بالكامل
             };
 
             try {
@@ -365,11 +339,11 @@
             };
 
             mediaRecorder.onstop = function() {
-                const blob = new Blob(recordedChunks, { type: 'video/webm' });
+                const blob = new Blob(recordedChunks, { type: 'image/gif' });
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
-                a.download = 'high_quality_100x100_SZ.gif';
+                a.download = 'result_100x100_SZ.gif';
                 document.body.appendChild(a);
                 a.click();
                 setTimeout(() => {
@@ -377,12 +351,12 @@
                     window.URL.revokeObjectURL(url);
                 }, 100);
 
-                downloadGifBtn.innerText = "تحويل إلى GIF (أعلى دقة 100x100)";
-                downloadGifBtn.disabled = false;
+                convertBtn.innerText = "تحويل (GIF بحجم 100x100)";
+                convertBtn.disabled = false;
             };
 
-            downloadGifBtn.innerText = "جاري التصدير بأعلى دقة...";
-            downloadGifBtn.disabled = true;
+            convertBtn.innerText = "جاري تحضير وتصدير الـ GIF...";
+            convertBtn.disabled = true;
 
             sourceVideo.currentTime = 0;
             mediaRecorder.start();
@@ -391,73 +365,6 @@
                 if(mediaRecorder.state === "recording") mediaRecorder.stop();
             }, (sourceVideo.duration * 1000) || 3000);
         });
-
-        // الخيار الثاني: الضبط الصارم ليصبح الحجم قريباً جداً من 64KB بالضبط
-        downloadWebmBtn.addEventListener('click', function() {
-            const targetBytes = 63.8 * 1024;
-            const durationSec = sourceVideo.duration || 3;
-            let calculatedBitrate = Math.round((targetBytes * 8) / durationSec);
-
-            optimizeAndRecord(calculatedBitrate, 1);
-        });
-
-        function optimizeAndRecord(bitrate, attempt) {
-            recordedChunks = [];
-            const stream = outputCanvas.captureStream(30);
-            const options = { 
-                mimeType: 'video/webm;codecs=vp9',
-                videoBitsPerSecond: bitrate
-            };
-
-            try {
-                mediaRecorder = new MediaRecorder(stream, options);
-            } catch (e) {
-                mediaRecorder = new MediaRecorder(stream);
-            }
-
-            mediaRecorder.ondataavailable = function(e) {
-                if (e.data.size > 0) recordedChunks.push(e.data);
-            };
-
-            mediaRecorder.onstop = function() {
-                const blob = new Blob(recordedChunks, { type: 'video/webm' });
-                const sizeKB = blob.size / 1024;
-
-                if (sizeKB > 63.9 && attempt < 5) {
-                    optimizeAndRecord(Math.round(bitrate * (63.5 / sizeKB)), attempt + 1);
-                    return;
-                }
-                
-                if (sizeKB < 60 && attempt < 5) {
-                    optimizeAndRecord(Math.round(bitrate * (63.5 / sizeKB)), attempt + 1);
-                    return;
-                }
-
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'optimized_64kb_SZ.webm';
-                document.body.appendChild(a);
-                a.click();
-                setTimeout(() => {
-                    document.body.removeChild(a);
-                    window.URL.revokeObjectURL(url);
-                }, 100);
-
-                downloadWebmBtn.innerText = "تحويل الـ GIF إلى WEBM (مضبوط على 64KB)";
-                downloadWebmBtn.disabled = false;
-            };
-
-            downloadWebmBtn.innerText = `جاري الضبط للحجم المطلوب (${attempt})...`;
-            downloadWebmBtn.disabled = true;
-
-            sourceVideo.currentTime = 0;
-            mediaRecorder.start();
-
-            setTimeout(() => {
-                if(mediaRecorder.state === "recording") mediaRecorder.stop();
-            }, (sourceVideo.duration * 1000) || 3000);
-        }
     </script>
 </body>
 </html>
