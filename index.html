@@ -149,9 +149,8 @@
 
         canvas {
             display: block;
-            max-width: 100%;
-            height: auto;
-            max-height: 500px;
+            width: 200px; /* عرض المعاينة على الشاشة فقط */
+            height: 200px;
         }
 
         video {
@@ -180,41 +179,6 @@
 
         .control-group:last-child {
             margin-bottom: 0;
-        }
-
-        .dimension-inputs {
-            display: flex;
-            gap: 15px;
-            width: 60%;
-        }
-
-        .dimension-field {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            width: 50%;
-        }
-
-        .dimension-field span {
-            font-size: 0.85rem;
-            color: var(--text-sub);
-        }
-
-        .dimension-field input[type=number] {
-            width: 100%;
-            padding: 6px 10px;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            color: #fff;
-            font-weight: bold;
-            text-align: center;
-            outline: none;
-        }
-
-        .dimension-field input[type=number]:focus {
-            border-color: var(--accent-glow);
-            box-shadow: 0 0 8px rgba(157, 78, 221, 0.4);
         }
 
         input[type=range] {
@@ -249,7 +213,7 @@
         
         <div class="header">
             <h1>أهلاً بك في أداة إزالة الخلفية الخضراء الاحترافية 👋</h1>
-            <p>قم برفع فيديو يحتوي على خلفية خضراء (Green Screen / Chroma Key) وسنقوم بحذف الخلفية تلقائياً وإتاحة تحميله كملف شفاف جودة عالية.</p>
+            <p>قم برفع فيديو يحتوي على خلفية خضراء وسنقوم بحذفها وتصديره تلقائياً بحجم (100x100) بصيغة WebM الشفافة.</p>
         </div>
 
         <div class="upload-section">
@@ -264,23 +228,11 @@
 
         <div class="preview-container" id="previewContainer">
             <div class="canvas-wrapper">
-                <canvas id="outputCanvas"></canvas>
+                <!-- أبعاد الكانفاس الفعلية مثبتة على 100x100 -->
+                <canvas id="outputCanvas" width="100" height="100"></canvas>
             </div>
 
             <div class="controls-panel" id="controlsPanel">
-                <div class="control-group">
-                    <label>أبعاد الفيديو:</label>
-                    <div class="dimension-inputs">
-                        <div class="dimension-field">
-                            <span>الطول</span>
-                            <input type="number" id="heightInput" min="10" max="2000" placeholder="100">
-                        </div>
-                        <div class="dimension-field">
-                            <span>العرض</span>
-                            <input type="number" id="widthInput" min="10" max="2000" placeholder="100">
-                        </div>
-                    </div>
-                </div>
                 <div class="control-group">
                     <label for="tolerance">حساسية اللون الأخضر:</label>
                     <input type="range" id="tolerance" min="0" max="150" value="70">
@@ -293,7 +245,7 @@
 
             <button class="btn btn-download" id="downloadBtn">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                تحميل الفيديو بدون خلفية (WebM الشفاف)
+                تحميل الفيديو الشفاف (100x100 WebM)
             </button>
         </div>
 
@@ -310,12 +262,9 @@
         const downloadBtn = document.getElementById('downloadBtn');
         const toleranceInput = document.getElementById('tolerance');
         const smoothnessInput = document.getElementById('smoothness');
-        const widthInput = document.getElementById('widthInput');
-        const heightInput = document.getElementById('heightInput');
 
         let mediaRecorder;
         let recordedChunks = [];
-        let resizeTimeout;
 
         videoInput.addEventListener('change', function(e) {
             const file = e.target.files[0];
@@ -332,31 +281,8 @@
         });
 
         sourceVideo.addEventListener('loadedmetadata', function() {
-            widthInput.value = sourceVideo.videoWidth;
-            heightInput.value = sourceVideo.videoHeight;
-            updateCanvasDimensions();
             requestAnimationFrame(processFrame);
         });
-
-        function handleDimensionChange() {
-            clearTimeout(resizeTimeout);
-            resizeTimeout = setTimeout(() => {
-                updateCanvasDimensions();
-            }, 300);
-        }
-
-        function updateCanvasDimensions() {
-            const w = parseInt(widthInput.value);
-            const h = parseInt(heightInput.value);
-
-            if (w && h && w > 0 && h > 0) {
-                outputCanvas.width = w;
-                outputCanvas.height = h;
-            }
-        }
-
-        widthInput.addEventListener('input', handleDimensionChange);
-        heightInput.addEventListener('input', handleDimensionChange);
 
         function processFrame() {
             if (sourceVideo.paused || sourceVideo.ended) {
@@ -364,8 +290,9 @@
                 return;
             }
 
-            ctx.drawImage(sourceVideo, 0, 0, outputCanvas.width, outputCanvas.height);
-            let frame = ctx.getImageData(0, 0, outputCanvas.width, outputCanvas.height);
+            // رسم الفيديو دائماً بأبعاد ثابتة 100x100
+            ctx.drawImage(sourceVideo, 0, 0, 100, 100);
+            let frame = ctx.getImageData(0, 0, 100, 100);
             let l = frame.data.length / 4;
 
             let tolerance = parseInt(toleranceInput.value);
@@ -422,7 +349,7 @@
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
-                a.download = 'transparent_video_SZ.webm';
+                a.download = 'transparent_100x100_SZ.webm';
                 document.body.appendChild(a);
                 a.click();
                 setTimeout(() => {
@@ -431,7 +358,7 @@
                 }, 100);
             };
 
-            downloadBtn.innerText = "جاري معالجة الحجم والتصدير...";
+            downloadBtn.innerText = "جاري تصدير الفيديو الشفاف...";
             downloadBtn.style.opacity = "0.7";
             downloadBtn.disabled = true;
 
@@ -449,7 +376,7 @@
         function stopRecording() {
             if(mediaRecorder && mediaRecorder.state === "recording") {
                 mediaRecorder.stop();
-                downloadBtn.innerText = "تحميل الفيديو بدون خلفية (WebM الشفاف)";
+                downloadBtn.innerText = "تحميل الفيديو الشفاف (100x100 WebM)";
                 downloadBtn.style.opacity = "1";
                 downloadBtn.disabled = false;
             }
