@@ -215,7 +215,7 @@
         
         <div class="header">
             <h1>أهلاً بك في أداة إزالة الخلفية الخضراء الاحترافية 👋</h1>
-            <p>حجم 100x100 أقصى دقة + ضمان عدم تجاوز 64KB وبدون حواف سوداء.</p>
+            <p>تصدير الفيديو بحجم 64KB بدقة أقصاها المتاحة وبدون حواف سوداء.</p>
         </div>
 
         <div class="upload-section">
@@ -246,7 +246,7 @@
 
             <button class="btn btn-download" id="downloadBtn">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                تحميل الفيديو الشفاف (100x100 WebM)
+                تحميل الفيديو الشفاف (64KB WebM)
             </button>
         </div>
 
@@ -294,7 +294,6 @@
                 return;
             }
 
-            // قص وتوسيط الفيديو بدون تمديد أو حواف (Object-Fit Center Crop)
             let vw = sourceVideo.videoWidth;
             let vh = sourceVideo.videoHeight;
             let minDim = Math.min(vw, vh);
@@ -329,10 +328,15 @@
         }
 
         downloadBtn.addEventListener('click', function() {
-            startRecordingWithBitrate(180000); // بدء البت ريت لمنع تجاور الحجم
+            // حساب الـ Bitrate بدقة لتحقيق 63.8KB ملموسة
+            const targetBytes = 63.8 * 1024;
+            const durationSec = sourceVideo.duration || 3;
+            let calculatedBitrate = Math.round((targetBytes * 8) / durationSec);
+
+            optimizeAndRecord(calculatedBitrate, 1);
         });
 
-        function startRecordingWithBitrate(bitrate) {
+        function optimizeAndRecord(bitrate, attempt) {
             recordedChunks = [];
             const stream = outputCanvas.captureStream(30);
             const options = { 
@@ -354,14 +358,21 @@
 
             mediaRecorder.onstop = function() {
                 const blob = new Blob(recordedChunks, { type: 'video/webm' });
+                const sizeKB = blob.size / 1024;
+
+                // لو الحجم طلع أكثر من 63.9KB يقلل البت ريت فوراً ويقيد الحجم
+                if (sizeKB > 63.9 && attempt < 5) {
+                    optimizeAndRecord(Math.round(bitrate * (63.5 / sizeKB)), attempt + 1);
+                    return;
+                }
                 
-                // فحص صارم: أقصى حجم مسموح هو 62KB حتى لا يصل لـ 64KB
-                if (blob.size > 62 * 1024 && bitrate > 30000) {
-                    // إذا تجاوز 62KB يتم إعادة الضغط بتدفق أقل تلقائياً
-                    startRecordingWithBitrate(Math.round(bitrate * 0.7));
+                // لو الحجم طلع أقل من 60KB يحاول يرفع الدقة للوصول إلى 63.8KB
+                if (sizeKB < 60 && attempt < 5) {
+                    optimizeAndRecord(Math.round(bitrate * (63.5 / sizeKB)), attempt + 1);
                     return;
                 }
 
+                // تحميل الملف فور الوصول لأعلى حجم مناسب تحتاجه
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
@@ -373,12 +384,12 @@
                     window.URL.revokeObjectURL(url);
                 }, 100);
 
-                downloadBtn.innerText = "تحميل الفيديو الشفاف (100x100 WebM)";
+                downloadBtn.innerText = "تحميل الفيديو الشفاف (64KB WebM)";
                 downloadBtn.style.opacity = "1";
                 downloadBtn.disabled = false;
             };
 
-            downloadBtn.innerText = "جاري تصدير أعلى دقة...";
+            downloadBtn.innerText = `جاري الضبط لأقصى دقة (${attempt})...`;
             downloadBtn.style.opacity = "0.7";
             downloadBtn.disabled = true;
 
