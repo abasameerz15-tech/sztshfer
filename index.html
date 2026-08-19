@@ -315,6 +315,7 @@
 
         let mediaRecorder;
         let recordedChunks = [];
+        let resizeTimeout;
 
         videoInput.addEventListener('change', function(e) {
             const file = e.target.files[0];
@@ -337,15 +338,25 @@
             requestAnimationFrame(processFrame);
         });
 
-        function updateCanvasDimensions() {
-            const w = parseInt(widthInput.value) || sourceVideo.videoWidth || 100;
-            const h = parseInt(heightInput.value) || sourceVideo.videoHeight || 100;
-            outputCanvas.width = w;
-            outputCanvas.height = h;
+        function handleDimensionChange() {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                updateCanvasDimensions();
+            }, 300);
         }
 
-        widthInput.addEventListener('input', updateCanvasDimensions);
-        heightInput.addEventListener('input', updateCanvasDimensions);
+        function updateCanvasDimensions() {
+            const w = parseInt(widthInput.value);
+            const h = parseInt(heightInput.value);
+
+            if (w && h && w > 0 && h > 0) {
+                outputCanvas.width = w;
+                outputCanvas.height = h;
+            }
+        }
+
+        widthInput.addEventListener('input', handleDimensionChange);
+        heightInput.addEventListener('input', handleDimensionChange);
 
         function processFrame() {
             if (sourceVideo.paused || sourceVideo.ended) {
