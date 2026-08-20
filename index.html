@@ -1,384 +1,160 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مُزيل الخلفية الخضراء الاحترافي | SZ Studio</title>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-color: #0b0c10;
-            --card-bg: rgba(23, 25, 35, 0.75);
-            --border-color: rgba(138, 43, 226, 0.3);
-            --primary-purple: #8a2be2;
-            --accent-glow: #9d4edd;
-            --text-main: #ffffff;
-            --text-sub: #c4c4c4;
-            --success-green: #00f081;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>استوديو إزالة الخلفية الخضراء</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Tajawal', sans-serif;
-            user-select: none;
-        }
+    body {
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      color: #f8fafc;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
 
-        body {
-            background-color: var(--bg-color);
-            background-image: 
-                radial-gradient(circle at 15% 20%, rgba(138, 43, 226, 0.15) 0%, transparent 40%),
-                radial-gradient(circle at 85% 80%, rgba(157, 78, 221, 0.15) 0%, transparent 40%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: var(--text-main);
-            padding: 20px;
-            overflow-x: hidden;
-        }
+    .container {
+      background: rgba(30, 41, 59, 0.7);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 24px;
+      padding: 40px;
+      max-width: 800px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    }
 
-        .container {
-            width: 100%;
-            max-width: 900px;
-            background: var(--card-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--border-color);
-            border-radius: 24px;
-            padding: 40px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6),
-                        0 0 30px rgba(138, 43, 226, 0.2);
-            text-align: center;
-            position: relative;
-        }
+    h1 {
+      font-size: 2.2rem;
+      margin-bottom: 12px;
+      background: linear-gradient(to right, #38bdf8, #818cf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
 
-        .header {
-            margin-bottom: 35px;
-        }
+    p.subtitle {
+      color: #94a3b8;
+      font-size: 1rem;
+      margin-bottom: 30px;
+    }
 
-        .header h1 {
-            font-size: 2.2rem;
-            font-weight: 900;
-            background: linear-gradient(135deg, #ffffff 0%, #c4c4c4 50%, var(--accent-glow) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 12px;
-            letter-spacing: -0.5px;
-        }
+    .upload-btn {
+      display: inline-block;
+      background: linear-gradient(135deg, #6366f1, #4f46e5);
+      color: #fff;
+      padding: 14px 32px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+    }
 
-        .header p {
-            color: var(--text-sub);
-            font-size: 1.05rem;
-            line-height: 1.6;
-        }
+    .upload-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(99, 102, 241, 0.5);
+    }
 
-        .upload-section {
-            margin-bottom: 30px;
-        }
+    input[type="file"] {
+      display: none;
+    }
 
-        .file-input {
-            display: none;
-        }
+    .video-container {
+      margin-top: 30px;
+      position: relative;
+      display: none;
+      border-radius: 16px;
+      overflow: hidden;
+      background: repeating-conic-gradient(#1e293b 0% 25%, #0f172a 0% 50%) 50% / 20px 20px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
 
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            padding: 16px 36px;
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: #fff;
-            background: linear-gradient(135deg, var(--primary-purple), #5a189a);
-            border: none;
-            border-radius: 14px;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 8px 25px rgba(138, 43, 226, 0.4);
-            text-decoration: none;
-        }
+    canvas {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
 
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 30px rgba(157, 78, 221, 0.6);
-            background: linear-gradient(135deg, #9d4edd, #7b2cbf);
-        }
-
-        .btn:active {
-            transform: translateY(0);
-        }
-
-        .btn-download {
-            background: linear-gradient(135deg, #10b981, #059669);
-            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
-            display: none;
-            margin-top: 25px;
-        }
-
-        .btn-download:hover {
-            background: linear-gradient(135deg, #34d399, #10b981);
-            box-shadow: 0 12px 30px rgba(52, 211, 153, 0.5);
-        }
-
-        .preview-container {
-            display: none;
-            margin-top: 30px;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .canvas-wrapper {
-            position: relative;
-            max-width: 100%;
-            border-radius: 16px;
-            overflow: hidden;
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            /* الشطرنج لبيان الشفافية */
-            background-color: #1a1a24;
-            background-image: 
-                linear-gradient(45deg, #252533 25%, transparent 25%), 
-                linear-gradient(-45deg, #252533 25%, transparent 25%), 
-                linear-gradient(45deg, transparent 75%, #252533 75%), 
-                linear-gradient(-45deg, transparent 75%, #252533 75%);
-            background-size: 20px 20px;
-            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        }
-
-        canvas {
-            display: block;
-            max-width: 100%;
-            height: auto;
-            max-height: 500px;
-        }
-
-        video {
-            display: none;
-        }
-
-        .controls-panel {
-            display: none;
-            width: 100%;
-            max-width: 500px;
-            background: rgba(0, 0, 0, 0.3);
-            padding: 20px;
-            border-radius: 14px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            margin-top: 15px;
-        }
-
-        .control-group {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-            font-size: 0.95rem;
-            color: var(--text-sub);
-        }
-
-        .control-group:last-child {
-            margin-bottom: 0;
-        }
-
-        input[type=range] {
-            width: 60%;
-            accent-color: var(--primary-purple);
-            cursor: pointer;
-        }
-
-        .status-badge {
-            display: inline-block;
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 700;
-            background: rgba(138, 43, 226, 0.15);
-            color: var(--accent-glow);
-            border: 1px solid rgba(138, 43, 226, 0.3);
-            margin-bottom: 20px;
-        }
-
-        .footer-tag {
-            margin-top: 30px;
-            font-size: 0.85rem;
-            color: rgba(255, 255, 255, 0.3);
-        }
-    </style>
+    video {
+      display: none;
+    }
+  </style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="status-badge">SZ GREEN SCREEN REMOVER v2.0</div>
-        
-        <div class="header">
-            <h1>أهلاً بك في أداة إزالة الخلفية الخضراء الاحترافية 👋</h1>
-            <p>قم برفع فيديو يحتوي على خلفية خضراء (Green Screen / Chroma Key) وسنقوم بحذف الخلفية تلقائياً وإتاحة تحميله كملف شفاف جودة عالية.</p>
-        </div>
+  <div class="container">
+    <h1>أهلاً بك في استوديو إزالة الخلفية 🎬</h1>
+    <p class="subtitle">قم برفع فيديو يتضمن خلفية خضراء ليتم تفريغها فورياً وبشكل احترافي.</p>
 
-        <div class="upload-section">
-            <input type="file" id="videoInput" class="file-input" accept="video/*">
-            <button class="btn" onclick="document.getElementById('videoInput').click()">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
-                رفع الفيديو
-            </button>
-        </div>
+    <label class="upload-btn" for="videoInput">
+      📁 رفع فيديو
+    </label>
+    <input type="file" id="videoInput" accept="video/*">
 
-        <video id="sourceVideo" playsinline loop muted></video>
-
-        <div class="preview-container" id="previewContainer">
-            <div class="canvas-wrapper">
-                <canvas id="outputCanvas"></canvas>
-            </div>
-
-            <div class="controls-panel" id="controlsPanel">
-                <div class="control-group">
-                    <label for="tolerance">حساسية اللون الأخضر:</label>
-                    <input type="range" id="tolerance" min="0" max="150" value="70">
-                </div>
-                <div class="control-group">
-                    <label for="smoothness">نعومة الحواف:</label>
-                    <input type="range" id="smoothness" min="0" max="50" value="15">
-                </div>
-            </div>
-
-            <button class="btn btn-download" id="downloadBtn">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                تحميل الفيديو بدون خلفية (WebM الشفاف)
-            </button>
-        </div>
-
-        <div class="footer-tag">تصميم وتطوير احترافي بواسطة SZ Studio</div>
+    <div class="video-container" id="videoContainer">
+      <canvas id="outputCanvas"></canvas>
     </div>
 
-    <script>
-        const videoInput = document.getElementById('videoInput');
-        const sourceVideo = document.getElementById('sourceVideo');
-        const outputCanvas = document.getElementById('outputCanvas');
-        const ctx = outputCanvas.getContext('2d', { willReadFrequently: true });
-        const previewContainer = document.getElementById('previewContainer');
-        const controlsPanel = document.getElementById('controlsPanel');
-        const downloadBtn = document.getElementById('downloadBtn');
-        const toleranceInput = document.getElementById('tolerance');
-        const smoothnessInput = document.getElementById('smoothness');
+    <video id="inputVideo" loop playsinline muted></video>
+  </div>
 
-        let mediaRecorder;
-        let recordedChunks = [];
-        let isProcessing = false;
+  <script>
+    const videoInput = document.getElementById('videoInput');
+    const inputVideo = document.getElementById('inputVideo');
+    const outputCanvas = document.getElementById('outputCanvas');
+    const ctx = outputCanvas.getContext('2d', { willReadFrequently: true });
+    const videoContainer = document.getElementById('videoContainer');
 
-        videoInput.addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const fileURL = URL.createObjectURL(file);
-                sourceVideo.src = fileURL;
-                sourceVideo.load();
-                sourceVideo.play();
+    videoInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const fileURL = URL.createObjectURL(file);
+        inputVideo.src = fileURL;
+        inputVideo.play();
+        videoContainer.style.display = 'block';
+      }
+    });
 
-                previewContainer.style.display = 'flex';
-                controlsPanel.style.display = 'block';
-                downloadBtn.style.display = 'inline-flex';
-            }
-        });
+    inputVideo.addEventListener('play', () => {
+      outputCanvas.width = inputVideo.videoWidth;
+      outputCanvas.height = inputVideo.videoHeight;
+      processFrame();
+    });
 
-        sourceVideo.addEventListener('loadedmetadata', function() {
-            outputCanvas.width = sourceVideo.videoWidth;
-            outputCanvas.height = sourceVideo.videoHeight;
-            isProcessing = true;
-            requestAnimationFrame(processFrame);
-        });
+    function processFrame() {
+      if (inputVideo.paused || inputVideo.ended) return;
 
-        function processFrame() {
-            if (sourceVideo.paused || sourceVideo.ended) {
-                requestAnimationFrame(processFrame);
-                return;
-            }
+      ctx.drawImage(inputVideo, 0, 0, outputCanvas.width, outputCanvas.height);
+      const frame = ctx.getImageData(0, 0, outputCanvas.width, outputCanvas.height);
+      const l = frame.data.length / 4;
 
-            ctx.drawImage(sourceVideo, 0, 0, outputCanvas.width, outputCanvas.height);
-            let frame = ctx.getImageData(0, 0, outputCanvas.width, outputCanvas.height);
-            let l = frame.data.length / 4;
+      for (let i = 0; i < l; i++) {
+        const r = frame.data[i * 4 + 0];
+        const g = frame.data[i * 4 + 1];
+        const b = frame.data[i * 4 + 2];
 
-            let tolerance = parseInt(toleranceInput.value);
-            let smoothness = parseInt(smoothnessInput.value);
-
-            for (let i = 0; i < l; i++) {
-                let r = frame.data[i * 4 + 0];
-                let g = frame.data[i * 4 + 1];
-                let b = frame.data[i * 4 + 2];
-
-                // خوارزمية تفكيك وإزالة اللون الأخضر Chroma Key
-                if (g > 70 && g > r * 1.1 && g > b * 1.1) {
-                    let diff = g - Math.max(r, b);
-                    if (diff > (150 - tolerance)) {
-                        let alpha = 255 - ((diff - (150 - tolerance)) * (255 / (smoothness + 1)));
-                        frame.data[i * 4 + 3] = Math.max(0, Math.min(255, alpha));
-                    }
-                }
-            }
-
-            ctx.putImageData(frame, 0, 0);
-            requestAnimationFrame(processFrame);
+        // اكتشاف الدرجة الخضراء وتفريغ الشفافية (Alpha)
+        if (g > 90 && r < 100 && b < 100) {
+          frame.data[i * 4 + 3] = 0;
         }
+      }
 
-        // تسجيل وتحميل الفيديو الشفاف
-        downloadBtn.addEventListener('click', function() {
-            recordedChunks = [];
-            
-            // استخدام كوديك ينعم الشفافية WebM
-            const stream = outputCanvas.captureStream(30);
-            const options = { mimeType: 'video/webm;codecs=vp9' };
+      ctx.putImageData(frame, 0, 0);
+      requestAnimationFrame(processFrame);
+    }
+  </script>
 
-            try {
-                mediaRecorder = new MediaRecorder(stream, options);
-            } catch (e) {
-                mediaRecorder = new MediaRecorder(stream);
-            }
-
-            mediaRecorder.ondataavailable = function(e) {
-                if (e.data.size > 0) {
-                    recordedChunks.push(e.data);
-                }
-            };
-
-            mediaRecorder.onstop = function() {
-                const blob = new Blob(recordedChunks, { type: 'video/webm' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'transparent_video_SZ.webm';
-                document.body.appendChild(a);
-                a.click();
-                setTimeout(() => {
-                    document.body.removeChild(a);
-                    window.URL.revokeObjectURL(url);
-                }, 100);
-            };
-
-            downloadBtn.innerText = "جاري تحضير وتصدير الفيديو...";
-            downloadBtn.style.opacity = "0.7";
-            downloadBtn.disabled = true;
-
-            // إعادة التشغيل للتسجيل من البداية
-            sourceVideo.currentTime = 0;
-            mediaRecorder.start();
-
-            sourceVideo.onended = stopRecording;
-            setTimeout(() => {
-                if(mediaRecorder.state === "recording") {
-                    stopRecording();
-                }
-            }, (sourceVideo.duration * 1000) || 5000);
-        });
-
-        function stopRecording() {
-            if(mediaRecorder && mediaRecorder.state === "recording") {
-                mediaRecorder.stop();
-                downloadBtn.innerText = "تحميل الفيديو بدون خلفية (WebM الشفاف)";
-                downloadBtn.style.opacity = "1";
-                downloadBtn.disabled = false;
-            }
-        }
-    </script>
 </body>
 </html>
