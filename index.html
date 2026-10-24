@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>ABBAS SZ | تثبيت الحجز</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
@@ -13,7 +13,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px;
+    padding: 15px;
     position: relative;
     overflow-x: hidden;
   }
@@ -21,58 +21,60 @@
   body::before {
     content: '';
     position: absolute;
-    width: 500px; height: 500px;
+    width: 300px; height: 300px;
     background: radial-gradient(circle, rgba(138,43,226,0.35), transparent 70%);
-    top: -150px; right: -150px;
+    top: -100px; right: -100px;
     border-radius: 50%;
     animation: float 8s ease-in-out infinite;
+    z-index: -1;
   }
   
   body::after {
     content: '';
     position: absolute;
-    width: 400px; height: 400px;
+    width: 250px; height: 250px;
     background: radial-gradient(circle, rgba(0,191,255,0.3), transparent 70%);
-    bottom: -120px; left: -120px;
+    bottom: -80px; left: -80px;
     border-radius: 50%;
     animation: float 10s ease-in-out infinite reverse;
+    z-index: -1;
   }
   
   @keyframes float {
     0%, 100% { transform: translateY(0) scale(1); }
-    50% { transform: translateY(-30px) scale(1.05); }
+    50% { transform: translateY(-20px) scale(1.05); }
   }
   
   .card {
     position: relative;
     width: 100%;
-    max-width: 480px;
+    max-width: 420px; /* تصغير العرض الأقصى */
     background: rgba(255,255,255,0.06);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
     border: 1px solid rgba(255,255,255,0.15);
-    border-radius: 24px;
-    padding: 35px 28px;
-    box-shadow: 0 25px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
+    border-radius: 20px;
+    padding: 25px 20px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
     animation: appear 0.8s ease;
     z-index: 2;
   }
   
   @keyframes appear {
-    from { opacity: 0; transform: translateY(30px); }
+    from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
   }
   
   .logo {
     text-align: center;
-    margin-bottom: 6px;
+    margin-bottom: 5px;
   }
   
   .logo .brand {
     display: inline-block;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 800;
-    letter-spacing: 4px;
+    letter-spacing: 3px;
     background: linear-gradient(90deg, #00d4ff, #a855f7, #00d4ff);
     background-size: 200% auto;
     -webkit-background-clip: text;
@@ -88,10 +90,10 @@
   h1 {
     text-align: center;
     color: #fff;
-    font-size: 22px;
+    font-size: 18px; /* تصغير الخط */
     font-weight: 700;
-    margin-bottom: 8px;
-    line-height: 1.5;
+    margin-bottom: 5px;
+    line-height: 1.4;
   }
   
   h1 span {
@@ -104,26 +106,26 @@
   .subtitle {
     text-align: center;
     color: rgba(255,255,255,0.55);
-    font-size: 13px;
-    margin-bottom: 26px;
+    font-size: 12px;
+    margin-bottom: 20px;
   }
   
-  .field { margin-bottom: 16px; }
+  .field { margin-bottom: 12px; }
   
   .field label {
     display: block;
     color: rgba(255,255,255,0.8);
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 600;
-    margin-bottom: 7px;
+    margin-bottom: 6px;
   }
   
   .field input, .field textarea {
     width: 100%;
     background: rgba(255,255,255,0.07);
     border: 1px solid rgba(255,255,255,0.15);
-    border-radius: 12px;
-    padding: 13px 15px;
+    border-radius: 10px;
+    padding: 12px;
     color: #fff;
     font-size: 14px;
     outline: none;
@@ -131,39 +133,40 @@
     resize: vertical;
   }
   
-  .field textarea { min-height: 90px; }
+  .field textarea { min-height: 80px; }
   
   .field input::placeholder, .field textarea::placeholder {
     color: rgba(255,255,255,0.35);
+    font-size: 13px;
   }
   
   .field input:focus, .field textarea:focus {
     border-color: #a855f7;
     background: rgba(255,255,255,0.1);
-    box-shadow: 0 0 0 3px rgba(168,85,247,0.2);
+    box-shadow: 0 0 0 2px rgba(168,85,247,0.2);
   }
   
   .date-btn {
     width: 100%;
-    padding: 13px;
+    padding: 12px;
     border: 1px dashed rgba(0,212,255,0.5);
     background: rgba(0,212,255,0.08);
     color: #00d4ff;
     font-size: 14px;
     font-weight: 600;
-    border-radius: 12px;
+    border-radius: 10px;
     cursor: pointer;
     transition: 0.3s;
   }
   
-  .date-btn:hover { background: rgba(0,212,255,0.18); }
+  .date-btn:active { background: rgba(0,212,255,0.2); }
   
   .date-box {
     display: none;
-    margin-top: 12px;
-    padding: 14px;
+    margin-top: 10px;
+    padding: 12px;
     background: rgba(0,0,0,0.25);
-    border-radius: 12px;
+    border-radius: 10px;
     border: 1px solid rgba(255,255,255,0.1);
   }
   
@@ -172,50 +175,47 @@
   .date-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
+    gap: 8px;
   }
   
   .date-grid select {
     padding: 10px;
-    border-radius: 10px;
+    border-radius: 8px;
     border: 1px solid rgba(255,255,255,0.15);
     background: rgba(255,255,255,0.08);
     color: #fff;
     font-size: 13px;
     outline: none;
     cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
   }
   
   .date-grid select option { background: #24243e; color: #fff; }
   
   .selected-date {
-    margin-top: 10px;
+    margin-top: 8px;
     color: #7CFFB2;
-    font-size: 12px;
+    font-size: 11px;
     text-align: center;
     font-weight: 600;
   }
   
   .submit-btn {
     width: 100%;
-    margin-top: 22px;
-    padding: 15px;
+    margin-top: 18px;
+    padding: 14px;
     border: none;
-    border-radius: 14px;
+    border-radius: 12px;
     background: linear-gradient(135deg, #a855f7, #00d4ff);
     color: #fff;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 700;
     cursor: pointer;
     transition: 0.3s;
-    position: relative;
-    overflow: hidden;
   }
   
-  .submit-btn:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 30px rgba(168,85,247,0.5);
-  }
+  .submit-btn:active:not(:disabled) { transform: scale(0.98); }
   
   .submit-btn:disabled {
     opacity: 0.4;
@@ -225,7 +225,7 @@
   
   .submit-btn .loader {
     display: none;
-    width: 18px; height: 18px;
+    width: 16px; height: 16px;
     border: 2px solid rgba(255,255,255,0.4);
     border-top-color: #fff;
     border-radius: 50%;
@@ -237,18 +237,18 @@
   
   .footer {
     text-align: center;
-    margin-top: 22px;
+    margin-top: 18px;
     color: rgba(255,255,255,0.3);
-    font-size: 11px;
+    font-size: 10px;
     letter-spacing: 1px;
   }
   
   .status {
     text-align: center;
-    margin-top: 14px;
-    font-size: 13px;
+    margin-top: 12px;
+    font-size: 12px;
     font-weight: 600;
-    min-height: 18px;
+    min-height: 16px;
   }
   .status.ok { color: #7CFFB2; }
   .status.err { color: #ff6b81; }
@@ -277,7 +277,7 @@
   </div>
 
   <div class="field">
-    <button class="date-btn" id="dateBtn">📅 تحديد تاريخ الحجز</button>
+    <button type="button" class="date-btn" id="dateBtn">📅 تحديد تاريخ الحجز</button>
     <div class="date-box" id="dateBox">
       <div class="date-grid">
         <select id="year"><option value="">السنة</option></select>
@@ -289,7 +289,7 @@
     </div>
   </div>
 
-  <button class="submit-btn" id="submitBtn" disabled>
+  <button type="button" class="submit-btn" id="submitBtn" disabled>
     <span id="btnText">✅ تثبيت الحجز</span>
     <span class="loader" id="loader"></span>
   </button>
@@ -299,75 +299,147 @@
   <div class="footer">ABBAS SZ • BOOKING SYSTEM</div>
 </div>
 
-<script>
-  const BOT_TOKEN = "8644318470:AAH_AS6XItwsHU5lAw13Rj-ppyPg-ZvYiz8";
-  const CHAT_ID = "8802630369";
-
-  const username = document.getElementById('username');
-  const userId = document.getElementById('userId');
-  const desc = document.getElementById('desc');
-  const dateBtn = document.getElementById('dateBtn');
-  const dateBox = document.getElementById('dateBox');
-  const yearSel = document.getElementById('year');
-  const monthSel = document.getElementById('month');
-  const daySel = document.getElementById('day');
-  const hourSel = document.getElementById('hour');
-  const selectedDate = document.getElementById('selectedDate');
-  const submitBtn = document.getElementById('submitBtn');
-  const btnText = document.getElementById('btnText');
-  const loader = document.getElementById('loader');
-  const status = document.getElementById('status');
-
-  const months = ["يناير","فبراير","مارس","أبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"];
-
-  // تعبئة السنوات
-  const currentYear = new Date().getFullYear();
-  for (let y = currentYear; y <= currentYear + 5; y++) {
-    yearSel.innerHTML += `<option value="${y}">${y}</option>`;
-  }
-  // تعبئة الأشهر
-  months.forEach((m, i) => {
-    monthSel.innerHTML += `<option value="${i+1}">${m}</option>`;
-  });
-  // تعبئة الأيام
-  for (let d = 1; d <= 31; d++) {
-    daySel.innerHTML += `<option value="${d}">${d}</option>`;
-  }
-  // تعبئة الساعات
-  for (let h = 0; h <= 23; h++) {
-    const label = h.toString().padStart(2,'0') + ":00";
-    hourSel.innerHTML += `<option value="${h}">${label}</option>`;
-  }
-
-  dateBtn.addEventListener('click', () => {
-    dateBox.classList.toggle('show');
-  });
-
-  function updateSelectedDate() {
-    if (yearSel.value && monthSel.value && daySel.value && hourSel.value !== "") {
-      const h = hourSel.value.padStart(2,'0');
-      selectedDate.textContent = `📌 التاريخ المحدد: ${daySel.value}/${monthSel.value}/${yearSel.value} — الساعة ${h}:00`;
-    } else {
-      selectedDate.textContent = "";
+<script defer>
+  // الانتظار حتى يتم تحميل الصفحة بالكامل
+  document.addEventListener('DOMContentLoaded', () => {
+    
+    // التحقق من دعم الجافاسكريبت
+    if (typeof document.getElementById('dateBtn') === 'undefined') {
+      alert('متصفحك لا يدعم الجافاسكريبت، يرجى استخدام متصفح آخر مثل Chrome.');
+      return;
     }
-    checkValid();
-  }
 
-  [yearSel, monthSel, daySel, hourSel].forEach(el => el.addEventListener('change', updateSelectedDate));
+    const BOT_TOKEN = "8644318470:AAH_AS6XItwsHU5lAw13Rj-ppyPg-ZvYiz8";
+    const CHAT_ID = "8802630369";
 
-  function checkValid() {
-    const allFilled =
-      username.value.trim() !== "" &&
-      userId.value.trim() !== "" &&
-      desc.value.trim() !== "" &&
-      yearSel.value && monthSel.value && daySel.value && hourSel.value !== "";
-    submitBtn.disabled = !allFilled;
-  }
+    const username = document.getElementById('username');
+    const userId = document.getElementById('userId');
+    const desc = document.getElementById('desc');
+    const dateBtn = document.getElementById('dateBtn');
+    const dateBox = document.getElementById('dateBox');
+    const yearSel = document.getElementById('year');
+    const monthSel = document.getElementById('month');
+    const daySel = document.getElementById('day');
+    const hourSel = document.getElementById('hour');
+    const selectedDate = document.getElementById('selectedDate');
+    const submitBtn = document.getElementById('submitBtn');
+    const btnText = document.getElementById('btnText');
+    const loader = document.getElementById('loader');
+    const status = document.getElementById('status');
 
-  [username, userId, desc].forEach(el => el.addEventListener('input', checkValid));
+    const months = ["يناير","فبراير","مارس","أبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"];
 
-  submitBtn.addEventListener('click', async () => {
-    if (submitBtn.disabled) return;
+    // تعبئة القوائم
+    const currentYear = new Date().getFullYear();
+    for (let y = currentYear; y <= currentYear + 5; y++) {
+      yearSel.innerHTML += `<option value="${y}">${y}</option>`;
+    }
+    months.forEach((m, i) => {
+      monthSel.innerHTML += `<option value="${i+1}">${m}</option>`;
+    });
+    for (let d = 1; d <= 31; d++) {
+      daySel.innerHTML += `<option value="${d}">${d}</option>`;
+    }
+    for (let h = 0; h <= 23; h++) {
+      const label = h.toString().padStart(2,'0') + ":00";
+      hourSel.innerHTML += `<option value="${h}">${label}</option>`;
+    }
 
-    const h = hourSel.value.padStart(2,'0');
-    const dateStr = `${daySel.value}/${monthSel.value}/${yearSel.value} 
+    // فتح وإغلاق صندوق التاريخ
+    dateBtn.addEventListener('click', function(e) {
+      e.preventDefault(); // لمنع أي سلوك افتراضي
+      dateBox.classList.toggle('show');
+    });
+
+    function updateSelectedDate() {
+      if (yearSel.value && monthSel.value && daySel.value && hourSel.value !== "") {
+        const h = hourSel.value.padStart(2,'0');
+        selectedDate.textContent = `📌 التاريخ المحدد: ${daySel.value}/${monthSel.value}/${yearSel.value} — الساعة ${h}:00`;
+      } else {
+        selectedDate.textContent = "";
+      }
+      checkValid();
+    }
+
+    [yearSel, monthSel, daySel, hourSel].forEach(el => {
+      el.addEventListener('change', updateSelectedDate);
+    });
+
+    function checkValid() {
+      const allFilled =
+        username.value.trim() !== "" &&
+        userId.value.trim() !== "" &&
+        desc.value.trim() !== "" &&
+        yearSel.value && monthSel.value && daySel.value && hourSel.value !== "";
+      submitBtn.disabled = !allFilled;
+    }
+
+    [username, userId, desc].forEach(el => {
+      el.addEventListener('input', checkValid);
+    });
+
+    // إرسال البيانات
+    submitBtn.addEventListener('click', async () => {
+      if (submitBtn.disabled) return;
+
+      const h = hourSel.value.padStart(2,'0');
+      const monthName = months[monthSel.value - 1];
+
+      const message =
+`🔔 <b>حجز جديد على موقع ABBAS SZ</b>
+
+👤 <b>يوزر التيليجرام:</b> @${username.value.trim().replace(/^@/,'')}
+🆔 <b>آيدي التيليجرام:</b> <code>${userId.value.trim()}</code>
+
+📝 <b>الوصف / الطلب:</b>
+${desc.value.trim()}
+
+📅 <b>تاريخ الحجز:</b> ${daySel.value} ${monthName} ${yearSel.value}
+⏰ <b>الساعة:</b> ${h}:00
+
+✅ تم إرسال الطلب من الموقع.`;
+
+      btnText.style.display = 'none';
+      loader.style.display = 'block';
+      submitBtn.disabled = true;
+      status.textContent = "";
+      status.className = "status";
+
+      try {
+        const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            chat_id: CHAT_ID,
+            text: message,
+            parse_mode: 'HTML'
+          })
+        });
+
+        const data = await res.json();
+
+        if (data.ok) {
+          status.textContent = "✅ تم تثبيت حجزك بنجاح! سيتم التواصل معك قريباً.";
+          status.className = "status ok";
+          // تفريغ الحقول
+          username.value = ""; userId.value = ""; desc.value = "";
+          yearSel.value = ""; monthSel.value = ""; daySel.value = ""; hourSel.value = "";
+          selectedDate.textContent = "";
+          dateBox.classList.remove('show');
+        } else {
+          throw new Error(data.description || "فشل الإرسال");
+        }
+      } catch (e) {
+        status.textContent = "❌ حدث خطأ أثناء إرسال الحجز، تأكد من البيانات وحاول مجدداً.";
+        status.className = "status err";
+      } finally {
+        btnText.style.display = 'inline';
+        loader.style.display = 'none';
+        checkValid();
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
