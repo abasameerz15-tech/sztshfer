@@ -1,160 +1,373 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>استوديو إزالة الخلفية الخضراء</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    body {
-      background: linear-gradient(135deg, #0f172a, #1e293b);
-      color: #f8fafc;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
-
-    .container {
-      background: rgba(30, 41, 59, 0.7);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 24px;
-      padding: 40px;
-      max-width: 800px;
-      width: 100%;
-      text-align: center;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-    }
-
-    h1 {
-      font-size: 2.2rem;
-      margin-bottom: 12px;
-      background: linear-gradient(to right, #38bdf8, #818cf8);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    p.subtitle {
-      color: #94a3b8;
-      font-size: 1rem;
-      margin-bottom: 30px;
-    }
-
-    .upload-btn {
-      display: inline-block;
-      background: linear-gradient(135deg, #6366f1, #4f46e5);
-      color: #fff;
-      padding: 14px 32px;
-      font-size: 1.1rem;
-      font-weight: 600;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
-    }
-
-    .upload-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(99, 102, 241, 0.5);
-    }
-
-    input[type="file"] {
-      display: none;
-    }
-
-    .video-container {
-      margin-top: 30px;
-      position: relative;
-      display: none;
-      border-radius: 16px;
-      overflow: hidden;
-      background: repeating-conic-gradient(#1e293b 0% 25%, #0f172a 0% 50%) 50% / 20px 20px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    canvas {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-
-    video {
-      display: none;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ABBAS SZ | تثبيت الحجز</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
+  
+  body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    position: relative;
+    overflow-x: hidden;
+  }
+  
+  body::before {
+    content: '';
+    position: absolute;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(138,43,226,0.35), transparent 70%);
+    top: -150px; right: -150px;
+    border-radius: 50%;
+    animation: float 8s ease-in-out infinite;
+  }
+  
+  body::after {
+    content: '';
+    position: absolute;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(0,191,255,0.3), transparent 70%);
+    bottom: -120px; left: -120px;
+    border-radius: 50%;
+    animation: float 10s ease-in-out infinite reverse;
+  }
+  
+  @keyframes float {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-30px) scale(1.05); }
+  }
+  
+  .card {
+    position: relative;
+    width: 100%;
+    max-width: 480px;
+    background: rgba(255,255,255,0.06);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 24px;
+    padding: 35px 28px;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
+    animation: appear 0.8s ease;
+    z-index: 2;
+  }
+  
+  @keyframes appear {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .logo {
+    text-align: center;
+    margin-bottom: 6px;
+  }
+  
+  .logo .brand {
+    display: inline-block;
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: 4px;
+    background: linear-gradient(90deg, #00d4ff, #a855f7, #00d4ff);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shine 3s linear infinite;
+  }
+  
+  @keyframes shine {
+    to { background-position: 200% center; }
+  }
+  
+  h1 {
+    text-align: center;
+    color: #fff;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    line-height: 1.5;
+  }
+  
+  h1 span {
+    background: linear-gradient(90deg, #00d4ff, #a855f7);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  
+  .subtitle {
+    text-align: center;
+    color: rgba(255,255,255,0.55);
+    font-size: 13px;
+    margin-bottom: 26px;
+  }
+  
+  .field { margin-bottom: 16px; }
+  
+  .field label {
+    display: block;
+    color: rgba(255,255,255,0.8);
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 7px;
+  }
+  
+  .field input, .field textarea {
+    width: 100%;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 12px;
+    padding: 13px 15px;
+    color: #fff;
+    font-size: 14px;
+    outline: none;
+    transition: 0.3s;
+    resize: vertical;
+  }
+  
+  .field textarea { min-height: 90px; }
+  
+  .field input::placeholder, .field textarea::placeholder {
+    color: rgba(255,255,255,0.35);
+  }
+  
+  .field input:focus, .field textarea:focus {
+    border-color: #a855f7;
+    background: rgba(255,255,255,0.1);
+    box-shadow: 0 0 0 3px rgba(168,85,247,0.2);
+  }
+  
+  .date-btn {
+    width: 100%;
+    padding: 13px;
+    border: 1px dashed rgba(0,212,255,0.5);
+    background: rgba(0,212,255,0.08);
+    color: #00d4ff;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  .date-btn:hover { background: rgba(0,212,255,0.18); }
+  
+  .date-box {
+    display: none;
+    margin-top: 12px;
+    padding: 14px;
+    background: rgba(0,0,0,0.25);
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  
+  .date-box.show { display: block; animation: appear 0.4s ease; }
+  
+  .date-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  
+  .date-grid select {
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.08);
+    color: #fff;
+    font-size: 13px;
+    outline: none;
+    cursor: pointer;
+  }
+  
+  .date-grid select option { background: #24243e; color: #fff; }
+  
+  .selected-date {
+    margin-top: 10px;
+    color: #7CFFB2;
+    font-size: 12px;
+    text-align: center;
+    font-weight: 600;
+  }
+  
+  .submit-btn {
+    width: 100%;
+    margin-top: 22px;
+    padding: 15px;
+    border: none;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #a855f7, #00d4ff);
+    color: #fff;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .submit-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(168,85,247,0.5);
+  }
+  
+  .submit-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    filter: grayscale(0.5);
+  }
+  
+  .submit-btn .loader {
+    display: none;
+    width: 18px; height: 18px;
+    border: 2px solid rgba(255,255,255,0.4);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    margin: 0 auto;
+  }
+  
+  @keyframes spin { to { transform: rotate(360deg); } }
+  
+  .footer {
+    text-align: center;
+    margin-top: 22px;
+    color: rgba(255,255,255,0.3);
+    font-size: 11px;
+    letter-spacing: 1px;
+  }
+  
+  .status {
+    text-align: center;
+    margin-top: 14px;
+    font-size: 13px;
+    font-weight: 600;
+    min-height: 18px;
+  }
+  .status.ok { color: #7CFFB2; }
+  .status.err { color: #ff6b81; }
+</style>
 </head>
 <body>
 
-  <div class="container">
-    <h1>أهلاً بك في استوديو إزالة الخلفية 🎬</h1>
-    <p class="subtitle">قم برفع فيديو يتضمن خلفية خضراء ليتم تفريغها فورياً وبشكل احترافي.</p>
+<div class="card">
+  <div class="logo"><span class="brand">ABBAS SZ</span></div>
+  <h1>أهلاً بك في موقع <span>تثبيت الحجز</span></h1>
+  <p class="subtitle">املأ البيانات التالية لتثبيت حجزك</p>
 
-    <label class="upload-btn" for="videoInput">
-      📁 رفع فيديو
-    </label>
-    <input type="file" id="videoInput" accept="video/*">
-
-    <div class="video-container" id="videoContainer">
-      <canvas id="outputCanvas"></canvas>
-    </div>
-
-    <video id="inputVideo" loop playsinline muted></video>
+  <div class="field">
+    <label>يوزر التيليجرام</label>
+    <input type="text" id="username" placeholder="ضع يوزرك تيليجرام" />
   </div>
 
-  <script>
-    const videoInput = document.getElementById('videoInput');
-    const inputVideo = document.getElementById('inputVideo');
-    const outputCanvas = document.getElementById('outputCanvas');
-    const ctx = outputCanvas.getContext('2d', { willReadFrequently: true });
-    const videoContainer = document.getElementById('videoContainer');
+  <div class="field">
+    <label>آيدي حساب التيليجرام</label>
+    <input type="number" id="userId" placeholder="ضع ايدي حسابك تيليجرام" />
+  </div>
 
-    videoInput.addEventListener('change', (e) => {
-      const file = e.target.files[0];
-      if (file) {
-        const fileURL = URL.createObjectURL(file);
-        inputVideo.src = fileURL;
-        inputVideo.play();
-        videoContainer.style.display = 'block';
-      }
-    });
+  <div class="field">
+    <label>الوصف والسعر</label>
+    <textarea id="desc" placeholder="اكتب الوصف أو الشيء الذي تريد شرائه وكَم السعر المتفق عليه"></textarea>
+  </div>
 
-    inputVideo.addEventListener('play', () => {
-      outputCanvas.width = inputVideo.videoWidth;
-      outputCanvas.height = inputVideo.videoHeight;
-      processFrame();
-    });
+  <div class="field">
+    <button class="date-btn" id="dateBtn">📅 تحديد تاريخ الحجز</button>
+    <div class="date-box" id="dateBox">
+      <div class="date-grid">
+        <select id="year"><option value="">السنة</option></select>
+        <select id="month"><option value="">الشهر</option></select>
+        <select id="day"><option value="">اليوم</option></select>
+        <select id="hour"><option value="">الساعة</option></select>
+      </div>
+      <div class="selected-date" id="selectedDate"></div>
+    </div>
+  </div>
 
-    function processFrame() {
-      if (inputVideo.paused || inputVideo.ended) return;
+  <button class="submit-btn" id="submitBtn" disabled>
+    <span id="btnText">✅ تثبيت الحجز</span>
+    <span class="loader" id="loader"></span>
+  </button>
 
-      ctx.drawImage(inputVideo, 0, 0, outputCanvas.width, outputCanvas.height);
-      const frame = ctx.getImageData(0, 0, outputCanvas.width, outputCanvas.height);
-      const l = frame.data.length / 4;
+  <div class="status" id="status"></div>
 
-      for (let i = 0; i < l; i++) {
-        const r = frame.data[i * 4 + 0];
-        const g = frame.data[i * 4 + 1];
-        const b = frame.data[i * 4 + 2];
+  <div class="footer">ABBAS SZ • BOOKING SYSTEM</div>
+</div>
 
-        // اكتشاف الدرجة الخضراء وتفريغ الشفافية (Alpha)
-        if (g > 90 && r < 100 && b < 100) {
-          frame.data[i * 4 + 3] = 0;
-        }
-      }
+<script>
+  const BOT_TOKEN = "8644318470:AAH_AS6XItwsHU5lAw13Rj-ppyPg-ZvYiz8";
+  const CHAT_ID = "8802630369";
 
-      ctx.putImageData(frame, 0, 0);
-      requestAnimationFrame(processFrame);
+  const username = document.getElementById('username');
+  const userId = document.getElementById('userId');
+  const desc = document.getElementById('desc');
+  const dateBtn = document.getElementById('dateBtn');
+  const dateBox = document.getElementById('dateBox');
+  const yearSel = document.getElementById('year');
+  const monthSel = document.getElementById('month');
+  const daySel = document.getElementById('day');
+  const hourSel = document.getElementById('hour');
+  const selectedDate = document.getElementById('selectedDate');
+  const submitBtn = document.getElementById('submitBtn');
+  const btnText = document.getElementById('btnText');
+  const loader = document.getElementById('loader');
+  const status = document.getElementById('status');
+
+  const months = ["يناير","فبراير","مارس","أبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"];
+
+  // تعبئة السنوات
+  const currentYear = new Date().getFullYear();
+  for (let y = currentYear; y <= currentYear + 5; y++) {
+    yearSel.innerHTML += `<option value="${y}">${y}</option>`;
+  }
+  // تعبئة الأشهر
+  months.forEach((m, i) => {
+    monthSel.innerHTML += `<option value="${i+1}">${m}</option>`;
+  });
+  // تعبئة الأيام
+  for (let d = 1; d <= 31; d++) {
+    daySel.innerHTML += `<option value="${d}">${d}</option>`;
+  }
+  // تعبئة الساعات
+  for (let h = 0; h <= 23; h++) {
+    const label = h.toString().padStart(2,'0') + ":00";
+    hourSel.innerHTML += `<option value="${h}">${label}</option>`;
+  }
+
+  dateBtn.addEventListener('click', () => {
+    dateBox.classList.toggle('show');
+  });
+
+  function updateSelectedDate() {
+    if (yearSel.value && monthSel.value && daySel.value && hourSel.value !== "") {
+      const h = hourSel.value.padStart(2,'0');
+      selectedDate.textContent = `📌 التاريخ المحدد: ${daySel.value}/${monthSel.value}/${yearSel.value} — الساعة ${h}:00`;
+    } else {
+      selectedDate.textContent = "";
     }
-  </script>
+    checkValid();
+  }
 
-</body>
-</html>
+  [yearSel, monthSel, daySel, hourSel].forEach(el => el.addEventListener('change', updateSelectedDate));
+
+  function checkValid() {
+    const allFilled =
+      username.value.trim() !== "" &&
+      userId.value.trim() !== "" &&
+      desc.value.trim() !== "" &&
+      yearSel.value && monthSel.value && daySel.value && hourSel.value !== "";
+    submitBtn.disabled = !allFilled;
+  }
+
+  [username, userId, desc].forEach(el => el.addEventListener('input', checkValid));
+
+  submitBtn.addEventListener('click', async () => {
+    if (submitBtn.disabled) return;
+
+    const h = hourSel.value.padStart(2,'0');
+    const dateStr = `${daySel.value}/${monthSel.value}/${yearSel.value} 
